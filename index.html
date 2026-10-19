@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Crispy Launcher: Free, Open Source Minecraft Launcher</title>
+<meta name="description" content="Download Crispy Launcher, a free Minecraft launcher with Modrinth, Fabric, Forge and automatic updates.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%A7%80%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0f1117;
+  --card:#181b24;
+  --card-hover:#202430;
+  --acc:#32cd82;
+  --acc-hover:#2ab870;
+  --tx:#f3f4f6;
+  --mut:#9ca3af;
+  --bd:rgba(255, 255, 255, 0.08);
+  --font:'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  color-scheme: dark;
+}
+
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth;scroll-padding-top:90px}
+body{
+  background-color: var(--bg);
+  color: var(--tx);
+  font-family: var(--font);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:2px solid var(--acc);outline-offset:3px}
+
+
+header{
+  position:sticky;
+  top:0;
+  z-index:100;
+  background:rgba(15, 17, 23, 0.85);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--bd);
+}
+.bar{
+  max-width:1200px;
+  margin:0 auto;
+  padding:18px 24px;
+  display:flex;
+  align-items:center;
+  gap:32px;
+}
+.logo{
+  font-size:18px;
+  font-weight:800;
+  display:flex;
+  gap:10px;
+  align-items:center;
+  margin-right:auto;
+  color:#fff;
+}
+.logo span{color:var(--acc)}
+nav{display:flex;gap:24px;font-size:15px;font-weight:600}
+nav a{color:var(--mut);transition:color .2s}
+nav a:hover{color:#fff}
+
+.btn{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  padding:12px 24px;
+  border-radius:10px;
+  font-family:inherit;
+  font-weight:700;
+  font-size:15px;
+  border:1px solid var(--bd);
+  background:var(--card);
+  color:var(--tx);
+  cursor:pointer;
+  transition:all .2s;
+}
+.btn:hover{
+  background:var(--card-hover);
+  border-color:rgba(255,255,255,0.2);
+  transform:translateY(-1px);
+}
+.btn.primary{
+  background:var(--acc);
+  color:#07130c;
+  border:none;
+}
+.btn.primary:hover{
+  background:var(--acc-hover);
+}
+.btn.sm{padding:8px 16px;font-size:14px}
+.btn.lg{padding:16px 32px;font-size:17px;border-radius:12px}
+
+
+.hero{
+  max-width:1200px;
+  margin:0 auto;
+  padding:100px 24px 80px;
+  display:grid;
+  grid-template-columns:1.1fr 0.9fr;
+  gap:60px;
+  align-items:center;
+}
+@media(max-width:900px){.hero{grid-template-columns:1fr;text-align:center;padding:60px 24px}}
+.hero-content h1{
+  font-size:clamp(40px, 5vw, 64px);
+  font-weight:800;
+  line-height:1.15;
+  letter-spacing:-0.03em;
+  margin-bottom:20px;
+  color:#fff;
+}
+.hero-content h1 span{
+  color:var(--acc);
+}
+.hero-content p{
+  font-size:18px;
+  color:var(--mut);
+  margin-bottom:32px;
+  max-width:540px;
+}
+@media(max-width:900px){.hero-content p{margin:0 auto 32px}}
+.hero-btns{
+  display:flex;
+  gap:16px;
+  flex-wrap:wrap;
+}
+@media(max-width:900px){.hero-btns{justify-content:center}}
+
+
+.hero-visual{
+  position:relative;
+  width:100%;
+}
+.win{
+  background:#141720;
+  border:1px solid var(--bd);
+  border-radius:16px;
+  overflow:hidden;
+  box-shadow:0 25px 50px -12px rgba(0,0,0,0.7);
+  display:grid;
+  grid-template-columns:160px 1fr;
+  font-size:13px;
+  text-align:left;
+}
+.w-side{background:#0f1117;border-right:1px solid var(--bd);padding:16px 12px;display:flex;flex-direction:column;gap:8px}
+.w-logo{font-size:12px;font-weight:800;color:var(--acc);margin-bottom:8px}
+.w-inst{display:flex;gap:8px;align-items:center;padding:8px;border-radius:8px;border:1px solid transparent}
+.w-inst.on{background:var(--card);border-color:var(--acc)}
+.w-inst i{width:26px;height:26px;border-radius:6px;display:grid;place-items:center;font-style:normal;font-weight:800;background:var(--acc);color:#07130c;flex:none}
+.w-inst b{display:block;font-size:12px;color:#fff}
+.w-inst small{color:var(--mut);font-size:10px}
+.w-main{padding:20px;display:flex;flex-direction:column;gap:16px}
+.w-top{display:flex;align-items:center;gap:12px}
+.w-top h4{font-size:16px;font-weight:700;margin:0;flex:1;color:#fff}
+.w-play{background:var(--acc);color:#07130c;font-weight:800;padding:8px 18px;border-radius:8px}
+.w-tabs{display:flex;gap:16px;border-bottom:1px solid var(--bd);color:var(--mut);padding-bottom:10px;font-size:13px}
+.w-tabs .on{color:#fff;font-weight:700;border-bottom:2px solid var(--acc);padding-bottom:8px}
+.w-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.w-mod{display:flex;gap:10px;align-items:center;background:var(--card);border:1px solid var(--bd);border-radius:8px;padding:10px}
+.w-mod i{width:24px;height:24px;border-radius:6px;background:#242a38;flex:none}
+.w-mod b{display:block;color:#fff;font-size:12px}
+.w-mod small{color:var(--acc);font-size:10px}
+@media(max-width:560px){.win{grid-template-columns:1fr}.w-side{display:none}}
+
+/* FEATURES GRID SECTION */
+.features-section{
+  max-width:1200px;
+  margin:0 auto;
+  padding:80px 24px;
+  border-top:1px solid var(--bd);
+}
+.section-title{
+  text-align:center;
+  max-width:600px;
+  margin:0 auto 60px;
+}
+.section-title h2{
+  font-size:32px;
+  font-weight:800;
+  margin-bottom:16px;
+  color:#fff;
+}
+.section-title p{color:var(--mut);font-size:16px}
+
+.features-grid{
+  display:grid;
+  grid-template-columns:repeat(3, 1fr);
+  gap:24px;
+}
+@media(max-width:900px){.features-grid{grid-template-columns:1fr}}
+.feature-card{
+  background:var(--card);
+  border:1px solid var(--bd);
+  border-radius:16px;
+  padding:32px;
+  transition:transform .2s, border-color .2s;
+}
+.feature-card:hover{
+  transform:translateY(-3px);
+  border-color:rgba(255,255,255,0.2);
+}
+.feature-icon{
+  width:48px;
+  height:48px;
+  border-radius:12px;
+  background:rgba(50,205,130,0.1);
+  color:var(--acc);
+  display:grid;
+  place-items:center;
+  font-size:22px;
+  font-weight:800;
+  margin-bottom:20px;
+}
+.feature-card h3{
+  font-size:18px;
+  font-weight:700;
+  margin-bottom:10px;
+  color:#fff;
+}
+.feature-card p{
+  color:var(--mut);
+  font-size:15px;
+}
+
+
+.community-section{
+  max-width:1200px;
+  margin:0 auto;
+  padding:0 24px 80px;
+}
+.community-box{
+  background:linear-gradient(135deg, #181b24, #13161f);
+  border:1px solid var(--bd);
+  border-radius:24px;
+  padding:50px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:30px;
+  flex-wrap:wrap;
+}
+@media(max-width:768px){.community-box{flex-direction:column;text-align:center;padding:30px}}
+.community-box h3{font-size:24px;color:#fff;margin-bottom:8px}
+.community-box p{color:var(--mut)}
+
+footer{
+  max-width:1200px;
+  margin:0 auto;
+  padding:40px 24px;
+  border-top:1px solid var(--bd);
+  color:var(--mut);
+  font-size:14px;
+  display:flex;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap:16px;
+}
+</style>
+</head>
+<body>
+
+<header><div class="bar">
+  <a class="logo" href="#top">🧀 <span>Crispy</span> Launcher</a>
+  <nav aria-label="Main">
+    <a href="#features">Features</a>
+    <a href="https://github.com/Web-mc1/crispy-launcher" target="_blank" rel="noopener noreferrer">GitHub</a>
+    <a href="https://discord.gg/CJGQTdbhyU" target="_blank" rel="noopener noreferrer">Discord</a>
+  </nav>
+  <a class="btn primary sm dl" href="https://github.com/Web-mc1/crispy-launcher/releases/latest">Download</a>
+</div></header>
+
+<section class="hero" id="top">
+  <div class="hero-content">
+    <h1>A free, open approach to <span>Minecraft</span>.</h1>
+    <p>Manage your instances, versions, mods, texture packs, and shaders with absolute ease. Built with Modrinth integration, automatic updates, and multi-loader support.</p>
+    <div class="hero-btns">
+      <a class="btn primary lg dl" href="https://github.com/Web-mc1/crispy-launcher/releases/latest">Download for Windows</a>
+      <a class="btn lg" href="#features">Learn More</a>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="win" aria-hidden="true">
+      <div class="w-side">
+        <b class="w-logo">🧀 Crispy</b>
+        <div class="w-inst on"><i>S</i><span><b>Survival</b><small>fabric, 1.21.4</small></span></div>
+        <div class="w-inst"><i>M</i><span><b>Modded</b><small>neoforge, 1.21.1</small></span></div>
+        <div class="w-inst"><i>P</i><span><b>Pixel pack</b><small>quilt, 1.20.1</small></span></div>
+      </div>
+      <div class="w-main">
+        <div class="w-top"><h4>Survival</h4><span class="w-play">▶ PLAY</span></div>
+        <div class="w-tabs"><span class="on">My mods</span><span>Resource packs</span><span>Shaders</span></div>
+        <div class="w-grid">
+          <div class="w-mod"><i></i><span><b>Sodium</b><small>modrinth</small></span></div>
+          <div class="w-mod"><i></i><span><b>Iris Shaders</b><small>modrinth</small></span></div>
+          <div class="w-mod"><i></i><span><b>Mod Menu</b><small>modrinth</small></span></div>
+          <div class="w-mod"><i></i><span><b>Lithium</b><small>modrinth</small></span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="features-section" id="features">
+  <div class="section-title">
+    <h2>Designed for Power & Simplicity</h2>
+    <p>Everything you need to configure and launch your favorite game setups seamlessly.</p>
+  </div>
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon">⚡</div>
+      <h3>Multi-Loader Support</h3>
+      <p>Easily manage and configure instances running Fabric, Quilt, Forge, and NeoForge across any Minecraft version.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🔍</div>
+      <h3>Modrinth Integration</h3>
+      <p>Browse, install, and update your favorite mods, resource packs, and shaders directly inside the client.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🔄</div>
+      <h3>Always Up-to-Date</h3>
+      <p>Features self-updating technology so you never have to manually download installers again.</p>
+    </div>
+  </div>
+</section>
+
+<section class="community-section">
+  <div class="community-box">
+    <div>
+      <h3>Join the community</h3>
+      <p>Have questions, want to report bugs, or share your custom setups? Connect with us on Discord.</p>
+    </div>
+    <a class="btn primary" href="https://discord.gg/CJGQTdbhyU" target="_blank" rel="noopener noreferrer">Join Discord Server</a>
+  </div>
+</section>
+
+<footer>
+  <span>© FryedCheese. Open source and free.</span>
+  <span>Windows 10 & 11 compatible</span>
+</footer>
+
+<script>
+(function(){
+  fetch('https://api.github.com/repos/Web-mc1/crispy-launcher/releases/latest',{headers:{Accept:'application/vnd.github+json'}})
+  .then(function(r){if(!r.ok)throw 0;return r.json()})
+  .then(function(j){
+    var a=(j.assets||[]).filter(function(x){return /\.exe$/i.test(x.name)})[0];if(!a)return;
+    document.querySelectorAll('.dl').forEach(function(b){b.href=a.browser_download_url});
+  }).catch(function(){});
+})();
+</script>
+</body>
+</html>
