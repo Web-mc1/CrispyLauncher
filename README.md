@@ -2,7 +2,7 @@
 
 > A lightweight, modern desktop Minecraft launcher built with Electron and Node.js.
 
-[![GitHub release](https://img.shields.io/github/v/release/Web-mc1/crispy-launcher?color=green&style=flat-square)](https://github.com/Web-mc1/crispy-launcher/releases/latest)
+[![GitHub release](https://img.shields.io/github/v/release/Web-mc1/crispyLauncher?color=green&style=flat-square)](https://github.com/Web-mc1/crispyLauncher/releases/latest)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)](LICENSE)
 
 Crispy Launcher provides a fast, responsive, and seamless experience for launching Minecraft, managing game instances, and delivering smooth updates right to your desktop.
@@ -42,5 +42,5 @@ If you would like to run or build Crispy Launcher locally from source, follow th
 
 1. **Clone the repository:**
    ```bash
-   git clone [https://github.com/Web-mc1/crispy-launcher.git](https://github.com/Web-mc1/crispy-launcher.git)
-   cd crispy-launcher
+   git clone [https://github.com/Web-mc1/crispyLauncher.git](https://github.com/Web-mc1/crispyLauncher.git)
+   cd crispyLauncher
