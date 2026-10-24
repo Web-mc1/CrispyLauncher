@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Crispy Launcher: Free, Open Source Minecraft Launcher</title>
-<meta name="description" content="Download Crispy Launcher, a free Minecraft launcher with Modrinth, Fabric, Forge and automatic updates.">
+<meta name="description" content="Download Crispy Launcher, a free Minecraft launcher for Windows and Linux with Modrinth, Fabric, Forge and automatic updates.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%A7%80%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -133,6 +133,19 @@ nav a:hover{color:#fff}
   flex-wrap:wrap;
 }
 @media(max-width:900px){.hero-btns{justify-content:center}}
+.dl-note{
+  margin-top:16px;
+  font-size:13px;
+  color:var(--mut);
+}
+.dl-note code{
+  background:var(--card);
+  border:1px solid var(--bd);
+  border-radius:6px;
+  padding:2px 7px;
+  font-size:12px;
+  color:var(--tx);
+}
 
 
 .hero-visual{
@@ -274,7 +287,7 @@ footer{
     <a href="https://github.com/Web-mc1/crispy-launcher" target="_blank" rel="noopener noreferrer">GitHub</a>
     <a href="https://discord.gg/CJGQTdbhyU" target="_blank" rel="noopener noreferrer">Discord</a>
   </nav>
-  <a class="btn primary sm dl" href="https://github.com/Web-mc1/crispy-launcher/releases/latest">Download</a>
+  <a class="btn primary sm" id="dl-top" href="https://github.com/Web-mc1/crispy-launcher/releases/latest">Download</a>
 </div></header>
 
 <section class="hero" id="top">
@@ -282,9 +295,11 @@ footer{
     <h1>A free, open approach to <span>Minecraft</span>.</h1>
     <p>Manage your instances, versions, mods, texture packs, and shaders with absolute ease. Built with Modrinth integration, automatic updates, and multi-loader support.</p>
     <div class="hero-btns">
-      <a class="btn primary lg dl" href="https://github.com/Web-mc1/crispy-launcher/releases/latest">Download for Windows</a>
+      <a class="btn primary lg" id="dl-win" href="https://github.com/Web-mc1/crispy-launcher/releases/latest">Download for Windows</a>
+      <a class="btn lg" id="dl-linux" href="https://github.com/Web-mc1/crispy-launcher/releases/latest">Download for Linux</a>
       <a class="btn lg" href="#features">Learn More</a>
     </div>
+    <p class="dl-note">Linux: download the AppImage, then run <code>chmod +x crispy-launcher-*.AppImage</code> and open it.</p>
   </div>
   <div class="hero-visual">
     <div class="win" aria-hidden="true">
@@ -344,16 +359,34 @@ footer{
 
 <footer>
   <span>© FryedCheese. Open source and free.</span>
-  <span>Windows 10 & 11 compatible</span>
+  <span>Windows 10 & 11 and Linux (AppImage)</span>
 </footer>
 
 <script>
 (function(){
+  var win = document.getElementById('dl-win');
+  var linux = document.getElementById('dl-linux');
+  var top = document.getElementById('dl-top');
+
+  // Linux visitors (not Android) get the Linux button highlighted and first
+  var onLinux = /linux/i.test(navigator.userAgent) && !/android/i.test(navigator.userAgent);
+  if (onLinux) {
+    win.classList.remove('primary');
+    linux.classList.add('primary');
+    linux.parentNode.insertBefore(linux, win);
+  }
+  top.textContent = onLinux ? 'Download for Linux' : 'Download';
+
   fetch('https://api.github.com/repos/Web-mc1/crispy-launcher/releases/latest',{headers:{Accept:'application/vnd.github+json'}})
   .then(function(r){if(!r.ok)throw 0;return r.json()})
   .then(function(j){
-    var a=(j.assets||[]).filter(function(x){return /\.exe$/i.test(x.name)})[0];if(!a)return;
-    document.querySelectorAll('.dl').forEach(function(b){b.href=a.browser_download_url});
+    var assets = j.assets || [];
+    var exe = assets.filter(function(x){return /\.exe$/i.test(x.name)})[0];
+    var app = assets.filter(function(x){return /\.AppImage$/i.test(x.name)})[0];
+    if (exe) win.href = exe.browser_download_url;
+    if (app) linux.href = app.browser_download_url;
+    var mine = onLinux ? app : exe;
+    if (mine) top.href = mine.browser_download_url;
   }).catch(function(){});
 })();
 </script>
