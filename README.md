@@ -25,7 +25,7 @@ You can get the latest pre-packaged installer directly from our official release
 [Download Latest Release](https://github.com/Web-mc1/crispy-launcher/releases/latest)
 
 ### System Requirements
-* **OS:** Windows 10 / 11 (64-bit)
+* **OS:** Windows 10 / 11 (64-bit) + Linux (appimage)
 * **Java:** Java 17 or higher (recommended for newer Minecraft versions)
 
 ---
