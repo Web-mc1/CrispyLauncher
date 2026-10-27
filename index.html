@@ -1,1042 +1,600 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Crispy Launcher — Modern, Open-Source Minecraft Client & Instance Manager</title>
-<meta name="description" content="Discover Crispy Launcher: A ultra-fast, open-source Minecraft launcher featuring native Modrinth API integration, multi-loader isolation, automatic updates, and Java runtime management.">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%A7%80%3C/text%3E%3C/svg%3E">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
-<style>
-:root {
-  --bg-darker: #0b0e14;
-  --bg: #11151e;
-  --card: #181f2b;
-  --card-hover: #20293a;
-  --card-border: #293447;
-  --card-border-glow: rgba(255, 184, 0, 0.35);
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crispy Launcher</title>
+  <meta name="description" content="Download Crispy Launcher, a free Minecraft launcher for Windows and Linux with Modrinth, Fabric, Quilt, Forge, and NeoForge integration.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%A7%80%3C/text%3E%3C/svg%3E">
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Inter & Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+  <!-- FontAwesome for Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            crispy: {
+              yellow: '#ffb800',
+              orange: '#ff6b00',
+              pureBlack: '#000000',
+              deepBlack: '#0a0a0c',
+              cardBg: '#111115',
+              cardHover: '#16161c',
+              cardBorder: '#22222a'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            heading: ['Plus Jakarta Sans', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
 
-  /* Modrinth-inspired Yellow & Orange Accent Palette */
-  --acc-yellow: #ffb800;
-  --acc-orange: #ff6b00;
-  --acc-gradient: linear-gradient(135deg, #ffc700 0%, #ff6b00 100%);
-  --acc-glow: rgba(255, 184, 0, 0.16);
+  <style>
+    :root {
+      --bg-pure: #000000;
+      --bg-deep: #0a0a0c;
+      --card-bg: #111115;
+      --card-hover: #16161c;
+      --card-border: #22222a;
+      --acc-yellow: #ffb800;
+      --acc-orange: #ff6b00;
+    }
 
-  --tx: #f3f4f6;
-  --tx-muted: #9ca8bd;
-  --tx-subtle: #67758d;
+    body {
+      background-color: var(--bg-pure);
+      color: #f3f4f6;
+      font-family: 'Inter', sans-serif;
+    }
 
-  --font: 'Inter', system-ui, -apple-system, sans-serif;
-  --font-display: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    .gradient-text {
+      background: linear-gradient(135deg, #ffb800 0%, #ff6b00 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
 
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 20px;
+    .gradient-btn {
+      background: linear-gradient(135deg, #ffb800 0%, #ff6b00 100%);
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
 
-  color-scheme: dark;
-}
+    .gradient-btn:hover {
+      box-shadow: 0 0 25px rgba(255, 184, 0, 0.35);
+      transform: translateY(-1px);
+    }
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; scroll-padding-top: 85px; }
-body {
-  background-color: var(--bg-darker);
-  color: var(--tx);
-  font-family: var(--font);
-  font-size: 16px;
-  line-height: 1.6;
-  -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
-}
+    .bg-radial-glow {
+      background: radial-gradient(circle at 50% -10%, rgba(255, 184, 0, 0.12) 0%, rgba(255, 107, 0, 0.03) 40%, rgba(0, 0, 0, 0) 70%);
+    }
 
-a { color: inherit; text-decoration: none; }
-:focus-visible { outline: 2px solid var(--acc-yellow); outline-offset: 2px; }
+    .pure-card {
+      background-color: var(--card-bg);
+      border: 1px solid var(--card-border);
+      transition: all 0.25s ease;
+    }
 
-/* NAVBAR */
-header {
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  background: rgba(11, 14, 20, 0.88);
-  backdrop-filter: blur(16px);
-  border-bottom: 1px solid var(--card-border);
-}
-.bar {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 14px 24px;
-  display: flex;
-  align-items: center;
-  gap: 24px;
-}
-.logo {
-  font-family: var(--font-display);
-  font-size: 20px;
-  font-weight: 800;
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  color: #fff;
-  letter-spacing: -0.02em;
-}
-.logo span {
-  background: var(--acc-gradient);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-nav { display: flex; gap: 22px; font-size: 14px; font-weight: 600; }
-nav a { color: var(--tx-muted); transition: color .2s; }
-nav a:hover { color: #fff; }
+    .pure-card:hover {
+      border-color: rgba(255, 184, 0, 0.35);
+      background-color: var(--card-hover);
+    }
 
-.nav-actions { margin-left: auto; display: flex; gap: 12px; align-items: center; }
-
-/* BUTTONS */
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  padding: 11px 22px;
-  border-radius: var(--radius-sm);
-  font-family: var(--font);
-  font-weight: 600;
-  font-size: 14px;
-  border: 1px solid var(--card-border);
-  background: var(--card);
-  color: var(--tx);
-  cursor: pointer;
-  transition: all .2s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.btn:hover {
-  background: var(--card-hover);
-  border-color: rgba(255, 255, 255, 0.2);
-  transform: translateY(-2px);
-}
-.btn.primary {
-  background: var(--acc-gradient);
-  color: #120e00;
-  border: none;
-  font-weight: 700;
-}
-.btn.primary:hover {
-  box-shadow: 0 6px 24px rgba(255, 107, 0, 0.38);
-  filter: brightness(1.08);
-}
-.btn.secondary-accent {
-  background: rgba(255, 184, 0, 0.1);
-  color: var(--acc-yellow);
-  border: 1px solid rgba(255, 184, 0, 0.3);
-}
-.btn.secondary-accent:hover {
-  background: rgba(255, 184, 0, 0.18);
-  border-color: var(--acc-yellow);
-}
-.btn.sm { padding: 8px 14px; font-size: 13px; }
-.btn.lg { padding: 15px 32px; font-size: 16px; border-radius: var(--radius-md); }
-
-/* HERO SECTION */
-.hero-wrapper {
-  position: relative;
-  background: radial-gradient(circle at 50% -10%, rgba(255, 184, 0, 0.16) 0%, rgba(255, 107, 0, 0.06) 45%, rgba(11, 14, 20, 0) 80%);
-}
-.hero {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 80px 24px 60px;
-  display: grid;
-  grid-template-columns: 1.1fr 0.9fr;
-  gap: 50px;
-  align-items: center;
-}
-@media(max-width:960px){
-  .hero { grid-template-columns: 1fr; text-align: center; padding: 50px 24px; }
-}
-.badge-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 14px;
-  background: rgba(255, 184, 0, 0.12);
-  border: 1px solid rgba(255, 184, 0, 0.25);
-  border-radius: 20px;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--acc-yellow);
-  margin-bottom: 20px;
-}
-.badge-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--acc-orange); box-shadow: 0 0 8px var(--acc-orange); }
-
-.hero-content h1 {
-  font-family: var(--font-display);
-  font-size: clamp(40px, 4.8vw, 62px);
-  font-weight: 800;
-  line-height: 1.1;
-  letter-spacing: -0.03em;
-  margin-bottom: 20px;
-  color: #fff;
-}
-.hero-content h1 span {
-  background: var(--acc-gradient);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-.hero-content p {
-  font-size: 18px;
-  color: var(--tx-muted);
-  margin-bottom: 32px;
-  max-width: 560px;
-}
-@media(max-width:960px){ .hero-content p { margin: 0 auto 32px; } }
-.hero-btns { display: flex; gap: 14px; flex-wrap: wrap; }
-@media(max-width:960px){ .hero-btns { justify-content: center; } }
-
-.dl-note {
-  margin-top: 20px;
-  font-size: 13px;
-  color: var(--tx-subtle);
-}
-.dl-note code {
-  background: var(--card);
-  border: 1px solid var(--card-border);
-  border-radius: 4px;
-  padding: 2px 7px;
-  font-size: 12px;
-  color: var(--tx-muted);
-}
-
-/* APP MOCKUP PREVIEW */
-.hero-visual { position: relative; width: 100%; }
-.win {
-  background: var(--bg);
-  border: 1px solid var(--card-border);
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  box-shadow: 0 35px 70px -15px rgba(0,0,0,0.85);
-  display: grid;
-  grid-template-columns: 190px 1fr;
-  font-size: 13px;
-  text-align: left;
-}
-.w-side {
-  background: #0d1017;
-  border-right: 1px solid var(--card-border);
-  padding: 16px 12px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-.w-logo {
-  font-family: var(--font-display);
-  font-size: 13px;
-  font-weight: 800;
-  color: var(--acc-yellow);
-  margin-bottom: 12px;
-  padding-left: 6px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-.w-inst {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  padding: 8px 10px;
-  border-radius: var(--radius-sm);
-  border: 1px solid transparent;
-  color: var(--tx-muted);
-  cursor: pointer;
-  transition: all .2s;
-}
-.w-inst.on, .w-inst:hover { background: var(--card); border-color: var(--card-border); color: #fff; }
-.w-inst i {
-  width: 28px;
-  height: 28px;
-  border-radius: 6px;
-  display: grid;
-  place-items: center;
-  font-style: normal;
-  font-weight: 800;
-  background: var(--acc-gradient);
-  color: #120e00;
-  flex: none;
-}
-.w-inst b { display: block; font-size: 13px; line-height: 1.2; }
-.w-inst small { color: var(--tx-subtle); font-size: 11px; }
-
-.w-main { padding: 24px; display: flex; flex-direction: column; gap: 20px; }
-.w-top { display: flex; align-items: center; gap: 12px; }
-.w-top h4 { font-size: 18px; font-weight: 700; margin: 0; flex: 1; color: #fff; }
-.w-play {
-  background: var(--acc-gradient);
-  color: #120e00;
-  font-weight: 800;
-  padding: 8px 22px;
-  border-radius: var(--radius-sm);
-  font-size: 12px;
-  letter-spacing: 0.05em;
-  box-shadow: 0 4px 15px rgba(255, 107, 0, 0.25);
-}
-.w-tabs { display: flex; gap: 20px; border-bottom: 1px solid var(--card-border); color: var(--tx-muted); padding-bottom: 10px; font-size: 13px; font-weight: 600; }
-.w-tabs .on { color: var(--acc-yellow); border-bottom: 2px solid var(--acc-yellow); padding-bottom: 8px; margin-bottom: -11px; }
-
-.w-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.w-mod { display: flex; gap: 10px; align-items: center; background: var(--card); border: 1px solid var(--card-border); border-radius: var(--radius-sm); padding: 10px; }
-.w-mod i { width: 28px; height: 28px; border-radius: 6px; background: #232d3d; flex: none; display: grid; place-items: center; font-style: normal; font-size: 12px; color: var(--acc-yellow); }
-.w-mod b { display: block; color: #fff; font-size: 12px; }
-.w-mod small { color: var(--acc-yellow); font-size: 10px; font-weight: 600; }
-@media(max-width:600px){ .win { grid-template-columns: 1fr; } .w-side { display: none; } }
-
-/* SEARCH & INTERACTIVE EXPLORER DEMO */
-.search-demo-section {
-  max-width: 1280px;
-  margin: 40px auto 0;
-  padding: 0 24px;
-}
-.search-box-card {
-  background: var(--card);
-  border: 1px solid var(--card-border);
-  border-radius: var(--radius-lg);
-  padding: 30px;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-}
-.search-input-wrapper {
-  position: relative;
-  display: flex;
-  align-items: center;
-  margin-bottom: 20px;
-}
-.search-input-wrapper input {
-  width: 100%;
-  padding: 16px 20px 16px 50px;
-  background: var(--bg);
-  border: 1px solid var(--card-border);
-  border-radius: var(--radius-md);
-  color: #fff;
-  font-size: 16px;
-  font-family: inherit;
-  transition: all .2s;
-}
-.search-input-wrapper input:focus {
-  border-color: var(--acc-yellow);
-  box-shadow: 0 0 0 3px var(--acc-glow);
-  outline: none;
-}
-.search-icon {
-  position: absolute;
-  left: 18px;
-  font-size: 20px;
-  color: var(--tx-subtle);
-}
-.search-results-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 16px;
-}
-.res-item {
-  background: var(--bg);
-  border: 1px solid var(--card-border);
-  border-radius: var(--radius-sm);
-  padding: 16px;
-  display: flex;
-  gap: 14px;
-  align-items: center;
-  transition: all .2s;
-}
-.res-item:hover {
-  border-color: var(--acc-yellow);
-  transform: translateY(-2px);
-}
-.res-icon {
-  width: 42px;
-  height: 42px;
-  border-radius: 8px;
-  background: rgba(255, 184, 0, 0.15);
-  color: var(--acc-yellow);
-  display: grid;
-  place-items: center;
-  font-size: 20px;
-  flex: none;
-}
-.res-info h5 { font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 2px; }
-.res-info p { font-size: 12px; color: var(--tx-muted); line-height: 1.3; }
-.res-tag { display: inline-block; font-size: 10px; font-weight: 700; color: var(--acc-orange); text-transform: uppercase; margin-top: 4px; }
-
-/* METRICS & STATS COUNTER */
-.stats-section {
-  max-width: 1280px;
-  margin: 80px auto;
-  padding: 0 24px;
-}
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
-}
-@media(max-width:900px){ .stats-grid { grid-template-columns: repeat(2, 1fr); } }
-@media(max-width:500px){ .stats-grid { grid-template-columns: 1fr; } }
-
-.stat-card {
-  background: var(--card);
-  border: 1px solid var(--card-border);
-  border-radius: var(--radius-md);
-  padding: 30px 24px;
-  text-align: center;
-}
-.stat-number {
-  font-family: var(--font-display);
-  font-size: 38px;
-  font-weight: 800;
-  background: var(--acc-gradient);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  margin-bottom: 6px;
-}
-.stat-label { font-size: 14px; color: var(--tx-muted); font-weight: 600; }
-
-/* FEATURES GRID & DEEP DIVES */
-.section-title {
-  text-align: center;
-  max-width: 650px;
-  margin: 0 auto 50px;
-}
-.section-title h2 {
-  font-family: var(--font-display);
-  font-size: 36px;
-  font-weight: 800;
-  margin-bottom: 14px;
-  color: #fff;
-  letter-spacing: -0.02em;
-}
-.section-title p { color: var(--tx-muted); font-size: 17px; }
-
-.features-section {
-  max-width: 1280px;
-  margin: 0 auto 100px;
-  padding: 0 24px;
-}
-.features-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
-}
-@media(max-width:960px){ .features-grid { grid-template-columns: repeat(2, 1fr); } }
-@media(max-width:640px){ .features-grid { grid-template-columns: 1fr; } }
-
-.feature-card {
-  background: var(--card);
-  border: 1px solid var(--card-border);
-  border-radius: var(--radius-md);
-  padding: 32px;
-  transition: transform .2s, border-color .2s;
-  position: relative;
-  overflow: hidden;
-}
-.feature-card:hover {
-  transform: translateY(-4px);
-  border-color: rgba(255, 184, 0, 0.4);
-}
-.feature-icon {
-  width: 48px;
-  height: 48px;
-  border-radius: var(--radius-sm);
-  background: rgba(255, 184, 0, 0.12);
-  color: var(--acc-yellow);
-  display: grid;
-  place-items: center;
-  font-size: 22px;
-  margin-bottom: 20px;
-}
-.feature-card h3 {
-  font-size: 20px;
-  font-weight: 700;
-  margin-bottom: 10px;
-  color: #fff;
-}
-.feature-card p {
-  color: var(--tx-muted);
-  font-size: 15px;
-  line-height: 1.6;
-}
-
-/* INSTALLATION STEPS */
-.install-section {
-  max-width: 1280px;
-  margin: 0 auto 100px;
-  padding: 0 24px;
-}
-.steps-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
-  position: relative;
-}
-@media(max-width:900px){ .steps-grid { grid-template-columns: 1fr; } }
-
-.step-card {
-  background: var(--card);
-  border: 1px solid var(--card-border);
-  border-radius: var(--radius-md);
-  padding: 32px;
-  position: relative;
-}
-.step-num {
-  font-family: var(--font-display);
-  font-size: 48px;
-  font-weight: 800;
-  color: rgba(255, 184, 0, 0.2);
-  position: absolute;
-  top: 20px;
-  right: 24px;
-}
-.step-card h4 { font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 12px; }
-.step-card p { font-size: 15px; color: var(--tx-muted); line-height: 1.6; }
-
-/* FEATURE COMPARISON TABLE */
-.comparison-section {
-  max-width: 1280px;
-  margin: 0 auto 100px;
-  padding: 0 24px;
-}
-.table-wrapper {
-  overflow-x: auto;
-  background: var(--card);
-  border: 1px solid var(--card-border);
-  border-radius: var(--radius-lg);
-}
-table {
-  width: 100%;
-  border-collapse: collapse;
-  text-align: left;
-  font-size: 15px;
-}
-th, td {
-  padding: 18px 24px;
-  border-bottom: 1px solid var(--card-border);
-}
-th {
-  background: rgba(13, 16, 23, 0.6);
-  font-family: var(--font-display);
-  font-size: 15px;
-  font-weight: 700;
-  color: #fff;
-}
-td:first-child, th:first-child { font-weight: 600; color: #fff; }
-tr:last-child td { border-bottom: none; }
-.check-yes { color: var(--acc-yellow); font-weight: 800; font-size: 18px; }
-.check-no { color: var(--tx-subtle); font-size: 18px; }
-
-/* SERVER SHOWCASE SPOTLIGHT */
-.server-spotlight {
-  max-width: 1280px;
-  margin: 0 auto 100px;
-  padding: 0 24px;
-}
-.spotlight-box {
-  background: linear-gradient(135deg, rgba(255,184,0,0.1) 0%, rgba(255,107,0,0.05) 50%, var(--card) 100%);
-  border: 1px solid rgba(255, 184, 0, 0.3);
-  border-radius: var(--radius-lg);
-  padding: 48px;
-  display: grid;
-  grid-template-columns: 1.2fr 0.8fr;
-  gap: 40px;
-  align-items: center;
-}
-@media(max-width:900px){ .spotlight-box { grid-template-columns: 1fr; text-align: center; padding: 32px; } }
-
-.spotlight-info h3 { font-family: var(--font-display); font-size: 28px; font-weight: 800; color: #fff; margin-bottom: 12px; }
-.spotlight-info p { font-size: 16px; color: var(--tx-muted); margin-bottom: 24px; }
-.server-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: var(--bg);
-  padding: 8px 16px;
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--card-border);
-  font-family: monospace;
-  font-size: 14px;
-  color: var(--acc-yellow);
-}
-
-/* FAQ ACCORDION */
-.faq-section {
-  max-width: 900px;
-  margin: 0 auto 100px;
-  padding: 0 24px;
-}
-.faq-item {
-  background: var(--card);
-  border: 1px solid var(--card-border);
-  border-radius: var(--radius-md);
-  margin-bottom: 16px;
-  overflow: hidden;
-  transition: border-color .2s;
-}
-.faq-item:hover { border-color: rgba(255, 184, 0, 0.3); }
-.faq-question {
-  padding: 20px 24px;
-  font-size: 17px;
-  font-weight: 700;
-  color: #fff;
-  cursor: pointer;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.faq-answer {
-  padding: 0 24px 20px;
-  color: var(--tx-muted);
-  font-size: 15px;
-  line-height: 1.6;
-  display: none;
-}
-.faq-item.active .faq-answer { display: block; }
-.faq-item.active .faq-toggle { transform: rotate(180deg); color: var(--acc-yellow); }
-.faq-toggle { transition: transform .2s; font-size: 18px; color: var(--tx-subtle); }
-
-/* FOOTER */
-footer {
-  background: #080a0f;
-  border-top: 1px solid var(--card-border);
-  padding: 60px 24px 40px;
-  color: var(--tx-subtle);
-  font-size: 14px;
-}
-.footer-container {
-  max-width: 1280px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: 2fr repeat(3, 1fr);
-  gap: 40px;
-  margin-bottom: 40px;
-}
-@media(max-width:900px){ .footer-container { grid-template-columns: 1fr 1fr; } }
-@media(max-width:600px){ .footer-container { grid-template-columns: 1fr; } }
-
-.footer-brand h4 { font-family: var(--font-display); font-size: 20px; font-weight: 800; color: #fff; margin-bottom: 12px; }
-.footer-brand p { color: var(--tx-muted); max-width: 300px; margin-bottom: 20px; }
-
-.footer-col h5 { font-family: var(--font-display); font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 16px; }
-.footer-col ul { list-style: none; }
-.footer-col li { margin-bottom: 10px; }
-.footer-col a { color: var(--tx-muted); transition: color .2s; }
-.footer-col a:hover { color: var(--acc-yellow); }
-
-.footer-bottom {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding-top: 24px;
-  border-top: 1px solid var(--card-border);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 16px;
-}
-</style>
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #000000;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #1e1e26;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #2a2a35;
+    }
+  </style>
 </head>
-<body>
+<body class="bg-radial-glow min-h-screen flex flex-col justify-between selection:bg-amber-500 selection:text-black">
 
-<!-- NAVBAR -->
-<header><div class="bar">
-  <a class="logo" href="#top">🧀 <span>Crispy</span> Launcher</a>
-  <nav aria-label="Main Navigation">
-    <a href="#features">Features</a>
-    <a href="#install">Install Guide</a>
-    <a href="#compare">Compare</a>
-    <a href="#smp">CrispySprings SMP</a>
-    <a href="#faq">FAQ</a>
-    <a href="https://github.com/Web-mc1/crispy-launcher" target="_blank" rel="noopener noreferrer">GitHub</a>
-  </nav>
-  <div class="nav-actions">
-    <a class="btn primary sm" id="dl-top" href="https://github.com/Web-mc1/crispy-launcher/releases/latest">Download</a>
-  </div>
-</div></header>
-
-<!-- HERO SECTION -->
-<div class="hero-wrapper">
-  <section class="hero" id="top">
-    <div class="hero-content">
-      <div class="badge-pill">
-        <span class="badge-dot"></span>
-        Now with Native Modrinth API Integration
-      </div>
-      <h1>A fast, vibrant approach to <span>Minecraft</span>.</h1>
-      <p>Manage your instances, versions, mods, resource packs, and shaders with total control. Built for high performance, multi-loader flexibility, and auto-updating efficiency.</p>
-      <div class="hero-btns">
-        <a class="btn primary lg" id="dl-win" href="https://github.com/Web-mc1/crispy-launcher/releases/latest">Download for Windows</a>
-        <a class="btn lg" id="dl-linux" href="https://github.com/Web-mc1/crispy-launcher/releases/latest">Download for Linux</a>
-        <a class="btn secondary-accent lg" href="https://discord.gg/bgW2nAw7rm" target="_blank" rel="noopener noreferrer">Join Community</a>
-      </div>
-      <p class="dl-note">Linux Users: execute <code>chmod +x crispy-launcher-*.AppImage</code> after downloading.</p>
-    </div>
-
-    <!-- WINDOW APP PREVIEW MOCKUP -->
-    <div class="hero-visual">
-      <div class="win" aria-hidden="true">
-        <div class="w-side">
-          <b class="w-logo">🧀 Crispy App</b>
-          <div class="w-inst on"><i>S</i><span><b>Survival SMP</b><small>fabric, 1.21.4</small></span></div>
-          <div class="w-inst"><i>N</i><span><b>NeoForge Modpack</b><small>neoforge, 1.21.1</small></span></div>
-          <div class="w-inst"><i>Q</i><span><b>Quilt Shader Pack</b><small>quilt, 1.20.1</small></span></div>
-          <div class="w-inst"><i>F</i><span><b>Vanilla Speedrun</b><small>vanilla, 1.16.1</small></span></div>
+  <!-- Header / Navigation -->
+  <header class="sticky top-0 z-50 backdrop-blur-xl bg-black/80 border-b border-[#22222a]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      <!-- Logo -->
+      <a href="#" class="flex items-center gap-3 group">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-[#ffb800] to-[#ff6b00] flex items-center justify-center text-black font-extrabold text-xl shadow-lg group-hover:scale-105 transition-transform">
+          <i class="fa-solid fa-fire"></i>
         </div>
-        <div class="w-main">
-          <div class="w-top"><h4>Survival SMP</h4><span class="w-play">▶ LAUNCH GAME</span></div>
-          <div class="w-tabs"><span class="on">Installed Mods</span><span>Shaders</span><span>Resource Packs</span><span>Java Settings</span></div>
-          <div class="w-grid">
-            <div class="w-mod"><i>⚡</i><span><b>Sodium</b><small>modrinth • 1.21.4</small></span></div>
-            <div class="w-mod"><i>✨</i><span><b>Iris Shaders</b><small>modrinth • 1.21.4</small></span></div>
-            <div class="w-mod"><i>📜</i><span><b>Mod Menu</b><small>modrinth • 1.21.4</small></span></div>
-            <div class="w-mod"><i>🚀</i><span><b>Lithium</b><small>modrinth • 1.21.4</small></span></div>
-            <div class="w-mod"><i>🗺️</i><span><b>Xaero's Minimap</b><small>modrinth • 1.21.4</small></span></div>
-            <div class="w-mod"><i>🛠️</i><span><b>Cloth Config</b><small>modrinth • 1.21.4</small></span></div>
+        <span class="font-heading font-extrabold text-2xl tracking-tight text-white">Crispy <span class="gradient-text">Launcher</span></span>
+      </a>
+
+      <!-- Nav Links -->
+      <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-400">
+        <a href="#features" class="hover:text-amber-400 transition-colors">Features</a>
+        <a href="#loaders" class="hover:text-amber-400 transition-colors">Loaders</a>
+        <a href="#architecture" class="hover:text-amber-400 transition-colors">Architecture</a>
+        <a href="#faq" class="hover:text-amber-400 transition-colors">FAQ</a>
+        <a href="https://discord.gg/bgW2nAw7rm" target="_blank" rel="noopener noreferrer" class="hover:text-amber-400 transition-colors flex items-center gap-2">
+          <i class="fa-brands fa-discord text-indigo-400"></i> Discord
+        </a>
+      </nav>
+
+      <!-- Action Button -->
+      <div class="flex items-center gap-4">
+        <a href="#download" class="gradient-btn text-black font-bold px-5 py-2.5 rounded-xl text-sm flex items-center gap-2 shadow-md">
+          <i class="fa-solid fa-download"></i> Get Launcher
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Area -->
+  <main class="flex-grow">
+    
+    <!-- Hero Section -->
+    <section class="relative pt-16 pb-20 md:pt-24 md:pb-32 overflow-hidden" id="download">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+        
+        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full pure-card text-xs font-semibold text-amber-400 mb-8 border border-amber-500/20">
+          <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+          Free Proprietary Software • High Performance Desktop Client
+        </div>
+
+        <h1 class="font-heading text-4xl sm:text-6xl md:text-7xl font-black text-white tracking-tight leading-tight max-w-4xl mx-auto">
+          A clean, high-performance launcher for <span class="gradient-text">Minecraft</span>.
+        </h1>
+        
+        <p class="mt-6 text-lg sm:text-xl text-gray-400 max-w-2xl mx-auto font-normal leading-relaxed">
+          Manage your instances, versions, mods, resource packs, and shaders seamlessly with native Modrinth API integration and multi-loader support.
+        </p>
+
+        <!-- OS Auto-detection & Download Buttons -->
+        <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+          <a id="primary-download-btn" href="https://github.com/Web-mc1/crispy-launcher/releases/latest" target="_blank" class="w-full sm:w-auto gradient-btn text-black font-extrabold px-8 py-4 rounded-xl text-lg flex items-center justify-center gap-3 shadow-xl">
+            <i id="download-icon" class="fa-solid fa-download text-xl"></i>
+            <span id="download-text">Download Crispy Launcher</span>
+          </a>
+          <a href="https://discord.gg/bgW2nAw7rm" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto pure-card text-white font-semibold px-6 py-4 rounded-xl text-base flex items-center justify-center gap-2 hover:border-amber-500/50">
+            <i class="fa-brands fa-discord text-indigo-400 text-lg"></i> Join Discord
+          </a>
+        </div>
+
+        <!-- Download Fallbacks / Alternative OS Links -->
+        <div class="mt-4 text-xs text-gray-500 flex items-center justify-center gap-4 flex-wrap" id="alt-downloads">
+          <span>Detected OS: <strong id="detected-os" class="text-gray-300">Detecting...</strong></span>
+          <span class="hidden sm:inline">•</span>
+          <a id="dl-win-link" href="https://github.com/Web-mc1/crispy-launcher/releases/latest" target="_blank" class="underline hover:text-amber-400">Windows (.exe)</a>
+          <span>•</span>
+          <a id="dl-linux-link" href="https://github.com/Web-mc1/crispy-launcher/releases/latest" target="_blank" class="underline hover:text-amber-400">Linux (.AppImage)</a>
+        </div>
+
+        <!-- Pure Black Interactive Window Preview -->
+        <div class="mt-16 max-w-5xl mx-auto rounded-2xl bg-[#0a0a0c] p-3 shadow-[0_20px_60px_rgba(0,0,0,0.9)] relative group overflow-hidden border border-[#22222a]">
+          <div class="bg-black rounded-xl overflow-hidden aspect-video relative flex flex-col border border-[#16161c]">
+            
+            <!-- App Bar Mockup -->
+            <div class="h-10 bg-[#0a0a0c] border-b border-[#22222a] flex items-center justify-between px-4">
+              <div class="flex items-center gap-2">
+                <div class="w-3 h-3 rounded-full bg-red-500/80"></div>
+                <div class="w-3 h-3 rounded-full bg-yellow-500/80"></div>
+                <div class="w-3 h-3 rounded-full bg-green-500/80"></div>
+                <span class="text-xs text-gray-400 ml-3 font-medium">Crispy Launcher v1.0.0</span>
+              </div>
+              <div class="flex items-center gap-3 text-xs text-gray-400">
+                <span class="bg-amber-500/10 text-amber-400 px-2 py-0.5 rounded border border-amber-500/20"><i class="fa-solid fa-shield-halved mr-1"></i> Official Client</span>
+              </div>
+            </div>
+
+            <!-- UI Body Mockup -->
+            <div class="flex-1 flex overflow-hidden">
+              <!-- Sidebar -->
+              <div class="w-48 bg-[#0a0a0c] border-r border-[#22222a] p-3 hidden sm:flex flex-col gap-2">
+                <div class="flex items-center gap-2 text-amber-400 font-bold text-xs px-3 py-2 bg-amber-500/10 rounded-lg border border-amber-500/20">
+                  <i class="fa-solid fa-gamepad"></i> Instances
+                </div>
+                <div class="flex items-center gap-2 text-gray-400 text-xs px-3 py-2 hover:bg-[#111115] rounded-lg">
+                  <i class="fa-solid fa-store"></i> Modrinth Store
+                </div>
+                <div class="flex items-center gap-2 text-gray-400 text-xs px-3 py-2 hover:bg-[#111115] rounded-lg">
+                  <i class="fa-solid fa-download"></i> Downloads
+                </div>
+                <div class="flex items-center gap-2 text-gray-400 text-xs px-3 py-2 hover:bg-[#111115] rounded-lg">
+                  <i class="fa-solid fa-sliders"></i> Settings
+                </div>
+              </div>
+
+              <!-- Main Visual Content -->
+              <div class="flex-1 p-6 grid grid-cols-1 sm:grid-cols-3 gap-4 text-left overflow-y-auto bg-black">
+                
+                <div class="pure-card p-4 rounded-xl border border-amber-500/40 flex flex-col justify-between">
+                  <div>
+                    <div class="w-8 h-8 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center font-bold mb-3">1.20</div>
+                    <h4 class="font-bold text-white text-sm">Fabric Survival</h4>
+                    <p class="text-xs text-gray-400 mt-1">Sodium, Iris Shaders, Mod Menu, Lithium</p>
+                  </div>
+                  <button class="mt-4 gradient-btn text-black font-bold py-1.5 px-3 rounded-lg text-xs flex items-center justify-center gap-1">
+                    <i class="fa-solid fa-play text-[10px]"></i> Launch
+                  </button>
+                </div>
+
+                <div class="pure-card p-4 rounded-xl flex flex-col justify-between">
+                  <div>
+                    <div class="w-8 h-8 rounded-lg bg-orange-500/20 text-orange-400 flex items-center justify-center font-bold mb-3">1.21.1</div>
+                    <h4 class="font-bold text-white text-sm">NeoForge Modded</h4>
+                    <p class="text-xs text-gray-400 mt-1">Tech & Quest Pack (128 Mods)</p>
+                  </div>
+                  <button class="mt-4 bg-[#16161c] hover:bg-[#22222a] text-white font-semibold py-1.5 px-3 rounded-lg text-xs flex items-center justify-center gap-1 border border-[#22222a]">
+                    <i class="fa-solid fa-play text-[10px]"></i> Launch
+                  </button>
+                </div>
+
+                <div class="pure-card p-4 rounded-xl flex flex-col justify-between border-dashed">
+                  <div class="h-full flex flex-col items-center justify-center text-center p-2">
+                    <i class="fa-solid fa-plus text-amber-400 text-xl mb-2"></i>
+                    <span class="text-xs font-semibold text-gray-300">Create Instance</span>
+                    <span class="text-[10px] text-gray-500 mt-1">Modrinth or Vanilla</span>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Stats & Metrics Bar -->
+    <section class="border-y border-[#22222a] bg-[#0a0a0c] py-10">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+          <div>
+            <div class="font-heading text-3xl sm:text-4xl font-extrabold text-white">100%</div>
+            <div class="text-xs sm:text-sm text-gray-400 mt-1">Modrinth Ecosystem</div>
+          </div>
+          <div>
+            <div class="font-heading text-3xl sm:text-4xl font-extrabold text-white">4 Loaders</div>
+            <div class="text-xs sm:text-sm text-gray-400 mt-1">Fabric, Quilt, Forge, NeoForge</div>
+          </div>
+          <div>
+            <div class="font-heading text-3xl sm:text-4xl font-extrabold gradient-text">Fast</div>
+            <div class="text-xs sm:text-sm text-gray-400 mt-1">Instant Instance Boot</div>
+          </div>
+          <div>
+            <div class="font-heading text-3xl sm:text-4xl font-extrabold text-white">Free</div>
+            <div class="text-xs sm:text-sm text-gray-400 mt-1">Proprietary Launcher</div>
           </div>
         </div>
       </div>
-    </div>
-  </section>
-</div>
+    </section>
 
-<!-- INTERACTIVE MOD SEARCH DEMO -->
-<section class="search-demo-section">
-  <div class="search-box-card">
-    <div class="search-input-wrapper">
-      <span class="search-icon">🔍</span>
-      <input type="text" id="mod-search" placeholder="Type to preview searching Modrinth ecosystem... (e.g., Sodium, Iris, Fabric)">
-    </div>
-    <div class="search-results-grid" id="search-results">
-      <div class="res-item">
-        <div class="res-icon">⚡</div>
-        <div class="res-info">
-          <h5>Sodium</h5>
-          <p>Modern rendering engine for Minecraft.</p>
-          <span class="res-tag">Fabric / Quilt</span>
+    <!-- Detailed Features Grid -->
+    <section id="features" class="py-20 md:py-28">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-3xl mx-auto mb-16">
+          <h2 class="text-xs font-bold uppercase tracking-widest text-amber-400 mb-2">Capabilities</h2>
+          <p class="font-heading text-3xl sm:text-4xl font-extrabold text-white">Designed for Speed & Simplicity</p>
+          <p class="text-gray-400 mt-4 text-base">Everything you need to manage and configure your favorite Minecraft setups seamlessly.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <!-- Feature 1 -->
+          <div class="pure-card p-8 rounded-2xl">
+            <div class="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center text-xl mb-6 border border-amber-500/20">
+              <i class="fa-solid fa-cube"></i>
+            </div>
+            <h3 class="font-heading text-xl font-bold text-white mb-3">Modrinth Integration</h3>
+            <p class="text-gray-400 text-sm leading-relaxed">
+              Browse, search, install, and update your favorite mods, resource packs, and shaders directly inside the client without external browsers.
+            </p>
+          </div>
+
+          <!-- Feature 2 -->
+          <div class="pure-card p-8 rounded-2xl">
+            <div class="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center text-xl mb-6 border border-amber-500/20">
+              <i class="fa-solid fa-layer-group"></i>
+            </div>
+            <h3 class="font-heading text-xl font-bold text-white mb-3">Multi-Loader Support</h3>
+            <p class="text-gray-400 text-sm leading-relaxed">
+              Easily manage and configure instances running Fabric, Quilt, Forge, and NeoForge across any supported Minecraft version.
+            </p>
+          </div>
+
+          <!-- Feature 3 -->
+          <div class="pure-card p-8 rounded-2xl">
+            <div class="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center text-xl mb-6 border border-amber-500/20">
+              <i class="fa-solid fa-arrows-rotate"></i>
+            </div>
+            <h3 class="font-heading text-xl font-bold text-white mb-3">Always Up-To-Date</h3>
+            <p class="text-gray-400 text-sm leading-relaxed">
+              Built-in self-updating technology ensures you always run the latest version without manually re-downloading installer files.
+            </p>
+          </div>
+
+          <!-- Feature 4 -->
+          <div class="pure-card p-8 rounded-2xl">
+            <div class="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center text-xl mb-6 border border-amber-500/20">
+              <i class="fa-solid fa-folder-tree"></i>
+            </div>
+            <h3 class="font-heading text-xl font-bold text-white mb-3">Isolated Environments</h3>
+            <p class="text-gray-400 text-sm leading-relaxed">
+              Every instance features its own isolated directory structure for mods, configs, saves, and assets to prevent mod conflicts.
+            </p>
+          </div>
+
+          <!-- Feature 5 -->
+          <div class="pure-card p-8 rounded-2xl">
+            <div class="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center text-xl mb-6 border border-amber-500/20">
+              <i class="fa-solid fa-gauge-high"></i>
+            </div>
+            <h3 class="font-heading text-xl font-bold text-white mb-3">Optimized Memory & CPU</h3>
+            <p class="text-gray-400 text-sm leading-relaxed">
+              Low desktop memory footprint engineered to maximize game FPS by dedicating system memory directly to Java processes.
+            </p>
+          </div>
+
+          <!-- Feature 6 -->
+          <div class="pure-card p-8 rounded-2xl">
+            <div class="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center text-xl mb-6 border border-amber-500/20">
+              <i class="fa-solid fa-shield-halved"></i>
+            </div>
+            <h3 class="font-heading text-xl font-bold text-white mb-3">Secure Microsoft Auth</h3>
+            <p class="text-gray-400 text-sm leading-relaxed">
+              Authenticate safely using official Microsoft OAuth 2.0 logins. Your account credentials stay local and encrypted.
+            </p>
+          </div>
         </div>
       </div>
-      <div class="res-item">
-        <div class="res-icon">✨</div>
-        <div class="res-info">
-          <h5>Iris Shaders</h5>
-          <p>Modern shaderpack support for Fabric & Quilt.</p>
-          <span class="res-tag">Shaders</span>
+    </section>
+
+    <!-- Supported Mod Loaders Showcase -->
+    <section id="loaders" class="py-16 bg-[#0a0a0c] border-y border-[#22222a]">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-2xl mx-auto mb-12">
+          <h2 class="text-xs font-bold uppercase tracking-widest text-amber-400 mb-2">Compatibility</h2>
+          <p class="font-heading text-2xl sm:text-3xl font-extrabold text-white">Full Multi-Loader Ecosystem</p>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+          <div class="pure-card p-6 rounded-xl">
+            <div class="font-heading font-extrabold text-lg text-white mb-1">Fabric</div>
+            <div class="text-xs text-amber-400 font-semibold">Lightweight & Fast</div>
+          </div>
+          <div class="pure-card p-6 rounded-xl">
+            <div class="font-heading font-extrabold text-lg text-white mb-1">Quilt</div>
+            <div class="text-xs text-amber-400 font-semibold">Modular Loader</div>
+          </div>
+          <div class="pure-card p-6 rounded-xl">
+            <div class="font-heading font-extrabold text-lg text-white mb-1">Forge</div>
+            <div class="text-xs text-amber-400 font-semibold">Classic Modding</div>
+          </div>
+          <div class="pure-card p-6 rounded-xl">
+            <div class="font-heading font-extrabold text-lg text-white mb-1">NeoForge</div>
+            <div class="text-xs text-amber-400 font-semibold">Next-Gen Forge</div>
+          </div>
         </div>
       </div>
-      <div class="res-item">
-        <div class="res-icon">🚀</div>
-        <div class="res-info">
-          <h5>Lithium</h5>
-          <p>General-purpose optimization mod for server & client.</p>
-          <span class="res-tag">Optimization</span>
-        </div>
-      </div>
-      <div class="res-item">
-        <div class="res-icon">☕</div>
-        <div class="res-info">
-          <h5>FerriteCore</h5>
-          <p>Memory usage optimizations for Minecraft.</p>
-          <span class="res-tag">Forge / NeoForge</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+    </section>
 
-<!-- LIVE STATS METRICS BLOCK -->
-<section class="stats-section">
-  <div class="stats-grid">
-    <div class="stat-card">
-      <div class="stat-number">100%</div>
-      <div class="stat-label">Open Source & Free</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-number">4+</div>
-      <div class="stat-label">Loaders (Fabric, Forge, NeoForge, Quilt)</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-number">0ms</div>
-      <div class="stat-label">Telemetry Overhead</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-number">Auto</div>
-      <div class="stat-label">Java & Update Engine</div>
-    </div>
-  </div>
-</section>
+    <!-- Architecture Section -->
+    <section id="architecture" class="py-20 md:py-28">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <div>
+            <h2 class="text-xs font-bold uppercase tracking-widest text-amber-400 mb-2">Architecture</h2>
+            <h3 class="font-heading text-3xl sm:text-4xl font-extrabold text-white mb-6">Engineered for Modrinth & Performance</h3>
+            <p class="text-gray-400 text-base mb-6 leading-relaxed">
+              Crispy Launcher is built as a fast proprietary client leveraging high-performance asynchronous networking, custom JVM argument optimization, and instant Modrinth REST API resolution.
+            </p>
+            
+            <div class="space-y-4">
+              <div class="flex items-start gap-4 p-4 rounded-xl pure-card">
+                <div class="text-amber-400 text-lg mt-1"><i class="fa-solid fa-bolt"></i></div>
+                <div>
+                  <h4 class="font-bold text-white text-sm">Asynchronous Concurrent Downloads</h4>
+                  <p class="text-xs text-gray-400 mt-1">Downloads modpack assets, Java runtimes, and libraries in parallel to minimize installation wait times.</p>
+                </div>
+              </div>
 
-<!-- FEATURE DEEP-DIVES SECTION -->
-<section class="features-section" id="features">
-  <div class="section-title">
-    <h2>Built for Maximum Performance</h2>
-    <p>Crispy Launcher replaces bloated tools with a sleek, native Modrinth-first experience.</p>
-  </div>
-  <div class="features-grid">
-    <div class="feature-card">
-      <div class="feature-icon">🔍</div>
-      <h3>Native Modrinth API Integration</h3>
-      <p>Directly query Modrinth's high-speed API to download mods, resource packs, and shaders directly into your instances with 1-click install.</p>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon">📦</div>
-      <h3>Strict Instance Isolation</h3>
-      <p>Keep your worlds, configurations, mods, and screenshots cleanly separated into isolated folders to prevent loader conflicts.</p>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon">⚡</div>
-      <h3>Universal Loader Engine</h3>
-      <p>Seamlessly toggle between Fabric, Quilt, Forge, NeoForge, or Vanilla across any release or snapshot version of Minecraft.</p>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon">☕</div>
-      <h3>Automated Java Management</h3>
-      <p>Never worry about setting up JDK runtime variables. Crispy automatically detects and manages Java versions for older or newer releases.</p>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon">🔄</div>
-      <h3>Background Self-Updates</h3>
-      <p>Stay protected and updated with automatic background releases using direct GitHub releases fetching.</p>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon">🛡️</div>
-      <h3>Privacy First & Lightweight</h3>
-      <p>No account tracking, telemetry spyware, or ad scripts. Minimal RAM footprint ensuring your game gets maximum system power.</p>
-    </div>
-  </div>
-</section>
+              <div class="flex items-start gap-4 p-4 rounded-xl pure-card">
+                <div class="text-amber-400 text-lg mt-1"><i class="fa-solid fa-server"></i></div>
+                <div>
+                  <h4 class="font-bold text-white text-sm">Direct Modrinth REST V2 Integration</h4>
+                  <p class="text-xs text-gray-400 mt-1">Queries project files, dependencies, and version hashes with zero intermediary proxy delay.</p>
+                </div>
+              </div>
+            </div>
+          </div>
 
-<!-- STEP-BY-STEP INSTALLATION GUIDE -->
-<section class="install-section" id="install">
-  <div class="section-title">
-    <h2>Getting Started in 3 Easy Steps</h2>
-    <p>Simple installation process with zero tedious configuration requirements.</p>
-  </div>
-  <div class="steps-grid">
-    <div class="step-card">
-      <div class="step-num">01</div>
-      <h4>Download Executable</h4>
-      <p>Get the latest release for Windows (.exe) or Linux (.AppImage) directly from our official release mirror.</p>
-    </div>
-    <div class="step-card">
-      <div class="step-num">02</div>
-      <h4>Create an Instance</h4>
-      <p>Select your desired Minecraft version along with your preferred modloader (Fabric, NeoForge, Quilt, or Forge).</p>
-    </div>
-    <div class="step-card">
-      <div class="step-num">03</div>
-      <h4>Add Mods & Launch</h4>
-      <p>Use the Modrinth integration to add mods or click 'Play' to start playing immediately.</p>
-    </div>
-  </div>
-</section>
-
-<!-- FEATURE COMPARISON GRID -->
-<section class="comparison-section" id="compare">
-  <div class="section-title">
-    <h2>How Crispy Compares</h2>
-    <p>See why players and modders are making the switch to Crispy Launcher.</p>
-  </div>
-  <div class="table-wrapper">
-    <table>
-      <thead>
-        <tr>
-          <th>Feature / Capability</th>
-          <th>Crispy Launcher</th>
-          <th>Official Launcher</th>
-          <th>Legacy Launchers</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Native Modrinth Direct Download</td>
-          <td><span class="check-yes">✓ Yes</span></td>
-          <td><span class="check-no">✗ No</span></td>
-          <td><span class="check-no">✗ Limited</span></td>
-        </tr>
-        <tr>
-          <td>Automatic Java Runtime Handling</td>
-          <td><span class="check-yes">✓ Yes</span></td>
-          <td><span class="check-yes">✓ Partial</span></td>
-          <td><span class="check-no">✗ Manual</span></td>
-        </tr>
-        <tr>
-          <td>Multi-loader Support (Fabric/NeoForge/Quilt)</td>
-          <td><span class="check-yes">✓ Yes</span></td>
-          <td><span class="check-no">✗ Manual</span></td>
-          <td><span class="check-yes">✓ Yes</span></td>
-        </tr>
-        <tr>
-          <td>Telemetry & Privacy Safeguards</td>
-          <td><span class="check-yes">✓ Zero Tracking</span></td>
-          <td><span class="check-no">✗ Heavy Telemetry</span></td>
-          <td><span class="check-no">✗ Varies</span></td>
-        </tr>
-        <tr>
-          <td>Ultra-fast Lightweight UI</td>
-          <td><span class="check-yes">✓ Yes</span></td>
-          <td><span class="check-no">✗ Heavy Electron</span></td>
-          <td><span class="check-no">✗ Cluttered</span></td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</section>
-
-<!-- SERVER SPOTLIGHT: CRISPYSPRINGS SMP -->
-<section class="server-spotlight" id="smp">
-  <div class="spotlight-box">
-    <div class="spotlight-info">
-      <h3>Featured Server: CrispySprings SMP</h3>
-      <p>Join our official community Minecraft survival multiplayer server! Pre-configured modpack settings and seamless connection built straight into Crispy Launcher.</p>
-      <div style="display:flex; gap:12px; flex-wrap:wrap; align-items:center;">
-        <a class="btn primary" href="https://discord.gg/bgW2nAw7rm" target="_blank" rel="noopener noreferrer">Join Server Discord</a>
-        <span class="server-badge">IP: play.crispysprings.net</span>
-      </div>
-    </div>
-    <div style="text-align:center;">
-      <div style="font-size:80px;">🏰</div>
-    </div>
-  </div>
-</section>
-
-<!-- FAQ ACCORDION -->
-<section class="faq-section" id="faq">
-  <div class="section-title">
-    <h2>Frequently Asked Questions</h2>
-    <p>Everything you need to know about Crispy Launcher.</p>
-  </div>
-  <div class="faq-item active">
-    <div class="faq-question">Is Crispy Launcher completely free and open-source? <span class="faq-toggle">▼</span></div>
-    <div class="faq-answer">Yes, Crispy Launcher is 100% free and open-source under permissible licensing. You can inspect all source code on our GitHub repository at any time.</div>
-  </div>
-  <div class="faq-item">
-    <div class="faq-question">How does Modrinth integration work? <span class="faq-toggle">▼</span></div>
-    <div class="faq-answer">The launcher connects directly to the official Modrinth v2 API. You can search, filter, install, and auto-update mods, resource packs, and shaders directly inside your launcher instances.</div>
-  </div>
-  <div class="faq-item">
-    <div class="faq-question">Do I need to install Java manually? <span class="faq-toggle">▼</span></div>
-    <div class="faq-answer">No! Crispy Launcher automatically detects the correct Java version needed for your selected Minecraft version and downloads isolated runtimes as needed.</div>
-  </div>
-  <div class="faq-item">
-    <div class="faq-question">How do I run the launcher on Linux? <span class="faq-toggle">▼</span></div>
-    <div class="faq-answer">Download the Linux <code>.AppImage</code> file, grant execution permission in your terminal using <code>chmod +x crispy-launcher-*.AppImage</code>, and double click to run.</div>
-  </div>
-</section>
-
-<!-- FOOTER -->
-<footer>
-  <div class="footer-container">
-    <div class="footer-brand">
-      <h4>🧀 Crispy Launcher</h4>
-      <p>A fast, open-source Minecraft launcher designed for simplicity, customizability, and seamless Modrinth integration.</p>
-    </div>
-    <div class="footer-col">
-      <h5>Navigation</h5>
-      <ul>
-        <li><a href="#top">Overview</a></li>
-        <li><a href="#features">Features</a></li>
-        <li><a href="#install">Install Guide</a></li>
-        <li><a href="#compare">Comparison</a></li>
-      </ul>
-    </div>
-    <div class="footer-col">
-      <h5>Community</h5>
-      <ul>
-        <li><a href="https://discord.gg/bgW2nAw7rm" target="_blank" rel="noopener noreferrer">Discord Server</a></li>
-        <li><a href="https://github.com/Web-mc1/crispy-launcher" target="_blank" rel="noopener noreferrer">GitHub Repository</a></li>
-        <li><a href="https://github.com/Web-mc1/crispy-launcher/issues" target="_blank" rel="noopener noreferrer">Issue Tracker</a></li>
-      </ul>
-    </div>
-    <div class="footer-col">
-      <h5>Legal & Tech</h5>
-      <ul>
-        <li><a href="https://modrinth.com" target="_blank" rel="noopener noreferrer">Modrinth API</a></li>
-        <li><a href="https://github.com/Web-mc1/crispy-launcher/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">Open Source License</a></li>
-      </ul>
-    </div>
-  </div>
-  <div class="footer-bottom">
-    <span>© FryedCheese & Crispy Contributors. Not affiliated with Mojang Studios or Microsoft.</span>
-    <span>Supported OS: Windows 10/11 & Linux (AppImage)</span>
-  </div>
-</footer>
-
-<script>
-(function(){
-  // Auto-detect OS & Fetch Github latest release tags
-  var win = document.getElementById('dl-win');
-  var linux = document.getElementById('dl-linux');
-  var top = document.getElementById('dl-top');
-
-  var onLinux = /linux/i.test(navigator.userAgent) && !/android/i.test(navigator.userAgent);
-  if (onLinux && win && linux) {
-    win.classList.remove('primary');
-    linux.classList.add('primary');
-    if (linux.parentNode) {
-      linux.parentNode.insertBefore(linux, win);
-    }
+          <!-- Code Preview Box -->
+          <div class="pure-card p-6 rounded-2xl font-mono text-xs text-gray-300 border border-[#22222a]">
+            <div class="flex items-center justify-between pb-4 mb-4 border-b border-[#22222a] text-gray-500">
+              <span>crispy-manifest.json</span>
+              <span class="text-emerald-400">● Live Desktop Build</span>
+            </div>
+            <pre class="overflow-x-auto text-amber-300">
+{
+  <span class="text-gray-400">"app"</span>: <span class="text-emerald-300">"Crispy Launcher"</span>,
+  <span class="text-gray-400">"license"</span>: <span class="text-emerald-300">"Free Proprietary"</span>,
+  <span class="text-gray-400">"author"</span>: <span class="text-emerald-300">"FryedCheese"</span>,
+  <span class="text-gray-400">"platforms"</span>: [<span class="text-emerald-300">"Windows (.exe)"</span>, <span class="text-emerald-300">"Linux (.AppImage)"</span>],
+  <span class="text-gray-400">"features"</span>: {
+    <span class="text-gray-400">"modrinthSync"</span>: <span class="text-emerald-300">true</span>,
+    <span class="text-gray-400">"autoUpdate"</span>: <span class="text-emerald-300">true</span>,
+    <span class="text-gray-400">"isolatedInstances"</span>: <span class="text-emerald-300">true</span>
   }
-  if (top) {
-    top.textContent = onLinux ? 'Download for Linux' : 'Download';
-  }
+}</pre>
+          </div>
+        </div>
+      </div>
+    </section>
 
-  fetch('https://api.github.com/repos/Web-mc1/crispy-launcher/releases/latest',{headers:{Accept:'application/vnd.github+json'}})
-  .then(function(r){if(!r.ok)throw 0;return r.json()})
-  .then(function(j){
-    var assets = j.assets || [];
-    var exe = assets.filter(function(x){return /\.exe$/i.test(x.name)})[0];
-    var app = assets.filter(function(x){return /\.AppImage$/i.test(x.name)})[0];
-    if (exe && win) win.href = exe.browser_download_url;
-    if (app && linux) linux.href = app.browser_download_url;
-    var mine = onLinux ? app : exe;
-    if (mine && top) top.href = mine.browser_download_url;
-  }).catch(function(){});
+    <!-- FAQ Accordion -->
+    <section id="faq" class="py-20 md:py-28 bg-[#0a0a0c] border-t border-[#22222a]">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+          <h2 class="text-xs font-bold uppercase tracking-widest text-amber-400 mb-2">Information</h2>
+          <p class="font-heading text-3xl sm:text-4xl font-extrabold text-white">Frequently Asked Questions</p>
+        </div>
 
-  // Interactive Search Demo logic
-  var searchInput = document.getElementById('mod-search');
-  var searchResults = document.getElementById('search-results');
-  if (searchInput && searchResults) {
-    var items = [
-      { name: 'Sodium', desc: 'Modern rendering engine for Minecraft.', tag: 'Fabric / Quilt', icon: '⚡' },
-      { name: 'Iris Shaders', desc: 'Modern shaderpack support for Fabric & Quilt.', tag: 'Shaders', icon: '✨' },
-      { name: 'Lithium', desc: 'General-purpose optimization mod.', tag: 'Optimization', icon: '🚀' },
-      { name: 'FerriteCore', desc: 'Memory usage optimizations for Minecraft.', tag: 'Forge / NeoForge', icon: '☕' },
-      { name: 'Mod Menu', desc: 'Adds a mod menu to view installed mods.', tag: 'UI / Client', icon: '📜' },
-      { name: 'Xaero\'s Minimap', desc: 'Displays a smooth minimap in game.', tag: 'World / HUD', icon: '🗺️' }
-    ];
+        <div class="space-y-4">
+          <!-- FAQ 1 -->
+          <div class="pure-card rounded-xl p-6">
+            <h3 class="font-bold text-white text-lg flex items-center justify-between">
+              Is Crispy Launcher free to download?
+              <i class="fa-solid fa-chevron-down text-amber-400 text-sm"></i>
+            </h3>
+            <p class="text-gray-400 text-sm mt-3 leading-relaxed">
+              Yes! Crispy Launcher is a free proprietary Minecraft desktop launcher maintained by FryedCheese.
+            </p>
+          </div>
 
-    searchInput.addEventListener('input', function(e){
-      var val = e.target.value.toLowerCase().trim();
-      var filtered = items.filter(function(item){
-        return item.name.toLowerCase().indexOf(val) !== -1 || item.tag.toLowerCase().indexOf(val) !== -1 || item.desc.toLowerCase().indexOf(val) !== -1;
-      });
+          <!-- FAQ 2 -->
+          <div class="pure-card rounded-xl p-6">
+            <h3 class="font-bold text-white text-lg flex items-center justify-between">
+              Is Crispy Launcher open source?
+              <i class="fa-solid fa-chevron-down text-amber-400 text-sm"></i>
+            </h3>
+            <p class="text-gray-400 text-sm mt-3 leading-relaxed">
+              No, Crispy Launcher is free proprietary software developed and distributed directly through official releases.
+            </p>
+          </div>
 
-      searchResults.innerHTML = '';
-      if(filtered.length === 0){
-        searchResults.innerHTML = '<p style="color:var(--tx-muted); grid-column: 1/-1;">No matching mods previewed. Search directly in Crispy Launcher app!</p>';
-        return;
+          <!-- FAQ 3 -->
+          <div class="pure-card rounded-xl p-6">
+            <h3 class="font-bold text-white text-lg flex items-center justify-between">
+              How do Linux downloads work?
+              <i class="fa-solid fa-chevron-down text-amber-400 text-sm"></i>
+            </h3>
+            <p class="text-gray-400 text-sm mt-3 leading-relaxed">
+              Download the <code>.AppImage</code> release, make it executable using <code>chmod +x crispy-launcher-*.AppImage</code> in your terminal, and run it.
+            </p>
+          </div>
+
+          <!-- FAQ 4 -->
+          <div class="pure-card rounded-xl p-6">
+            <h3 class="font-bold text-white text-lg flex items-center justify-between">
+              Does Crispy Launcher support Fabric and Forge?
+              <i class="fa-solid fa-chevron-down text-amber-400 text-sm"></i>
+            </h3>
+            <p class="text-gray-400 text-sm mt-3 leading-relaxed">
+              Yes, Fabric, Quilt, Forge, and NeoForge are fully supported with one-click loader installation and version switching.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Discord Community Banner -->
+    <section class="py-16">
+      <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="rounded-3xl bg-black border border-amber-500/30 p-8 sm:p-12 relative overflow-hidden text-center sm:text-left flex flex-col sm:flex-row items-center justify-between gap-8 shadow-2xl">
+          <div class="relative z-10 max-w-xl">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 text-indigo-400 text-xs font-bold mb-4 border border-indigo-500/20">
+              <i class="fa-brands fa-discord"></i> Official Discord
+            </div>
+            <h3 class="font-heading text-2xl sm:text-3xl font-extrabold text-white">Join the Crispy Launcher Discord</h3>
+            <p class="text-gray-400 text-sm mt-3 leading-relaxed">
+              Connect with developers and fellow players in the official Crispy Launcher Discord community. Get live support, share feedback, and stay updated on launcher releases!
+            </p>
+          </div>
+          <div class="relative z-10">
+            <a href="https://discord.gg/bgW2nAw7rm" target="_blank" rel="noopener noreferrer" class="gradient-btn text-black font-extrabold px-8 py-4 rounded-xl text-base flex items-center gap-3 whitespace-nowrap shadow-xl">
+              <i class="fa-brands fa-discord text-xl"></i> Join Discord
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="border-t border-[#22222a] bg-black py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+        
+        <!-- Brand / Copyright -->
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-[#ffb800] to-[#ff6b00] flex items-center justify-center text-black font-bold text-sm">
+            <i class="fa-solid fa-fire"></i>
+          </div>
+          <span class="text-sm text-gray-500">
+            © FryedCheese. Free proprietary software. Not affiliated with Mojang AB or Microsoft.
+          </span>
+        </div>
+
+        <!-- Links -->
+        <div class="flex items-center gap-6 text-sm text-gray-400">
+          <a href="https://discord.gg/bgW2nAw7rm" target="_blank" rel="noopener noreferrer" class="hover:text-amber-400 transition-colors flex items-center gap-1.5">
+            <i class="fa-brands fa-discord text-indigo-400"></i> Discord Community
+          </a>
+          <a href="https://github.com/Web-mc1/crispy-launcher/releases/latest" target="_blank" rel="noopener noreferrer" class="hover:text-amber-400 transition-colors flex items-center gap-1.5">
+            <i class="fa-brands fa-github"></i> GitHub Releases
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </footer>
+
+  <!-- OS Auto-detection & Release Asset Resolver Script -->
+  <script>
+    (function(){
+      var winLink = document.getElementById('dl-win-link');
+      var linuxLink = document.getElementById('dl-linux-link');
+      var primaryBtn = document.getElementById('primary-download-btn');
+      var downloadText = document.getElementById('download-text');
+      var downloadIcon = document.getElementById('download-icon');
+      var detectedOsText = document.getElementById('detected-os');
+
+      var userAgent = navigator.userAgent || '';
+      var onLinux = /linux/i.test(userAgent) && !/android/i.test(userAgent);
+      var onWin = /windows|win32|win64/i.test(userAgent);
+
+      if (onLinux) {
+        detectedOsText.textContent = "Linux (.AppImage)";
+        downloadText.textContent = "Download for Linux";
+        downloadIcon.className = "fa-brands fa-linux text-xl";
+      } else if (onWin) {
+        detectedOsText.textContent = "Windows (.exe)";
+        downloadText.textContent = "Download for Windows";
+        downloadIcon.className = "fa-brands fa-windows text-xl";
+      } else {
+        detectedOsText.textContent = "Desktop";
+        downloadText.textContent = "Download Crispy Launcher";
+        downloadIcon.className = "fa-solid fa-download text-xl";
       }
 
-      filtered.forEach(function(item){
-        var div = document.createElement('div');
-        div.className = 'res-item';
-        div.innerHTML = '<div class="res-icon">' + item.icon + '</div><div class="res-info"><h5>' + item.name + '</h5><p>' + item.desc + '</p><span class="res-tag">' + item.tag + '</span></div>';
-        searchResults.appendChild(div);
-      });
-    });
-  }
+      // Fetch latest release direct download URLs from GitHub API
+      fetch('https://api.github.com/repos/Web-mc1/crispy-launcher/releases/latest', {
+        headers: { Accept: 'application/vnd.github+json' }
+      })
+      .then(function(r) { if(!r.ok) throw 0; return r.json(); })
+      .then(function(j) {
+        var assets = j.assets || [];
+        var exe = assets.filter(function(x){ return /\.exe$/i.test(x.name); })[0];
+        var app = assets.filter(function(x){ return /\.AppImage$/i.test(x.name); })[0];
 
-  // FAQ Accordion interaction
-  var faqItems = document.querySelectorAll('.faq-item');
-  faqItems.forEach(function(item){
-    var q = item.querySelector('.faq-question');
-    if(q){
-      q.addEventListener('click', function(){
-        item.classList.toggle('active');
-      });
-    }
-  });
-})();
-</script>
+        if (exe) winLink.href = exe.browser_download_url;
+        if (app) linuxLink.href = app.browser_download_url;
+
+        var targetAsset = onLinux ? app : exe;
+        if (targetAsset) {
+          primaryBtn.href = targetAsset.browser_download_url;
+        }
+      })
+      .catch(function(){});
+    })();
+  </script>
 </body>
 </html>
