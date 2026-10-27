@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Crispy Launcher — Modern, Open-Source Minecraft Client & Instance Manager</title>
+<meta name="description" content="Discover Crispy Launcher: A ultra-fast, open-source Minecraft launcher featuring native Modrinth API integration, multi-loader isolation, automatic updates, and Java runtime management.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%A7%80%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-darker: #0b0e14;
+  --bg: #11151e;
+  --card: #181f2b;
+  --card-hover: #20293a;
+  --card-border: #293447;
+  --card-border-glow: rgba(255, 184, 0, 0.35);
+
+  /* Modrinth-inspired Yellow & Orange Accent Palette */
+  --acc-yellow: #ffb800;
+  --acc-orange: #ff6b00;
+  --acc-gradient: linear-gradient(135deg, #ffc700 0%, #ff6b00 100%);
+  --acc-glow: rgba(255, 184, 0, 0.16);
+
+  --tx: #f3f4f6;
+  --tx-muted: #9ca8bd;
+  --tx-subtle: #67758d;
+
+  --font: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-display: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; scroll-padding-top: 85px; }
+body {
+  background-color: var(--bg-darker);
+  color: var(--tx);
+  font-family: var(--font);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+a { color: inherit; text-decoration: none; }
+:focus-visible { outline: 2px solid var(--acc-yellow); outline-offset: 2px; }
+
+/* NAVBAR */
+header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(11, 14, 20, 0.88);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--card-border);
+}
+.bar {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 14px 24px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+.logo {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 800;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  color: #fff;
+  letter-spacing: -0.02em;
+}
+.logo span {
+  background: var(--acc-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+nav { display: flex; gap: 22px; font-size: 14px; font-weight: 600; }
+nav a { color: var(--tx-muted); transition: color .2s; }
+nav a:hover { color: #fff; }
+
+.nav-actions { margin-left: auto; display: flex; gap: 12px; align-items: center; }
+
+/* BUTTONS */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 11px 22px;
+  border-radius: var(--radius-sm);
+  font-family: var(--font);
+  font-weight: 600;
+  font-size: 14px;
+  border: 1px solid var(--card-border);
+  background: var(--card);
+  color: var(--tx);
+  cursor: pointer;
+  transition: all .2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.btn:hover {
+  background: var(--card-hover);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+.btn.primary {
+  background: var(--acc-gradient);
+  color: #120e00;
+  border: none;
+  font-weight: 700;
+}
+.btn.primary:hover {
+  box-shadow: 0 6px 24px rgba(255, 107, 0, 0.38);
+  filter: brightness(1.08);
+}
+.btn.secondary-accent {
+  background: rgba(255, 184, 0, 0.1);
+  color: var(--acc-yellow);
+  border: 1px solid rgba(255, 184, 0, 0.3);
+}
+.btn.secondary-accent:hover {
+  background: rgba(255, 184, 0, 0.18);
+  border-color: var(--acc-yellow);
+}
+.btn.sm { padding: 8px 14px; font-size: 13px; }
+.btn.lg { padding: 15px 32px; font-size: 16px; border-radius: var(--radius-md); }
+
+/* HERO SECTION */
+.hero-wrapper {
+  position: relative;
+  background: radial-gradient(circle at 50% -10%, rgba(255, 184, 0, 0.16) 0%, rgba(255, 107, 0, 0.06) 45%, rgba(11, 14, 20, 0) 80%);
+}
+.hero {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 80px 24px 60px;
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 50px;
+  align-items: center;
+}
+@media(max-width:960px){
+  .hero { grid-template-columns: 1fr; text-align: center; padding: 50px 24px; }
+}
+.badge-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  background: rgba(255, 184, 0, 0.12);
+  border: 1px solid rgba(255, 184, 0, 0.25);
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--acc-yellow);
+  margin-bottom: 20px;
+}
+.badge-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--acc-orange); box-shadow: 0 0 8px var(--acc-orange); }
+
+.hero-content h1 {
+  font-family: var(--font-display);
+  font-size: clamp(40px, 4.8vw, 62px);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  margin-bottom: 20px;
+  color: #fff;
+}
+.hero-content h1 span {
+  background: var(--acc-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.hero-content p {
+  font-size: 18px;
+  color: var(--tx-muted);
+  margin-bottom: 32px;
+  max-width: 560px;
+}
+@media(max-width:960px){ .hero-content p { margin: 0 auto 32px; } }
+.hero-btns { display: flex; gap: 14px; flex-wrap: wrap; }
+@media(max-width:960px){ .hero-btns { justify-content: center; } }
+
+.dl-note {
+  margin-top: 20px;
+  font-size: 13px;
+  color: var(--tx-subtle);
+}
+.dl-note code {
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: 4px;
+  padding: 2px 7px;
+  font-size: 12px;
+  color: var(--tx-muted);
+}
+
+/* APP MOCKUP PREVIEW */
+.hero-visual { position: relative; width: 100%; }
+.win {
+  background: var(--bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: 0 35px 70px -15px rgba(0,0,0,0.85);
+  display: grid;
+  grid-template-columns: 190px 1fr;
+  font-size: 13px;
+  text-align: left;
+}
+.w-side {
+  background: #0d1017;
+  border-right: 1px solid var(--card-border);
+  padding: 16px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.w-logo {
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--acc-yellow);
+  margin-bottom: 12px;
+  padding-left: 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.w-inst {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 8px 10px;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  color: var(--tx-muted);
+  cursor: pointer;
+  transition: all .2s;
+}
+.w-inst.on, .w-inst:hover { background: var(--card); border-color: var(--card-border); color: #fff; }
+.w-inst i {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  display: grid;
+  place-items: center;
+  font-style: normal;
+  font-weight: 800;
+  background: var(--acc-gradient);
+  color: #120e00;
+  flex: none;
+}
+.w-inst b { display: block; font-size: 13px; line-height: 1.2; }
+.w-inst small { color: var(--tx-subtle); font-size: 11px; }
+
+.w-main { padding: 24px; display: flex; flex-direction: column; gap: 20px; }
+.w-top { display: flex; align-items: center; gap: 12px; }
+.w-top h4 { font-size: 18px; font-weight: 700; margin: 0; flex: 1; color: #fff; }
+.w-play {
+  background: var(--acc-gradient);
+  color: #120e00;
+  font-weight: 800;
+  padding: 8px 22px;
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  letter-spacing: 0.05em;
+  box-shadow: 0 4px 15px rgba(255, 107, 0, 0.25);
+}
+.w-tabs { display: flex; gap: 20px; border-bottom: 1px solid var(--card-border); color: var(--tx-muted); padding-bottom: 10px; font-size: 13px; font-weight: 600; }
+.w-tabs .on { color: var(--acc-yellow); border-bottom: 2px solid var(--acc-yellow); padding-bottom: 8px; margin-bottom: -11px; }
+
+.w-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.w-mod { display: flex; gap: 10px; align-items: center; background: var(--card); border: 1px solid var(--card-border); border-radius: var(--radius-sm); padding: 10px; }
+.w-mod i { width: 28px; height: 28px; border-radius: 6px; background: #232d3d; flex: none; display: grid; place-items: center; font-style: normal; font-size: 12px; color: var(--acc-yellow); }
+.w-mod b { display: block; color: #fff; font-size: 12px; }
+.w-mod small { color: var(--acc-yellow); font-size: 10px; font-weight: 600; }
+@media(max-width:600px){ .win { grid-template-columns: 1fr; } .w-side { display: none; } }
+
+/* SEARCH & INTERACTIVE EXPLORER DEMO */
+.search-demo-section {
+  max-width: 1280px;
+  margin: 40px auto 0;
+  padding: 0 24px;
+}
+.search-box-card {
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-lg);
+  padding: 30px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+}
+.search-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.search-input-wrapper input {
+  width: 100%;
+  padding: 16px 20px 16px 50px;
+  background: var(--bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-md);
+  color: #fff;
+  font-size: 16px;
+  font-family: inherit;
+  transition: all .2s;
+}
+.search-input-wrapper input:focus {
+  border-color: var(--acc-yellow);
+  box-shadow: 0 0 0 3px var(--acc-glow);
+  outline: none;
+}
+.search-icon {
+  position: absolute;
+  left: 18px;
+  font-size: 20px;
+  color: var(--tx-subtle);
+}
+.search-results-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+}
+.res-item {
+  background: var(--bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  transition: all .2s;
+}
+.res-item:hover {
+  border-color: var(--acc-yellow);
+  transform: translateY(-2px);
+}
+.res-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 8px;
+  background: rgba(255, 184, 0, 0.15);
+  color: var(--acc-yellow);
+  display: grid;
+  place-items: center;
+  font-size: 20px;
+  flex: none;
+}
+.res-info h5 { font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 2px; }
+.res-info p { font-size: 12px; color: var(--tx-muted); line-height: 1.3; }
+.res-tag { display: inline-block; font-size: 10px; font-weight: 700; color: var(--acc-orange); text-transform: uppercase; margin-top: 4px; }
+
+/* METRICS & STATS COUNTER */
+.stats-section {
+  max-width: 1280px;
+  margin: 80px auto;
+  padding: 0 24px;
+}
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+@media(max-width:900px){ .stats-grid { grid-template-columns: repeat(2, 1fr); } }
+@media(max-width:500px){ .stats-grid { grid-template-columns: 1fr; } }
+
+.stat-card {
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-md);
+  padding: 30px 24px;
+  text-align: center;
+}
+.stat-number {
+  font-family: var(--font-display);
+  font-size: 38px;
+  font-weight: 800;
+  background: var(--acc-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 6px;
+}
+.stat-label { font-size: 14px; color: var(--tx-muted); font-weight: 600; }
+
+/* FEATURES GRID & DEEP DIVES */
+.section-title {
+  text-align: center;
+  max-width: 650px;
+  margin: 0 auto 50px;
+}
+.section-title h2 {
+  font-family: var(--font-display);
+  font-size: 36px;
+  font-weight: 800;
+  margin-bottom: 14px;
+  color: #fff;
+  letter-spacing: -0.02em;
+}
+.section-title p { color: var(--tx-muted); font-size: 17px; }
+
+.features-section {
+  max-width: 1280px;
+  margin: 0 auto 100px;
+  padding: 0 24px;
+}
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+@media(max-width:960px){ .features-grid { grid-template-columns: repeat(2, 1fr); } }
+@media(max-width:640px){ .features-grid { grid-template-columns: 1fr; } }
+
+.feature-card {
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-md);
+  padding: 32px;
+  transition: transform .2s, border-color .2s;
+  position: relative;
+  overflow: hidden;
+}
+.feature-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(255, 184, 0, 0.4);
+}
+.feature-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-sm);
+  background: rgba(255, 184, 0, 0.12);
+  color: var(--acc-yellow);
+  display: grid;
+  place-items: center;
+  font-size: 22px;
+  margin-bottom: 20px;
+}
+.feature-card h3 {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: #fff;
+}
+.feature-card p {
+  color: var(--tx-muted);
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+/* INSTALLATION STEPS */
+.install-section {
+  max-width: 1280px;
+  margin: 0 auto 100px;
+  padding: 0 24px;
+}
+.steps-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  position: relative;
+}
+@media(max-width:900px){ .steps-grid { grid-template-columns: 1fr; } }
+
+.step-card {
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-md);
+  padding: 32px;
+  position: relative;
+}
+.step-num {
+  font-family: var(--font-display);
+  font-size: 48px;
+  font-weight: 800;
+  color: rgba(255, 184, 0, 0.2);
+  position: absolute;
+  top: 20px;
+  right: 24px;
+}
+.step-card h4 { font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 12px; }
+.step-card p { font-size: 15px; color: var(--tx-muted); line-height: 1.6; }
+
+/* FEATURE COMPARISON TABLE */
+.comparison-section {
+  max-width: 1280px;
+  margin: 0 auto 100px;
+  padding: 0 24px;
+}
+.table-wrapper {
+  overflow-x: auto;
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-lg);
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 15px;
+}
+th, td {
+  padding: 18px 24px;
+  border-bottom: 1px solid var(--card-border);
+}
+th {
+  background: rgba(13, 16, 23, 0.6);
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff;
+}
+td:first-child, th:first-child { font-weight: 600; color: #fff; }
+tr:last-child td { border-bottom: none; }
+.check-yes { color: var(--acc-yellow); font-weight: 800; font-size: 18px; }
+.check-no { color: var(--tx-subtle); font-size: 18px; }
+
+/* SERVER SHOWCASE SPOTLIGHT */
+.server-spotlight {
+  max-width: 1280px;
+  margin: 0 auto 100px;
+  padding: 0 24px;
+}
+.spotlight-box {
+  background: linear-gradient(135deg, rgba(255,184,0,0.1) 0%, rgba(255,107,0,0.05) 50%, var(--card) 100%);
+  border: 1px solid rgba(255, 184, 0, 0.3);
+  border-radius: var(--radius-lg);
+  padding: 48px;
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 40px;
+  align-items: center;
+}
+@media(max-width:900px){ .spotlight-box { grid-template-columns: 1fr; text-align: center; padding: 32px; } }
+
+.spotlight-info h3 { font-family: var(--font-display); font-size: 28px; font-weight: 800; color: #fff; margin-bottom: 12px; }
+.spotlight-info p { font-size: 16px; color: var(--tx-muted); margin-bottom: 24px; }
+.server-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--bg);
+  padding: 8px 16px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--card-border);
+  font-family: monospace;
+  font-size: 14px;
+  color: var(--acc-yellow);
+}
+
+/* FAQ ACCORDION */
+.faq-section {
+  max-width: 900px;
+  margin: 0 auto 100px;
+  padding: 0 24px;
+}
+.faq-item {
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-md);
+  margin-bottom: 16px;
+  overflow: hidden;
+  transition: border-color .2s;
+}
+.faq-item:hover { border-color: rgba(255, 184, 0, 0.3); }
+.faq-question {
+  padding: 20px 24px;
+  font-size: 17px;
+  font-weight: 700;
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.faq-answer {
+  padding: 0 24px 20px;
+  color: var(--tx-muted);
+  font-size: 15px;
+  line-height: 1.6;
+  display: none;
+}
+.faq-item.active .faq-answer { display: block; }
+.faq-item.active .faq-toggle { transform: rotate(180deg); color: var(--acc-yellow); }
+.faq-toggle { transition: transform .2s; font-size: 18px; color: var(--tx-subtle); }
+
+/* FOOTER */
+footer {
+  background: #080a0f;
+  border-top: 1px solid var(--card-border);
+  padding: 60px 24px 40px;
+  color: var(--tx-subtle);
+  font-size: 14px;
+}
+.footer-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 2fr repeat(3, 1fr);
+  gap: 40px;
+  margin-bottom: 40px;
+}
+@media(max-width:900px){ .footer-container { grid-template-columns: 1fr 1fr; } }
+@media(max-width:600px){ .footer-container { grid-template-columns: 1fr; } }
+
+.footer-brand h4 { font-family: var(--font-display); font-size: 20px; font-weight: 800; color: #fff; margin-bottom: 12px; }
+.footer-brand p { color: var(--tx-muted); max-width: 300px; margin-bottom: 20px; }
+
+.footer-col h5 { font-family: var(--font-display); font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 16px; }
+.footer-col ul { list-style: none; }
+.footer-col li { margin-bottom: 10px; }
+.footer-col a { color: var(--tx-muted); transition: color .2s; }
+.footer-col a:hover { color: var(--acc-yellow); }
+
+.footer-bottom {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding-top: 24px;
+  border-top: 1px solid var(--card-border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<header><div class="bar">
+  <a class="logo" href="#top">🧀 <span>Crispy</span> Launcher</a>
+  <nav aria-label="Main Navigation">
+    <a href="#features">Features</a>
+    <a href="#install">Install Guide</a>
+    <a href="#compare">Compare</a>
+    <a href="#smp">CrispySprings SMP</a>
+    <a href="#faq">FAQ</a>
+    <a href="https://github.com/Web-mc1/crispy-launcher" target="_blank" rel="noopener noreferrer">GitHub</a>
+  </nav>
+  <div class="nav-actions">
+    <a class="btn primary sm" id="dl-top" href="https://github.com/Web-mc1/crispy-launcher/releases/latest">Download</a>
+  </div>
+</div></header>
+
+<!-- HERO SECTION -->
+<div class="hero-wrapper">
+  <section class="hero" id="top">
+    <div class="hero-content">
+      <div class="badge-pill">
+        <span class="badge-dot"></span>
+        Now with Native Modrinth API Integration
+      </div>
+      <h1>A fast, vibrant approach to <span>Minecraft</span>.</h1>
+      <p>Manage your instances, versions, mods, resource packs, and shaders with total control. Built for high performance, multi-loader flexibility, and auto-updating efficiency.</p>
+      <div class="hero-btns">
+        <a class="btn primary lg" id="dl-win" href="https://github.com/Web-mc1/crispy-launcher/releases/latest">Download for Windows</a>
+        <a class="btn lg" id="dl-linux" href="https://github.com/Web-mc1/crispy-launcher/releases/latest">Download for Linux</a>
+        <a class="btn secondary-accent lg" href="https://discord.gg/bgW2nAw7rm" target="_blank" rel="noopener noreferrer">Join Community</a>
+      </div>
+      <p class="dl-note">Linux Users: execute <code>chmod +x crispy-launcher-*.AppImage</code> after downloading.</p>
+    </div>
+
+    <!-- WINDOW APP PREVIEW MOCKUP -->
+    <div class="hero-visual">
+      <div class="win" aria-hidden="true">
+        <div class="w-side">
+          <b class="w-logo">🧀 Crispy App</b>
+          <div class="w-inst on"><i>S</i><span><b>Survival SMP</b><small>fabric, 1.21.4</small></span></div>
+          <div class="w-inst"><i>N</i><span><b>NeoForge Modpack</b><small>neoforge, 1.21.1</small></span></div>
+          <div class="w-inst"><i>Q</i><span><b>Quilt Shader Pack</b><small>quilt, 1.20.1</small></span></div>
+          <div class="w-inst"><i>F</i><span><b>Vanilla Speedrun</b><small>vanilla, 1.16.1</small></span></div>
+        </div>
+        <div class="w-main">
+          <div class="w-top"><h4>Survival SMP</h4><span class="w-play">▶ LAUNCH GAME</span></div>
+          <div class="w-tabs"><span class="on">Installed Mods</span><span>Shaders</span><span>Resource Packs</span><span>Java Settings</span></div>
+          <div class="w-grid">
+            <div class="w-mod"><i>⚡</i><span><b>Sodium</b><small>modrinth • 1.21.4</small></span></div>
+            <div class="w-mod"><i>✨</i><span><b>Iris Shaders</b><small>modrinth • 1.21.4</small></span></div>
+            <div class="w-mod"><i>📜</i><span><b>Mod Menu</b><small>modrinth • 1.21.4</small></span></div>
+            <div class="w-mod"><i>🚀</i><span><b>Lithium</b><small>modrinth • 1.21.4</small></span></div>
+            <div class="w-mod"><i>🗺️</i><span><b>Xaero's Minimap</b><small>modrinth • 1.21.4</small></span></div>
+            <div class="w-mod"><i>🛠️</i><span><b>Cloth Config</b><small>modrinth • 1.21.4</small></span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- INTERACTIVE MOD SEARCH DEMO -->
+<section class="search-demo-section">
+  <div class="search-box-card">
+    <div class="search-input-wrapper">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="mod-search" placeholder="Type to preview searching Modrinth ecosystem... (e.g., Sodium, Iris, Fabric)">
+    </div>
+    <div class="search-results-grid" id="search-results">
+      <div class="res-item">
+        <div class="res-icon">⚡</div>
+        <div class="res-info">
+          <h5>Sodium</h5>
+          <p>Modern rendering engine for Minecraft.</p>
+          <span class="res-tag">Fabric / Quilt</span>
+        </div>
+      </div>
+      <div class="res-item">
+        <div class="res-icon">✨</div>
+        <div class="res-info">
+          <h5>Iris Shaders</h5>
+          <p>Modern shaderpack support for Fabric & Quilt.</p>
+          <span class="res-tag">Shaders</span>
+        </div>
+      </div>
+      <div class="res-item">
+        <div class="res-icon">🚀</div>
+        <div class="res-info">
+          <h5>Lithium</h5>
+          <p>General-purpose optimization mod for server & client.</p>
+          <span class="res-tag">Optimization</span>
+        </div>
+      </div>
+      <div class="res-item">
+        <div class="res-icon">☕</div>
+        <div class="res-info">
+          <h5>FerriteCore</h5>
+          <p>Memory usage optimizations for Minecraft.</p>
+          <span class="res-tag">Forge / NeoForge</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LIVE STATS METRICS BLOCK -->
+<section class="stats-section">
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-number">100%</div>
+      <div class="stat-label">Open Source & Free</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">4+</div>
+      <div class="stat-label">Loaders (Fabric, Forge, NeoForge, Quilt)</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">0ms</div>
+      <div class="stat-label">Telemetry Overhead</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">Auto</div>
+      <div class="stat-label">Java & Update Engine</div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURE DEEP-DIVES SECTION -->
+<section class="features-section" id="features">
+  <div class="section-title">
+    <h2>Built for Maximum Performance</h2>
+    <p>Crispy Launcher replaces bloated tools with a sleek, native Modrinth-first experience.</p>
+  </div>
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon">🔍</div>
+      <h3>Native Modrinth API Integration</h3>
+      <p>Directly query Modrinth's high-speed API to download mods, resource packs, and shaders directly into your instances with 1-click install.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📦</div>
+      <h3>Strict Instance Isolation</h3>
+      <p>Keep your worlds, configurations, mods, and screenshots cleanly separated into isolated folders to prevent loader conflicts.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">⚡</div>
+      <h3>Universal Loader Engine</h3>
+      <p>Seamlessly toggle between Fabric, Quilt, Forge, NeoForge, or Vanilla across any release or snapshot version of Minecraft.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">☕</div>
+      <h3>Automated Java Management</h3>
+      <p>Never worry about setting up JDK runtime variables. Crispy automatically detects and manages Java versions for older or newer releases.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🔄</div>
+      <h3>Background Self-Updates</h3>
+      <p>Stay protected and updated with automatic background releases using direct GitHub releases fetching.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🛡️</div>
+      <h3>Privacy First & Lightweight</h3>
+      <p>No account tracking, telemetry spyware, or ad scripts. Minimal RAM footprint ensuring your game gets maximum system power.</p>
+    </div>
+  </div>
+</section>
+
+<!-- STEP-BY-STEP INSTALLATION GUIDE -->
+<section class="install-section" id="install">
+  <div class="section-title">
+    <h2>Getting Started in 3 Easy Steps</h2>
+    <p>Simple installation process with zero tedious configuration requirements.</p>
+  </div>
+  <div class="steps-grid">
+    <div class="step-card">
+      <div class="step-num">01</div>
+      <h4>Download Executable</h4>
+      <p>Get the latest release for Windows (.exe) or Linux (.AppImage) directly from our official release mirror.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-num">02</div>
+      <h4>Create an Instance</h4>
+      <p>Select your desired Minecraft version along with your preferred modloader (Fabric, NeoForge, Quilt, or Forge).</p>
+    </div>
+    <div class="step-card">
+      <div class="step-num">03</div>
+      <h4>Add Mods & Launch</h4>
+      <p>Use the Modrinth integration to add mods or click 'Play' to start playing immediately.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURE COMPARISON GRID -->
+<section class="comparison-section" id="compare">
+  <div class="section-title">
+    <h2>How Crispy Compares</h2>
+    <p>See why players and modders are making the switch to Crispy Launcher.</p>
+  </div>
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>Feature / Capability</th>
+          <th>Crispy Launcher</th>
+          <th>Official Launcher</th>
+          <th>Legacy Launchers</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Native Modrinth Direct Download</td>
+          <td><span class="check-yes">✓ Yes</span></td>
+          <td><span class="check-no">✗ No</span></td>
+          <td><span class="check-no">✗ Limited</span></td>
+        </tr>
+        <tr>
+          <td>Automatic Java Runtime Handling</td>
+          <td><span class="check-yes">✓ Yes</span></td>
+          <td><span class="check-yes">✓ Partial</span></td>
+          <td><span class="check-no">✗ Manual</span></td>
+        </tr>
+        <tr>
+          <td>Multi-loader Support (Fabric/NeoForge/Quilt)</td>
+          <td><span class="check-yes">✓ Yes</span></td>
+          <td><span class="check-no">✗ Manual</span></td>
+          <td><span class="check-yes">✓ Yes</span></td>
+        </tr>
+        <tr>
+          <td>Telemetry & Privacy Safeguards</td>
+          <td><span class="check-yes">✓ Zero Tracking</span></td>
+          <td><span class="check-no">✗ Heavy Telemetry</span></td>
+          <td><span class="check-no">✗ Varies</span></td>
+        </tr>
+        <tr>
+          <td>Ultra-fast Lightweight UI</td>
+          <td><span class="check-yes">✓ Yes</span></td>
+          <td><span class="check-no">✗ Heavy Electron</span></td>
+          <td><span class="check-no">✗ Cluttered</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- SERVER SPOTLIGHT: CRISPYSPRINGS SMP -->
+<section class="server-spotlight" id="smp">
+  <div class="spotlight-box">
+    <div class="spotlight-info">
+      <h3>Featured Server: CrispySprings SMP</h3>
+      <p>Join our official community Minecraft survival multiplayer server! Pre-configured modpack settings and seamless connection built straight into Crispy Launcher.</p>
+      <div style="display:flex; gap:12px; flex-wrap:wrap; align-items:center;">
+        <a class="btn primary" href="https://discord.gg/bgW2nAw7rm" target="_blank" rel="noopener noreferrer">Join Server Discord</a>
+        <span class="server-badge">IP: play.crispysprings.net</span>
+      </div>
+    </div>
+    <div style="text-align:center;">
+      <div style="font-size:80px;">🏰</div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ ACCORDION -->
+<section class="faq-section" id="faq">
+  <div class="section-title">
+    <h2>Frequently Asked Questions</h2>
+    <p>Everything you need to know about Crispy Launcher.</p>
+  </div>
+  <div class="faq-item active">
+    <div class="faq-question">Is Crispy Launcher completely free and open-source? <span class="faq-toggle">▼</span></div>
+    <div class="faq-answer">Yes, Crispy Launcher is 100% free and open-source under permissible licensing. You can inspect all source code on our GitHub repository at any time.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-question">How does Modrinth integration work? <span class="faq-toggle">▼</span></div>
+    <div class="faq-answer">The launcher connects directly to the official Modrinth v2 API. You can search, filter, install, and auto-update mods, resource packs, and shaders directly inside your launcher instances.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-question">Do I need to install Java manually? <span class="faq-toggle">▼</span></div>
+    <div class="faq-answer">No! Crispy Launcher automatically detects the correct Java version needed for your selected Minecraft version and downloads isolated runtimes as needed.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-question">How do I run the launcher on Linux? <span class="faq-toggle">▼</span></div>
+    <div class="faq-answer">Download the Linux <code>.AppImage</code> file, grant execution permission in your terminal using <code>chmod +x crispy-launcher-*.AppImage</code>, and double click to run.</div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-container">
+    <div class="footer-brand">
+      <h4>🧀 Crispy Launcher</h4>
+      <p>A fast, open-source Minecraft launcher designed for simplicity, customizability, and seamless Modrinth integration.</p>
+    </div>
+    <div class="footer-col">
+      <h5>Navigation</h5>
+      <ul>
+        <li><a href="#top">Overview</a></li>
+        <li><a href="#features">Features</a></li>
+        <li><a href="#install">Install Guide</a></li>
+        <li><a href="#compare">Comparison</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Community</h5>
+      <ul>
+        <li><a href="https://discord.gg/bgW2nAw7rm" target="_blank" rel="noopener noreferrer">Discord Server</a></li>
+        <li><a href="https://github.com/Web-mc1/crispy-launcher" target="_blank" rel="noopener noreferrer">GitHub Repository</a></li>
+        <li><a href="https://github.com/Web-mc1/crispy-launcher/issues" target="_blank" rel="noopener noreferrer">Issue Tracker</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Legal & Tech</h5>
+      <ul>
+        <li><a href="https://modrinth.com" target="_blank" rel="noopener noreferrer">Modrinth API</a></li>
+        <li><a href="https://github.com/Web-mc1/crispy-launcher/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">Open Source License</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© FryedCheese & Crispy Contributors. Not affiliated with Mojang Studios or Microsoft.</span>
+    <span>Supported OS: Windows 10/11 & Linux (AppImage)</span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  // Auto-detect OS & Fetch Github latest release tags
+  var win = document.getElementById('dl-win');
+  var linux = document.getElementById('dl-linux');
+  var top = document.getElementById('dl-top');
+
+  var onLinux = /linux/i.test(navigator.userAgent) && !/android/i.test(navigator.userAgent);
+  if (onLinux && win && linux) {
+    win.classList.remove('primary');
+    linux.classList.add('primary');
+    if (linux.parentNode) {
+      linux.parentNode.insertBefore(linux, win);
+    }
+  }
+  if (top) {
+    top.textContent = onLinux ? 'Download for Linux' : 'Download';
+  }
+
+  fetch('https://api.github.com/repos/Web-mc1/crispy-launcher/releases/latest',{headers:{Accept:'application/vnd.github+json'}})
+  .then(function(r){if(!r.ok)throw 0;return r.json()})
+  .then(function(j){
+    var assets = j.assets || [];
+    var exe = assets.filter(function(x){return /\.exe$/i.test(x.name)})[0];
+    var app = assets.filter(function(x){return /\.AppImage$/i.test(x.name)})[0];
+    if (exe && win) win.href = exe.browser_download_url;
+    if (app && linux) linux.href = app.browser_download_url;
+    var mine = onLinux ? app : exe;
+    if (mine && top) top.href = mine.browser_download_url;
+  }).catch(function(){});
+
+  // Interactive Search Demo logic
+  var searchInput = document.getElementById('mod-search');
+  var searchResults = document.getElementById('search-results');
+  if (searchInput && searchResults) {
+    var items = [
+      { name: 'Sodium', desc: 'Modern rendering engine for Minecraft.', tag: 'Fabric / Quilt', icon: '⚡' },
+      { name: 'Iris Shaders', desc: 'Modern shaderpack support for Fabric & Quilt.', tag: 'Shaders', icon: '✨' },
+      { name: 'Lithium', desc: 'General-purpose optimization mod.', tag: 'Optimization', icon: '🚀' },
+      { name: 'FerriteCore', desc: 'Memory usage optimizations for Minecraft.', tag: 'Forge / NeoForge', icon: '☕' },
+      { name: 'Mod Menu', desc: 'Adds a mod menu to view installed mods.', tag: 'UI / Client', icon: '📜' },
+      { name: 'Xaero\'s Minimap', desc: 'Displays a smooth minimap in game.', tag: 'World / HUD', icon: '🗺️' }
+    ];
+
+    searchInput.addEventListener('input', function(e){
+      var val = e.target.value.toLowerCase().trim();
+      var filtered = items.filter(function(item){
+        return item.name.toLowerCase().indexOf(val) !== -1 || item.tag.toLowerCase().indexOf(val) !== -1 || item.desc.toLowerCase().indexOf(val) !== -1;
+      });
+
+      searchResults.innerHTML = '';
+      if(filtered.length === 0){
+        searchResults.innerHTML = '<p style="color:var(--tx-muted); grid-column: 1/-1;">No matching mods previewed. Search directly in Crispy Launcher app!</p>';
+        return;
+      }
+
+      filtered.forEach(function(item){
+        var div = document.createElement('div');
+        div.className = 'res-item';
+        div.innerHTML = '<div class="res-icon">' + item.icon + '</div><div class="res-info"><h5>' + item.name + '</h5><p>' + item.desc + '</p><span class="res-tag">' + item.tag + '</span></div>';
+        searchResults.appendChild(div);
+      });
+    });
+  }
+
+  // FAQ Accordion interaction
+  var faqItems = document.querySelectorAll('.faq-item');
+  faqItems.forEach(function(item){
+    var q = item.querySelector('.faq-question');
+    if(q){
+      q.addEventListener('click', function(){
+        item.classList.toggle('active');
+      });
+    }
+  });
+})();
+</script>
+</body>
+</html>
