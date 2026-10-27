@@ -51,6 +51,10 @@
       --acc-orange: #ff6b00;
     }
 
+    html, body {
+      background-color: #000000;
+    }
+
     body {
       background-color: var(--bg-pure);
       color: #f3f4f6;
@@ -74,7 +78,8 @@
     }
 
     .bg-radial-glow {
-      background: radial-gradient(circle at 50% -10%, rgba(255, 184, 0, 0.12) 0%, rgba(255, 107, 0, 0.03) 40%, rgba(0, 0, 0, 0) 70%);
+      background: #000000 !important;
+      background-image: none !important;
     }
 
     .pure-card {
@@ -111,7 +116,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
       <!-- Logo -->
       <a href="#" class="flex items-center gap-3 group">
-        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-[#ffb800] to-[#ff6b00] flex items-center justify-center text-black font-extrabold text-xl shadow-lg group-hover:scale-105 transition-transform">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-[#ffb800] to-[#ff6b00] flex items-center justify-center text-black font-extrabold text-xl shadow-lg group-hover:scale-105 transition-transform duration-200">
           <i class="fa-solid fa-fire"></i>
         </div>
         <span class="font-heading font-extrabold text-2xl tracking-tight text-white">Crispy <span class="gradient-text">Launcher</span></span>
@@ -159,11 +164,11 @@
 
         <!-- OS Auto-detection & Download Buttons -->
         <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-          <a id="primary-download-btn" href="https://github.com/Web-mc1/crispy-launcher/releases/latest" target="_blank" class="w-full sm:w-auto gradient-btn text-black font-extrabold px-8 py-4 rounded-xl text-lg flex items-center justify-center gap-3 shadow-xl">
+          <a id="primary-download-btn" href="https://github.com/Web-mc1/crispy-launcher/releases/latest" target="_blank" class="w-full sm:w-auto gradient-btn text-black font-extrabold px-8 py-4 rounded-xl text-base flex items-center justify-center gap-3 shadow-lg hover:shadow-amber-500/20 transition-all">
             <i id="download-icon" class="fa-solid fa-download text-xl"></i>
             <span id="download-text">Download Crispy Launcher</span>
           </a>
-          <a href="https://discord.gg/bgW2nAw7rm" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto pure-card text-white font-semibold px-6 py-4 rounded-xl text-base flex items-center justify-center gap-2 hover:border-amber-500/50">
+          <a href="https://discord.gg/bgW2nAw7rm" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto pure-card text-white font-semibold px-6 py-4 rounded-xl text-base flex items-center justify-center gap-2">
             <i class="fa-brands fa-discord text-indigo-400 text-lg"></i> Join Discord
           </a>
         </div>
@@ -497,7 +502,7 @@
     <!-- Discord Community Banner -->
     <section class="py-16">
       <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="rounded-3xl bg-black border border-amber-500/30 p-8 sm:p-12 relative overflow-hidden text-center sm:text-left flex flex-col sm:flex-row items-center justify-between gap-8 shadow-2xl">
+        <div class="rounded-3xl bg-black border border-amber-500/30 p-8 sm:p-12 relative overflow-hidden text-center sm:text-left flex flex-col sm:flex-row items-center justify-between gap-8 shadow-[0_20px_60px_rgba(0,0,0,0.9)]">
           <div class="relative z-10 max-w-xl">
             <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 text-indigo-400 text-xs font-bold mb-4 border border-indigo-500/20">
               <i class="fa-brands fa-discord"></i> Official Discord
@@ -508,7 +513,7 @@
             </p>
           </div>
           <div class="relative z-10">
-            <a href="https://discord.gg/bgW2nAw7rm" target="_blank" rel="noopener noreferrer" class="gradient-btn text-black font-extrabold px-8 py-4 rounded-xl text-base flex items-center gap-3 whitespace-nowrap shadow-xl">
+            <a href="https://discord.gg/bgW2nAw7rm" target="_blank" rel="noopener noreferrer" class="gradient-btn text-black font-extrabold px-8 py-4 rounded-xl text-base flex items-center gap-3 shadow-lg">
               <i class="fa-brands fa-discord text-xl"></i> Join Discord
             </a>
           </div>
