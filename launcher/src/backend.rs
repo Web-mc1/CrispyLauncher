@@ -9,7 +9,32 @@ use std::process::{Child, ChildStdin, Command, Stdio};
 use std::sync::mpsc::Sender;
 use std::sync::{Arc, Mutex};
 
-pub const REPO: &str = "horizon-rust/horizon";
+/// The repository whose releases the launcher installs from, whose `links.json` it reads and
+/// whose source it fetches for native mods: `HORIZON_REPO` at build time, or at run time to point
+/// an existing build elsewhere, and upstream's otherwise. A fork that publishes its own signed
+/// builds sets it to its own name, so its players install that fork's game and its own launcher
+/// updates, and never upstream's.
+pub fn repo() -> String {
+    repo_from(
+        std::env::var("HORIZON_REPO").ok().as_deref(),
+        option_env!("HORIZON_REPO"),
+    )
+}
+
+/// The run-time value first, the build-time one next, upstream's when neither names a
+/// repository: a blank value names none, exactly as an unset one does.
+fn repo_from(run_time: Option<&str>, built_in: Option<&str>) -> String {
+    [run_time, built_in]
+        .into_iter()
+        .flatten()
+        .map(str::trim)
+        .find(|r| !r.is_empty())
+        .unwrap_or(UPSTREAM_REPO)
+        .to_owned()
+}
+
+/// Where the project lives, for a build that names no other repository.
+const UPSTREAM_REPO: &str = "horizon-rust/horizon";
 pub const README_URL: &str = "https://github.com/horizon-rust/horizon/blob/main/launcher/README.md";
 /// The players' page on connecting an AI agent (the website's docs/agents.md).
 pub const AGENT_DOCS_URL: &str = "https://playhorizon.dev/docs/agents";
@@ -313,7 +338,10 @@ pub fn compare_versions(a: &str, b: &str) -> std::cmp::Ordering {
 
 /// Every published release of the repository, both kinds, as GitHub's JSON.
 fn release_list() -> Result<serde_json::Value, String> {
-    let url = format!("https://api.github.com/repos/{REPO}/releases?per_page=100");
+    let url = format!(
+        "https://api.github.com/repos/{}/releases?per_page=100",
+        repo()
+    );
     get(&url)?.into_json().map_err(|e| e.to_string())
 }
 
@@ -404,7 +432,7 @@ fn launcher_releases_in_with(
     if found.iter().any(|r| r.asset.is_some()) {
         return found;
     }
-    let api = format!("https://api.github.com/repos/{REPO}");
+    let api = format!("https://api.github.com/repos/{}", repo());
     let mut tags = Vec::new();
     for prefix in [LAUNCHER_TAG_PREFIX, OLD_LAUNCHER_TAG_PREFIX] {
         // Every `launcher@` tag is newer than every `launcher-v` one: those only when there is none.
@@ -522,7 +550,10 @@ impl Links {
 
 /// The links from main, or the built-in ones when offline.
 pub fn links() -> Links {
-    let url = format!("https://raw.githubusercontent.com/{REPO}/main/launcher/links.json");
+    let url = format!(
+        "https://raw.githubusercontent.com/{}/main/launcher/links.json",
+        repo()
+    );
     get(&url)
         .ok()
         .and_then(|r| r.into_string().ok())
@@ -4018,6 +4049,26 @@ pub fn {f}("
             assert!(saved.get("update_channel").is_none(), "{old}");
             assert!(saved.get("beta_builds").is_none(), "{old}");
         }
+    }
+
+    #[test]
+    fn the_repository_is_configuration() {
+        // Nothing set is upstream: a build never has to name a repository to work.
+        assert_eq!(repo_from(None, None), UPSTREAM_REPO);
+        // A blank value names none, so its neighbour can still answer.
+        assert_eq!(repo_from(Some(" "), Some("")), UPSTREAM_REPO);
+        assert_eq!(repo_from(Some("Web-mc1/own"), None), "Web-mc1/own");
+        assert_eq!(repo_from(None, Some("built/in")), "built/in");
+        // The run-time choice wins, so an existing build can be pointed at another repository.
+        assert_eq!(
+            repo_from(Some("Web-mc1/own"), Some("built/in")),
+            "Web-mc1/own"
+        );
+        assert_eq!(
+            repo_from(Some(" Web-mc1/own "), None),
+            "Web-mc1/own",
+            "whitespace around the name is not part of it"
+        );
     }
 
     #[test]

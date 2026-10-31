@@ -583,7 +583,7 @@ fn hooks_in(source: &str) -> Option<u32> {
 fn hooks_at(revision: &str) -> Option<u32> {
     let url = format!(
         "https://raw.githubusercontent.com/{}/{revision}/{HOOKS_FILE}",
-        backend::REPO
+        backend::repo()
     );
     let text = backend::get(&url).ok()?.into_string().ok()?;
     hooks_in(&text)
@@ -679,7 +679,7 @@ pub fn revision_of(version: &str) -> Result<String, String> {
     };
     let url = format!(
         "https://api.github.com/repos/{}/commits/{reference}",
-        backend::REPO
+        backend::repo()
     );
     let commit: serde_json::Value = backend::get(&url)?.into_json().map_err(|e| e.to_string())?;
     commit["sha"]
@@ -1142,7 +1142,7 @@ fn source(revision: &str) -> Result<PathBuf, String> {
     }
     let archive = format!(
         "https://codeload.github.com/{}/tar.gz/{revision}",
-        backend::REPO
+        backend::repo()
     );
     let partial = root().join("source").join(format!(".{revision}.partial"));
     let top = unpack_archive(&archive, &partial, u64::MAX)?;
@@ -1253,7 +1253,7 @@ pub fn build(
             None => revision_of(base),
         },
         None,
-        |r| committed(backend::REPO, r),
+        |r| committed(&backend::repo(), r),
     )?;
     let revision = with_hooks(&mods, pinned, free, hooks_at)?;
     let other = mismatch(&mods, &revision);
