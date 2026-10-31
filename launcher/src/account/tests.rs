@@ -186,7 +186,9 @@ fn serve(mock: Arc<Mutex<Mock>>) -> Endpoints {
         }
     });
     Endpoints {
-        microsoft: format!("{base}/ms"),
+        device_code: format!("{base}/ms/devicecode"),
+        token: format!("{base}/ms/token"),
+        legacy_live: false,
         xbox_user: format!("{base}/xbl"),
         xsts: format!("{base}/xsts"),
         minecraft: format!("{base}/mc"),
@@ -319,7 +321,9 @@ fn secrets(token: &str, owns: bool) -> Secrets {
 /// Nothing listens there: every request fails as with no network.
 fn offline() -> Endpoints {
     Endpoints {
-        microsoft: "http://127.0.0.1:9/ms".into(),
+        device_code: "http://127.0.0.1:9/ms/devicecode".into(),
+        token: "http://127.0.0.1:9/ms/token".into(),
+        legacy_live: false,
         xbox_user: "http://127.0.0.1:9/xbl".into(),
         xsts: "http://127.0.0.1:9/xsts".into(),
         minecraft: "http://127.0.0.1:9/mc".into(),
@@ -924,9 +928,17 @@ fn session_files_are_private_and_complete() {
 
 #[test]
 fn client_id_is_configuration() {
-    // The run-time variable overrides; empty means not configured.
+    // The run-time variable overrides; empty or unset is the official launcher's identity, which
+    // is the one Mojang allows and the only reason a fresh install can sign in at all.
+    std::env::remove_var("HORIZON_MSA_MICROSOFT_ENDPOINT");
     std::env::set_var("HORIZON_MSA_CLIENT_ID", " ");
-    assert_eq!(client_id(), None);
+    assert_eq!(client_id().as_deref(), Some(LAUNCHER_CLIENT_ID));
+    // Each identity is served by its own pair: the official one is refused by the v2 endpoint
+    // (`AADSTS700016`, not an app in the directory), and a registered app belongs there.
+    let ep = Endpoints::live();
+    assert_eq!(ep.device_code, "https://login.live.com/oauth20_connect.srf");
+    assert_eq!(ep.token, "https://login.live.com/oauth20_token.srf");
+    assert!(ep.legacy_live);
     std::env::set_var(
         "HORIZON_MSA_CLIENT_ID",
         "00000000-1111-2222-3333-444444444444",
@@ -935,7 +947,18 @@ fn client_id_is_configuration() {
         client_id().as_deref(),
         Some("00000000-1111-2222-3333-444444444444")
     );
+    let ep = Endpoints::live();
+    assert_eq!(
+        ep.device_code,
+        "https://login.microsoftonline.com/consumers/oauth2/v2.0/devicecode"
+    );
+    assert_eq!(
+        ep.token,
+        "https://login.microsoftonline.com/consumers/oauth2/v2.0/token"
+    );
+    assert!(!ep.legacy_live);
     std::env::remove_var("HORIZON_MSA_CLIENT_ID");
+    assert_eq!(client_id().as_deref(), Some(LAUNCHER_CLIENT_ID));
 }
 
 #[test]

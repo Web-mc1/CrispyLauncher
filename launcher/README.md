@@ -433,9 +433,11 @@ Credential Manager, or the Secret Service on Linux), never in a file, a log or t
 in until the launcher closes. When the game starts, it gets the session in a private file it
 deletes as soon as it has read it. Sign out removes the tokens.
 
-Sign-in needs crispylauncher's own Azure app registration: its client ID is built in from
-`HORIZON_MSA_CLIENT_ID` (and `HORIZON_MSA_CLIENT_ID` at run time overrides it; empty = not
-configured). How it works: [docs/microsoft-account.md](../docs/microsoft-account.md).
+Sign-in uses the identity the official Minecraft launcher signs in with, so it needs no app
+registration of this fork's own: a build that sets no `HORIZON_MSA_CLIENT_ID` (at build time, or
+through the run-time variable, which overrides it) signs in as that one, and the Live endpoints
+that serve it; setting a registered app's client ID signs in as that instead, on the Entra v2 ones.
+How it works: [docs/microsoft-account.md](../docs/microsoft-account.md).
 
 ## Logs and crash reports
 

@@ -9,8 +9,11 @@
 //! Minecraft: Java Edition, as other launchers do. Offline names play behind such an account.
 //! The game binary itself, its harnesses and the servers don't go through the launcher's gate.
 //!
-//! The Azure app (client ID) is crispylauncher's own and is configuration: `HORIZON_MSA_CLIENT_ID` at
-//! build time, or at run time to override it. Without one, sign-in says it is not configured.
+//! The client ID is configuration: `HORIZON_MSA_CLIENT_ID` at build time, or at run time to
+//! override it. A build that sets none signs in as the official Minecraft launcher
+//! ([`LAUNCHER_CLIENT_ID`]): that is the identity Mojang keeps on the allow list, so a player on a
+//! computer that has never seen this fork can still sign in. Set your own registered app's client
+//! ID to sign in as that instead, which switches the endpoints to the Microsoft Entra v2 ones.
 use serde_json::{json, Value};
 use std::collections::HashMap;
 use std::path::{Path, PathBuf};
@@ -20,6 +23,14 @@ use std::time::{Duration, SystemTime, UNIX_EPOCH};
 /// The keychain service name every secret is stored under.
 pub const SERVICE: &str = "dev.playhorizon.launcher";
 const SCOPE: &str = "XboxLive.signin offline_access";
+/// The client ID the official Minecraft launcher signs in with, and what a build that sets no
+/// `HORIZON_MSA_CLIENT_ID` uses. It isn't an app in a directory anyone here administers, which is
+/// the point: it is already on Mojang's allow list, so no registration, review or tenant stands
+/// between a player and their account. Microsoft serves it only from the older Live endpoints
+/// ([`Endpoints::live`]), never from the Entra v2 ones.
+pub const LAUNCHER_CLIENT_ID: &str = "00000000402b5328";
+/// A build always has a client ID now; this is what the paths that ask for one still say if it is
+/// ever absent.
 pub const NOT_CONFIGURED: &str =
     "This build of the launcher has no Microsoft sign-in (HORIZON_MSA_CLIENT_ID), so it can't start the game.";
 /// What every Play says while no account in the launcher owns the game.
@@ -34,21 +45,28 @@ const SIGN_IN_AGAIN: &str = "Your Microsoft sign-in expired. Sign in again.";
 /// The Minecraft token is renewed when it has less than this left.
 const RENEW_BEFORE: u64 = 3600;
 
-/// The configured Azure app, if any: the run-time variable wins over the build-time one, and an
-/// empty value means none.
+/// The client ID to sign in as: the run-time variable wins over the build-time one, and an empty
+/// or unset value means this build has no registered app of its own, so it is the official
+/// launcher's identity.
 pub fn client_id() -> Option<String> {
-    std::env::var("HORIZON_MSA_CLIENT_ID")
+    let configured = std::env::var("HORIZON_MSA_CLIENT_ID")
         .ok()
         .or_else(|| option_env!("HORIZON_MSA_CLIENT_ID").map(str::to_owned))
         .map(|id| id.trim().to_owned())
-        .filter(|id| !id.is_empty())
+        .filter(|id| !id.is_empty());
+    configured.or_else(|| Some(LAUNCHER_CLIENT_ID.to_owned()))
 }
 
 /// Where the requests go: the real services, or a mock in tests.
 #[derive(Clone, Debug)]
 pub struct Endpoints {
-    /// The OAuth 2.0 v2 endpoints for personal accounts (`…/devicecode`, `…/token`).
-    pub microsoft: String,
+    /// Where the sign-in code is asked for.
+    pub device_code: String,
+    /// Where the token is polled for and renewed.
+    pub token: String,
+    /// Whether these are the older Live endpoints: their device-code request must carry
+    /// `response_type`, which the v2 endpoint doesn't send.
+    pub legacy_live: bool,
     pub xbox_user: String,
     pub xsts: String,
     /// api.minecraftservices.com.
@@ -59,12 +77,28 @@ impl Endpoints {
     pub fn live() -> Self {
         // Development builds only: `HORIZON_MSA_MICROSOFT_ENDPOINT` points the device-code and
         // token requests at a local mock, to see and screenshot the sign-in panel.
-        let microsoft = std::env::var("HORIZON_MSA_MICROSOFT_ENDPOINT")
+        let mock = std::env::var("HORIZON_MSA_MICROSOFT_ENDPOINT")
             .ok()
-            .filter(|_| cfg!(debug_assertions))
-            .unwrap_or_else(|| "https://login.microsoftonline.com/consumers/oauth2/v2.0".into());
+            .filter(|_| cfg!(debug_assertions));
+        let official = mock.is_none() && client_id().as_deref() == Some(LAUNCHER_CLIENT_ID);
+        let (device_code, token) = match mock {
+            Some(base) => (format!("{base}/devicecode"), format!("{base}/token")),
+            // The official launcher's identity is not an app in a directory to consent to: the v2
+            // endpoint answers `AADSTS700016` ("not found in the directory") for it, and the older
+            // Live pair serves it. A registered app of our own is the other way round.
+            None if official => (
+                "https://login.live.com/oauth20_connect.srf".into(),
+                "https://login.live.com/oauth20_token.srf".into(),
+            ),
+            None => (
+                "https://login.microsoftonline.com/consumers/oauth2/v2.0/devicecode".into(),
+                "https://login.microsoftonline.com/consumers/oauth2/v2.0/token".into(),
+            ),
+        };
         Self {
-            microsoft,
+            device_code,
+            token,
+            legacy_live: official,
             xbox_user: "https://user.auth.xboxlive.com/user/authenticate".into(),
             xsts: "https://xsts.auth.xboxlive.com/xsts/authorize".into(),
             minecraft: "https://api.minecraftservices.com".into(),
@@ -164,9 +198,14 @@ pub enum Poll {
 }
 
 pub fn device_code(ep: &Endpoints, client_id: &str) -> Result<DeviceCode, String> {
+    let mut form = vec![("client_id", client_id), ("scope", SCOPE)];
+    if ep.legacy_live {
+        // The Live endpoint answers `invalid_request` without it; the v2 one doesn't take it.
+        form.push(("response_type", "device_code"));
+    }
     let (status, v) = send(
-        request_to("POST", &format!("{}/devicecode", ep.microsoft)),
-        Some(Body::Form(vec![("client_id", client_id), ("scope", SCOPE)])),
+        request_to("POST", &ep.device_code),
+        Some(Body::Form(form)),
         "Microsoft",
     )?;
     match (
@@ -208,7 +247,7 @@ fn oauth_error(v: &Value) -> String {
 /// One poll of the token endpoint while the player signs in.
 pub fn poll(ep: &Endpoints, client_id: &str, code: &DeviceCode) -> Result<Poll, String> {
     let (status, v) = send(
-        request_to("POST", &format!("{}/token", ep.microsoft)),
+        request_to("POST", &ep.token),
         Some(Body::Form(vec![
             ("grant_type", "urn:ietf:params:oauth:grant-type:device_code"),
             ("client_id", client_id),
@@ -265,7 +304,7 @@ pub fn wait_for_sign_in(
 
 fn refresh_ms(ep: &Endpoints, client_id: &str, refresh: &str) -> Result<MsTokens, String> {
     let (status, v) = send(
-        request_to("POST", &format!("{}/token", ep.microsoft)),
+        request_to("POST", &ep.token),
         Some(Body::Form(vec![
             ("grant_type", "refresh_token"),
             ("client_id", client_id),

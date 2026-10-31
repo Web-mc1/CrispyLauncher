@@ -132,8 +132,9 @@ jobs:
       RUSTFLAGS: ${{ matrix.rustflags }}
       # Where cargo puts the launcher: target/release, or target/<target>/release for another target.
       BIN: ${{ matrix.target && format('target/{0}/release', matrix.target) || 'target/release' }}
-      # Horizon's Azure app for Microsoft sign-in (docs/microsoft-account.md): a repository
-      # variable, not a secret. Unset, the launcher says sign-in is not configured.
+      # An Azure app of this fork's own for Microsoft sign-in (docs/microsoft-account.md): a
+      # repository variable, not a secret. Unset, the launcher signs in as the official Minecraft
+      # launcher, which is what players use when this fork has no registration of its own.
       HORIZON_MSA_CLIENT_ID: ${{ vars.HORIZON_MSA_CLIENT_ID }}
       # The mod browser's CurseForge source (docs/mod-browser.md#curseforge): a repository secret. Unset, the
       # launcher searches Modrinth only.

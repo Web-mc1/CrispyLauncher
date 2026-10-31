@@ -3,14 +3,26 @@
 Horizon signs players in with their Microsoft account in the launcher and joins online-mode
 (authenticated) servers like vanilla 26.3 does. The launcher plays only with an account that owns
 Minecraft: Java Edition ([the owner gate](#the-owner-gate)); offline names, LAN and offline-mode
-servers play behind it. This note is the design, the status of each part and what Ludovic has to
-register.
+servers play behind it. This note is the design, the status of each part and what an app
+registration of this fork's own would take, should it ever have one.
 
-## What Ludovic registers (needs his accounts)
+## Which app the launcher signs in as
 
-Nothing below can be done by an agent: the app registrations belong to Ludovic. A build without
-the client ID can't sign in, so its launcher can't start the game ("This build of the launcher has
-no Microsoft sign-in"); release builds have it.
+A build that sets no client ID signs in as **the official Minecraft launcher**
+(`LAUNCHER_CLIENT_ID` in `launcher/src/account.rs`). That is the identity Mojang keeps on the allow
+list, so a player on a computer that has never run this launcher can sign in and play: nothing to
+register, no tenant, no review, and no consent screen naming an app they have never heard of.
+
+It isn't an app in a directory anyone here administers, so Microsoft serves it only from the older
+Live endpoints (`login.live.com/oauth20_connect.srf` and `oauth20_token.srf`); the Entra v2 endpoint
+refuses it with `AADSTS700016` ("not found in the directory"). `Endpoints::live` picks the pair by
+the identity in use, so the two always match.
+
+### This fork's own app (optional)
+
+Registering an app of our own only changes which name the consent screen shows. It needs an account
+that can hold an Azure subscription (18 or older, or an adult's) and Mojang's review, which takes
+days to weeks. The steps, if that ever becomes available:
 
 1. **Azure app registration** (https://portal.azure.com → Microsoft Entra ID → App registrations →
    New registration):
@@ -38,7 +50,9 @@ no Microsoft sign-in"); release builds have it.
    - Any build, at run time: the environment variable `HORIZON_MSA_CLIENT_ID` overrides the built-in
      value (empty or unset = not configured).
 
-Never use another application's client ID (the official launcher's or another launcher's).
+An empty or unset `HORIZON_MSA_CLIENT_ID` means the official identity, which is the default; never
+point it at another launcher's registration. Setting it to a registered app of our own also
+switches the endpoints back to the Entra v2 pair.
 
 ## Flow (launcher)
 
