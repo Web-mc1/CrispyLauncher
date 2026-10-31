@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crispy Launcher</title>
+  <meta name="description" content="Download Crispy Launcher, a free Minecraft launcher for Windows and Linux with Modrinth, Fabric, Quilt, Forge, and NeoForge integration.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%A7%80%3C/text%3E%3C/svg%3E">
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Inter & Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+  <!-- FontAwesome for Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            crispy: {
+              yellow: '#ffb800',
+              orange: '#ff6b00',
+              pureBlack: '#000000',
+              deepBlack: '#0a0a0c',
+              cardBg: '#111115',
+              cardHover: '#16161c',
+              cardBorder: '#22222a'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            heading: ['Plus Jakarta Sans', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    :root {
+      --bg-pure: #000000;
+      --bg-deep: #0a0a0c;
+      --card-bg: #111115;
+      --card-hover: #16161c;
+      --card-border: #22222a;
+      --acc-yellow: #ffb800;
+      --acc-orange: #ff6b00;
+    }
+
+    html, body {
+      background-color: #000000;
+    }
+
+    body {
+      background-color: var(--bg-pure);
+      color: #f3f4f6;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .gradient-text {
+      background: linear-gradient(135deg, #ffb800 0%, #ff6b00 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .gradient-btn {
+      background: linear-gradient(135deg, #ffb800 0%, #ff6b00 100%);
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .gradient-btn:hover {
+      box-shadow: 0 0 25px rgba(255, 184, 0, 0.35);
+      transform: translateY(-1px);
+    }
+
+    .bg-radial-glow {
+      background: #000000 !important;
+      background-image: none !important;
+    }
+
+    .pure-card {
+      background-color: var(--card-bg);
+      border: 1px solid var(--card-border);
+      transition: all 0.25s ease;
+    }
+
+    .pure-card:hover {
+      border-color: rgba(255, 184, 0, 0.35);
+      background-color: var(--card-hover);
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #000000;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #1e1e26;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #2a2a35;
+    }
+  </style>
+</head>
+<body class="bg-radial-glow min-h-screen flex flex-col justify-between selection:bg-amber-500 selection:text-black">
+
+  <!-- Header / Navigation -->
+  <header class="sticky top-0 z-50 backdrop-blur-xl bg-black/80 border-b border-[#22222a]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      <!-- Logo -->
+      <a href="#" class="flex items-center gap-3 group">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-[#ffb800] to-[#ff6b00] flex items-center justify-center text-black font-extrabold text-xl shadow-lg group-hover:scale-105 transition-transform duration-200">
+          <i class="fa-solid fa-fire"></i>
+        </div>
+        <span class="font-heading font-extrabold text-2xl tracking-tight text-white">Crispy <span class="gradient-text">Launcher</span></span>
+      </a>
+
+      <!-- Nav Links -->
+      <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-400">
+        <a href="#features" class="hover:text-amber-400 transition-colors">Features</a>
+        <a href="#loaders" class="hover:text-amber-400 transition-colors">Loaders</a>
+        <a href="#architecture" class="hover:text-amber-400 transition-colors">Architecture</a>
+        <a href="#faq" class="hover:text-amber-400 transition-colors">FAQ</a>
+        <a href="https://discord.gg/bgW2nAw7rm" target="_blank" rel="noopener noreferrer" class="hover:text-amber-400 transition-colors flex items-center gap-2">
+          <i class="fa-brands fa-discord text-indigo-400"></i> Discord
+        </a>
+      </nav>
+
+      <!-- Action Button -->
+      <div class="flex items-center gap-4">
+        <a href="#download" class="gradient-btn text-black font-bold px-5 py-2.5 rounded-xl text-sm flex items-center gap-2 shadow-md">
+          <i class="fa-solid fa-download"></i> Get Launcher
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Area -->
+  <main class="flex-grow">
+    
+    <!-- Hero Section -->
+    <section class="relative pt-16 pb-20 md:pt-24 md:pb-32 overflow-hidden" id="download">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+        
+        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full pure-card text-xs font-semibold text-amber-400 mb-8 border border-amber-500/20">
+          <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+          Free Proprietary Software • High Performance Desktop Client
+        </div>
+
+        <h1 class="font-heading text-4xl sm:text-6xl md:text-7xl font-black text-white tracking-tight leading-tight max-w-4xl mx-auto">
+          A clean, high-performance launcher for <span class="gradient-text">Minecraft</span>.
+        </h1>
+        
+        <p class="mt-6 text-lg sm:text-xl text-gray-400 max-w-2xl mx-auto font-normal leading-relaxed">
+          Manage your instances, versions, mods, resource packs, and shaders seamlessly with native Modrinth API integration and multi-loader support.
+        </p>
+
+        <!-- OS Auto-detection & Download Buttons -->
+        <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+          <a id="primary-download-btn" href="https://github.com/Web-mc1/crispy-launcher/releases/latest" target="_blank" class="w-full sm:w-auto gradient-btn text-black font-extrabold px-8 py-4 rounded-xl text-base flex items-center justify-center gap-3 shadow-lg hover:shadow-amber-500/20 transition-all">
+            <i id="download-icon" class="fa-solid fa-download text-xl"></i>
+            <span id="download-text">Download Crispy Launcher</span>
+          </a>
+          <a href="https://discord.gg/bgW2nAw7rm" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto pure-card text-white font-semibold px-6 py-4 rounded-xl text-base flex items-center justify-center gap-2">
+            <i class="fa-brands fa-discord text-indigo-400 text-lg"></i> Join Discord
+          </a>
+        </div>
+
+        <!-- Download Fallbacks / Alternative OS Links -->
+        <div class="mt-4 text-xs text-gray-500 flex items-center justify-center gap-4 flex-wrap" id="alt-downloads">
+          <span>Detected OS: <strong id="detected-os" class="text-gray-300">Detecting...</strong></span>
+          <span class="hidden sm:inline">•</span>
+          <a id="dl-win-link" href="https://github.com/Web-mc1/crispy-launcher/releases/latest" target="_blank" class="underline hover:text-amber-400">Windows (.exe)</a>
+          <span>•</span>
+          <a id="dl-linux-link" href="https://github.com/Web-mc1/crispy-launcher/releases/latest" target="_blank" class="underline hover:text-amber-400">Linux (.AppImage)</a>
+        </div>
+
+        <!-- Pure Black Interactive Window Preview -->
+        <div class="mt-16 max-w-5xl mx-auto rounded-2xl bg-[#0a0a0c] p-3 shadow-[0_20px_60px_rgba(0,0,0,0.9)] relative group overflow-hidden border border-[#22222a]">
+          <div class="bg-black rounded-xl overflow-hidden aspect-video relative flex flex-col border border-[#16161c]">
+            
+            <!-- App Bar Mockup -->
+            <div class="h-10 bg-[#0a0a0c] border-b border-[#22222a] flex items-center justify-between px-4">
+              <div class="flex items-center gap-2">
+                <div class="w-3 h-3 rounded-full bg-red-500/80"></div>
+                <div class="w-3 h-3 rounded-full bg-yellow-500/80"></div>
+                <div class="w-3 h-3 rounded-full bg-green-500/80"></div>
+                <span class="text-xs text-gray-400 ml-3 font-medium">Crispy Launcher v1.0.0</span>
+              </div>
+              <div class="flex items-center gap-3 text-xs text-gray-400">
+                <span class="bg-amber-500/10 text-amber-400 px-2 py-0.5 rounded border border-amber-500/20"><i class="fa-solid fa-shield-halved mr-1"></i> Official Client</span>
+              </div>
+            </div>
+
+            <!-- UI Body Mockup -->
+            <div class="flex-1 flex overflow-hidden">
+              <!-- Sidebar -->
+              <div class="w-48 bg-[#0a0a0c] border-r border-[#22222a] p-3 hidden sm:flex flex-col gap-2">
+                <div class="flex items-center gap-2 text-amber-400 font-bold text-xs px-3 py-2 bg-amber-500/10 rounded-lg border border-amber-500/20">
+                  <i class="fa-solid fa-gamepad"></i> Instances
+                </div>
+                <div class="flex items-center gap-2 text-gray-400 text-xs px-3 py-2 hover:bg-[#111115] rounded-lg">
+                  <i class="fa-solid fa-store"></i> Modrinth Store
+                </div>
+                <div class="flex items-center gap-2 text-gray-400 text-xs px-3 py-2 hover:bg-[#111115] rounded-lg">
+                  <i class="fa-solid fa-download"></i> Downloads
+                </div>
+                <div class="flex items-center gap-2 text-gray-400 text-xs px-3 py-2 hover:bg-[#111115] rounded-lg">
+                  <i class="fa-solid fa-sliders"></i> Settings
+                </div>
+              </div>
+
+              <!-- Main Visual Content -->
+              <div class="flex-1 p-6 grid grid-cols-1 sm:grid-cols-3 gap-4 text-left overflow-y-auto bg-black">
+                
+                <div class="pure-card p-4 rounded-xl border border-amber-500/40 flex flex-col justify-between">
+                  <div>
+                    <div class="w-8 h-8 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center font-bold mb-3">1.20</div>
+                    <h4 class="font-bold text-white text-sm">Fabric Survival</h4>
+                    <p class="text-xs text-gray-400 mt-1">Sodium, Iris Shaders, Mod Menu, Lithium</p>
+                  </div>
+                  <button class="mt-4 gradient-btn text-black font-bold py-1.5 px-3 rounded-lg text-xs flex items-center justify-center gap-1">
+                    <i class="fa-solid fa-play text-[10px]"></i> Launch
+                  </button>
+                </div>
+
+                <div class="pure-card p-4 rounded-xl flex flex-col justify-between">
+                  <div>
+                    <div class="w-8 h-8 rounded-lg bg-orange-500/20 text-orange-400 flex items-center justify-center font-bold mb-3">1.21.1</div>
+                    <h4 class="font-bold text-white text-sm">NeoForge Modded</h4>
+                    <p class="text-xs text-gray-400 mt-1">Tech & Quest Pack (128 Mods)</p>
+                  </div>
+                  <button class="mt-4 bg-[#16161c] hover:bg-[#22222a] text-white font-semibold py-1.5 px-3 rounded-lg text-xs flex items-center justify-center gap-1 border border-[#22222a]">
+                    <i class="fa-solid fa-play text-[10px]"></i> Launch
+                  </button>
+                </div>
+
+                <div class="pure-card p-4 rounded-xl flex flex-col justify-between border-dashed">
+                  <div class="h-full flex flex-col items-center justify-center text-center p-2">
+                    <i class="fa-solid fa-plus text-amber-400 text-xl mb-2"></i>
+                    <span class="text-xs font-semibold text-gray-300">Create Instance</span>
+                    <span class="text-[10px] text-gray-500 mt-1">Modrinth or Vanilla</span>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Stats & Metrics Bar -->
+    <section class="border-y border-[#22222a] bg-[#0a0a0c] py-10">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+          <div>
+            <div class="font-heading text-3xl sm:text-4xl font-extrabold text-white">100%</div>
+            <div class="text-xs sm:text-sm text-gray-400 mt-1">Modrinth Ecosystem</div>
+          </div>
+          <div>
+            <div class="font-heading text-3xl sm:text-4xl font-extrabold text-white">4 Loaders</div>
+            <div class="text-xs sm:text-sm text-gray-400 mt-1">Fabric, Quilt, Forge, NeoForge</div>
+          </div>
+          <div>
+            <div class="font-heading text-3xl sm:text-4xl font-extrabold gradient-text">Fast</div>
+            <div class="text-xs sm:text-sm text-gray-400 mt-1">Instant Instance Boot</div>
+          </div>
+          <div>
+            <div class="font-heading text-3xl sm:text-4xl font-extrabold text-white">Free</div>
+            <div class="text-xs sm:text-sm text-gray-400 mt-1">Proprietary Launcher</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Detailed Features Grid -->
+    <section id="features" class="py-20 md:py-28">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-3xl mx-auto mb-16">
+          <h2 class="text-xs font-bold uppercase tracking-widest text-amber-400 mb-2">Capabilities</h2>
+          <p class="font-heading text-3xl sm:text-4xl font-extrabold text-white">Designed for Speed & Simplicity</p>
+          <p class="text-gray-400 mt-4 text-base">Everything you need to manage and configure your favorite Minecraft setups seamlessly.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <!-- Feature 1 -->
+          <div class="pure-card p-8 rounded-2xl">
+            <div class="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center text-xl mb-6 border border-amber-500/20">
+              <i class="fa-solid fa-cube"></i>
+            </div>
+            <h3 class="font-heading text-xl font-bold text-white mb-3">Modrinth Integration</h3>
+            <p class="text-gray-400 text-sm leading-relaxed">
+              Browse, search, install, and update your favorite mods, resource packs, and shaders directly inside the client without external browsers.
+            </p>
+          </div>
+
+          <!-- Feature 2 -->
+          <div class="pure-card p-8 rounded-2xl">
+            <div class="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center text-xl mb-6 border border-amber-500/20">
+              <i class="fa-solid fa-layer-group"></i>
+            </div>
+            <h3 class="font-heading text-xl font-bold text-white mb-3">Multi-Loader Support</h3>
+            <p class="text-gray-400 text-sm leading-relaxed">
+              Easily manage and configure instances running Fabric, Quilt, Forge, and NeoForge across any supported Minecraft version.
+            </p>
+          </div>
+
+          <!-- Feature 3 -->
+          <div class="pure-card p-8 rounded-2xl">
+            <div class="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center text-xl mb-6 border border-amber-500/20">
+              <i class="fa-solid fa-arrows-rotate"></i>
+            </div>
+            <h3 class="font-heading text-xl font-bold text-white mb-3">Always Up-To-Date</h3>
+            <p class="text-gray-400 text-sm leading-relaxed">
+              Built-in self-updating technology ensures you always run the latest version without manually re-downloading installer files.
+            </p>
+          </div>
+
+          <!-- Feature 4 -->
+          <div class="pure-card p-8 rounded-2xl">
+            <div class="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center text-xl mb-6 border border-amber-500/20">
+              <i class="fa-solid fa-folder-tree"></i>
+            </div>
+            <h3 class="font-heading text-xl font-bold text-white mb-3">Isolated Environments</h3>
+            <p class="text-gray-400 text-sm leading-relaxed">
+              Every instance features its own isolated directory structure for mods, configs, saves, and assets to prevent mod conflicts.
+            </p>
+          </div>
+
+          <!-- Feature 5 -->
+          <div class="pure-card p-8 rounded-2xl">
+            <div class="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center text-xl mb-6 border border-amber-500/20">
+              <i class="fa-solid fa-gauge-high"></i>
+            </div>
+            <h3 class="font-heading text-xl font-bold text-white mb-3">Optimized Memory & CPU</h3>
+            <p class="text-gray-400 text-sm leading-relaxed">
+              Low desktop memory footprint engineered to maximize game FPS by dedicating system memory directly to Java processes.
+            </p>
+          </div>
+
+          <!-- Feature 6 -->
+          <div class="pure-card p-8 rounded-2xl">
+            <div class="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center text-xl mb-6 border border-amber-500/20">
+              <i class="fa-solid fa-shield-halved"></i>
+            </div>
+            <h3 class="font-heading text-xl font-bold text-white mb-3">Secure Microsoft Auth</h3>
+            <p class="text-gray-400 text-sm leading-relaxed">
+              Authenticate safely using official Microsoft OAuth 2.0 logins. Your account credentials stay local and encrypted.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Supported Mod Loaders Showcase -->
+    <section id="loaders" class="py-16 bg-[#0a0a0c] border-y border-[#22222a]">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-2xl mx-auto mb-12">
+          <h2 class="text-xs font-bold uppercase tracking-widest text-amber-400 mb-2">Compatibility</h2>
+          <p class="font-heading text-2xl sm:text-3xl font-extrabold text-white">Full Multi-Loader Ecosystem</p>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+          <div class="pure-card p-6 rounded-xl">
+            <div class="font-heading font-extrabold text-lg text-white mb-1">Fabric</div>
+            <div class="text-xs text-amber-400 font-semibold">Lightweight & Fast</div>
+          </div>
+          <div class="pure-card p-6 rounded-xl">
+            <div class="font-heading font-extrabold text-lg text-white mb-1">Quilt</div>
+            <div class="text-xs text-amber-400 font-semibold">Modular Loader</div>
+          </div>
+          <div class="pure-card p-6 rounded-xl">
+            <div class="font-heading font-extrabold text-lg text-white mb-1">Forge</div>
+            <div class="text-xs text-amber-400 font-semibold">Classic Modding</div>
+          </div>
+          <div class="pure-card p-6 rounded-xl">
+            <div class="font-heading font-extrabold text-lg text-white mb-1">NeoForge</div>
+            <div class="text-xs text-amber-400 font-semibold">Next-Gen Forge</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Architecture Section -->
+    <section id="architecture" class="py-20 md:py-28">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <div>
+            <h2 class="text-xs font-bold uppercase tracking-widest text-amber-400 mb-2">Architecture</h2>
+            <h3 class="font-heading text-3xl sm:text-4xl font-extrabold text-white mb-6">Engineered for Modrinth & Performance</h3>
+            <p class="text-gray-400 text-base mb-6 leading-relaxed">
+              Crispy Launcher is built as a fast proprietary client leveraging high-performance asynchronous networking, custom JVM argument optimization, and instant Modrinth REST API resolution.
+            </p>
+            
+            <div class="space-y-4">
+              <div class="flex items-start gap-4 p-4 rounded-xl pure-card">
+                <div class="text-amber-400 text-lg mt-1"><i class="fa-solid fa-bolt"></i></div>
+                <div>
+                  <h4 class="font-bold text-white text-sm">Asynchronous Concurrent Downloads</h4>
+                  <p class="text-xs text-gray-400 mt-1">Downloads modpack assets, Java runtimes, and libraries in parallel to minimize installation wait times.</p>
+                </div>
+              </div>
+
+              <div class="flex items-start gap-4 p-4 rounded-xl pure-card">
+                <div class="text-amber-400 text-lg mt-1"><i class="fa-solid fa-server"></i></div>
+                <div>
+                  <h4 class="font-bold text-white text-sm">Direct Modrinth REST V2 Integration</h4>
+                  <p class="text-xs text-gray-400 mt-1">Queries project files, dependencies, and version hashes with zero intermediary proxy delay.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Code Preview Box -->
+          <div class="pure-card p-6 rounded-2xl font-mono text-xs text-gray-300 border border-[#22222a]">
+            <div class="flex items-center justify-between pb-4 mb-4 border-b border-[#22222a] text-gray-500">
+              <span>crispy-manifest.json</span>
+              <span class="text-emerald-400">● Live Desktop Build</span>
+            </div>
+            <pre class="overflow-x-auto text-amber-300">
+{
+  <span class="text-gray-400">"app"</span>: <span class="text-emerald-300">"Crispy Launcher"</span>,
+  <span class="text-gray-400">"license"</span>: <span class="text-emerald-300">"Free Proprietary"</span>,
+  <span class="text-gray-400">"author"</span>: <span class="text-emerald-300">"FryedCheese"</span>,
+  <span class="text-gray-400">"platforms"</span>: [<span class="text-emerald-300">"Windows (.exe)"</span>, <span class="text-emerald-300">"Linux (.AppImage)"</span>],
+  <span class="text-gray-400">"features"</span>: {
+    <span class="text-gray-400">"modrinthSync"</span>: <span class="text-emerald-300">true</span>,
+    <span class="text-gray-400">"autoUpdate"</span>: <span class="text-emerald-300">true</span>,
+    <span class="text-gray-400">"isolatedInstances"</span>: <span class="text-emerald-300">true</span>
+  }
+}</pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ Accordion -->
+    <section id="faq" class="py-20 md:py-28 bg-[#0a0a0c] border-t border-[#22222a]">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+          <h2 class="text-xs font-bold uppercase tracking-widest text-amber-400 mb-2">Information</h2>
+          <p class="font-heading text-3xl sm:text-4xl font-extrabold text-white">Frequently Asked Questions</p>
+        </div>
+
+        <div class="space-y-4">
+          <!-- FAQ 1 -->
+          <div class="pure-card rounded-xl p-6">
+            <h3 class="font-bold text-white text-lg flex items-center justify-between">
+              Is Crispy Launcher free to download?
+              <i class="fa-solid fa-chevron-down text-amber-400 text-sm"></i>
+            </h3>
+            <p class="text-gray-400 text-sm mt-3 leading-relaxed">
+              Yes! Crispy Launcher is a free proprietary Minecraft desktop launcher maintained by FryedCheese.
+            </p>
+          </div>
+
+          <!-- FAQ 2 -->
+          <div class="pure-card rounded-xl p-6">
+            <h3 class="font-bold text-white text-lg flex items-center justify-between">
+              Is Crispy Launcher open source?
+              <i class="fa-solid fa-chevron-down text-amber-400 text-sm"></i>
+            </h3>
+            <p class="text-gray-400 text-sm mt-3 leading-relaxed">
+              No, Crispy Launcher is free proprietary software developed and distributed directly through official releases.
+            </p>
+          </div>
+
+          <!-- FAQ 3 -->
+          <div class="pure-card rounded-xl p-6">
+            <h3 class="font-bold text-white text-lg flex items-center justify-between">
+              How do Linux downloads work?
+              <i class="fa-solid fa-chevron-down text-amber-400 text-sm"></i>
+            </h3>
+            <p class="text-gray-400 text-sm mt-3 leading-relaxed">
+              Download the <code>.AppImage</code> release, make it executable using <code>chmod +x crispy-launcher-*.AppImage</code> in your terminal, and run it.
+            </p>
+          </div>
+
+          <!-- FAQ 4 -->
+          <div class="pure-card rounded-xl p-6">
+            <h3 class="font-bold text-white text-lg flex items-center justify-between">
+              Does Crispy Launcher support Fabric and Forge?
+              <i class="fa-solid fa-chevron-down text-amber-400 text-sm"></i>
+            </h3>
+            <p class="text-gray-400 text-sm mt-3 leading-relaxed">
+              Yes, Fabric, Quilt, Forge, and NeoForge are fully supported with one-click loader installation and version switching.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Discord Community Banner -->
+    <section class="py-16">
+      <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="rounded-3xl bg-black border border-amber-500/30 p-8 sm:p-12 relative overflow-hidden text-center sm:text-left flex flex-col sm:flex-row items-center justify-between gap-8 shadow-[0_20px_60px_rgba(0,0,0,0.9)]">
+          <div class="relative z-10 max-w-xl">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 text-indigo-400 text-xs font-bold mb-4 border border-indigo-500/20">
+              <i class="fa-brands fa-discord"></i> Official Discord
+            </div>
+            <h3 class="font-heading text-2xl sm:text-3xl font-extrabold text-white">Join the Crispy Launcher Discord</h3>
+            <p class="text-gray-400 text-sm mt-3 leading-relaxed">
+              Connect with developers and fellow players in the official Crispy Launcher Discord community. Get live support, share feedback, and stay updated on launcher releases!
+            </p>
+          </div>
+          <div class="relative z-10">
+            <a href="https://discord.gg/bgW2nAw7rm" target="_blank" rel="noopener noreferrer" class="gradient-btn text-black font-extrabold px-8 py-4 rounded-xl text-base flex items-center gap-3 shadow-lg">
+              <i class="fa-brands fa-discord text-xl"></i> Join Discord
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="border-t border-[#22222a] bg-black py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+        
+        <!-- Brand / Copyright -->
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-[#ffb800] to-[#ff6b00] flex items-center justify-center text-black font-bold text-sm">
+            <i class="fa-solid fa-fire"></i>
+          </div>
+          <span class="text-sm text-gray-500">
+            © FryedCheese. Free proprietary software. Not affiliated with Mojang AB or Microsoft.
+          </span>
+        </div>
+
+        <!-- Links -->
+        <div class="flex items-center gap-6 text-sm text-gray-400">
+          <a href="https://discord.gg/bgW2nAw7rm" target="_blank" rel="noopener noreferrer" class="hover:text-amber-400 transition-colors flex items-center gap-1.5">
+            <i class="fa-brands fa-discord text-indigo-400"></i> Discord Community
+          </a>
+          <a href="https://github.com/Web-mc1/crispy-launcher/releases/latest" target="_blank" rel="noopener noreferrer" class="hover:text-amber-400 transition-colors flex items-center gap-1.5">
+            <i class="fa-brands fa-github"></i> GitHub Releases
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </footer>
+
+  <!-- OS Auto-detection & Release Asset Resolver Script -->
+  <script>
+    (function(){
+      var winLink = document.getElementById('dl-win-link');
+      var linuxLink = document.getElementById('dl-linux-link');
+      var primaryBtn = document.getElementById('primary-download-btn');
+      var downloadText = document.getElementById('download-text');
+      var downloadIcon = document.getElementById('download-icon');
+      var detectedOsText = document.getElementById('detected-os');
+
+      var userAgent = navigator.userAgent || '';
+      var onLinux = /linux/i.test(userAgent) && !/android/i.test(userAgent);
+      var onWin = /windows|win32|win64/i.test(userAgent);
+
+      if (onLinux) {
+        detectedOsText.textContent = "Linux (.AppImage)";
+        downloadText.textContent = "Download for Linux";
+        downloadIcon.className = "fa-brands fa-linux text-xl";
+      } else if (onWin) {
+        detectedOsText.textContent = "Windows (.exe)";
+        downloadText.textContent = "Download for Windows";
+        downloadIcon.className = "fa-brands fa-windows text-xl";
+      } else {
+        detectedOsText.textContent = "Desktop";
+        downloadText.textContent = "Download Crispy Launcher";
+        downloadIcon.className = "fa-solid fa-download text-xl";
+      }
+
+      // Fetch latest release direct download URLs from GitHub API
+      fetch('https://api.github.com/repos/Web-mc1/crispy-launcher/releases/latest', {
+        headers: { Accept: 'application/vnd.github+json' }
+      })
+      .then(function(r) { if(!r.ok) throw 0; return r.json(); })
+      .then(function(j) {
+        var assets = j.assets || [];
+        var exe = assets.filter(function(x){ return /\.exe$/i.test(x.name); })[0];
+        var app = assets.filter(function(x){ return /\.AppImage$/i.test(x.name); })[0];
+
+        if (exe) winLink.href = exe.browser_download_url;
+        if (app) linuxLink.href = app.browser_download_url;
+
+        var targetAsset = onLinux ? app : exe;
+        if (targetAsset) {
+          primaryBtn.href = targetAsset.browser_download_url;
+        }
+      })
+      .catch(function(){});
+    })();
+  </script>
+</body>
+</html>
