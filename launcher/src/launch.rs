@@ -233,6 +233,33 @@ pub fn env_line(env: &BTreeMap<String, String>) -> String {
         .join(" ")
 }
 
+/// `CRISPY_KEEP_WAYLAND=1`: play on Wayland even where [`xwayland_for_fullscreen`] would move
+/// the game to XWayland.
+pub const KEEP_WAYLAND_ENV: &str = "CRISPY_KEEP_WAYLAND";
+
+/// Whether the game should be started on XWayland rather than on Wayland.
+///
+/// NVIDIA's Vulkan driver on Wayland kills the game when its window goes fullscreen: the switch
+/// commits a frame with DRM sync points and no buffer attached, which the compositor answers with
+/// `no_buffer` (error 3 on `wp_linux_drm_syncobj_surface_v1`) and closes the connection, so the
+/// game dies the moment it goes fullscreen (F11, the video setting, or `--fullscreen`). XWayland
+/// runs the same GPU and the same driver, and fullscreen works there. Only when there is an X
+/// server to fall back to, and only with NVIDIA's own driver: Mesa's Vulkan (RADV, NVK) shows
+/// fullscreen fine, so it stays on Wayland.
+pub fn xwayland_for_fullscreen(found: &Found) -> bool {
+    if !cfg!(target_os = "linux") {
+        return false;
+    }
+    let set = |name: &str| std::env::var_os(name).is_some_and(|v| !v.is_empty());
+    xwayland_wanted(set("WAYLAND_DISPLAY"), set("DISPLAY"), found.nvidia, set(KEEP_WAYLAND_ENV))
+}
+
+/// [`xwayland_for_fullscreen`] with what it reads passed in, so it can be checked without a
+/// session's environment.
+fn xwayland_wanted(wayland: bool, x11: bool, nvidia: bool, keep_wayland: bool) -> bool {
+    wayland && x11 && nvidia && !keep_wayland
+}
+
 /// The instance's variables for the game and the commands around it, named as Prism Launcher
 /// names them so its scripts carry over (<https://prismlauncher.org/wiki/help-pages/custom-commands/>):
 /// `INST_NAME`, `INST_ID`, `INST_DIR` and `INST_MC_DIR` (both the instance's game folder), and

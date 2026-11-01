@@ -68,6 +68,20 @@ A version the launcher re-installs, or another instance's build (`native-<tag>`)
 upstream binary again — repeat the copy for those. The upstream copy stays beside it as
 `horizon-client.upstream`.
 
+## Fullscreen on NVIDIA
+
+On Wayland, NVIDIA's own Vulkan driver kills the game the moment the window goes fullscreen: it
+commits a frame carrying DRM sync points with no buffer attached, the compositor correctly
+refuses that (`no_buffer`, error 3 on `wp_linux_drm_syncobj_surface_v1`) and closes the
+connection, and the game exits with a crash report that ends "the window system closed the game
+in fullscreen".
+
+`backend::client_command` therefore starts the game on XWayland when the session is Wayland, an X
+server is reachable and `/proc/driver/nvidia/gpus` exists: the same GPU and the same driver, where
+fullscreen works. Mesa's Vulkan (RADV, NVK) shows fullscreen fine and stays on Wayland, as does
+OpenGL. `CRISPY_KEEP_WAYLAND=1` keeps Wayland regardless — set it in the launcher's environment,
+or through the instance's variables.
+
 ## Keeping your UI
 
 ```bash

@@ -2239,6 +2239,16 @@ pub fn client_command(tag: &str) -> Command {
             "{ application.name = \"crispylauncher\" media.role = \"Game\" }",
         );
     }
+    // NVIDIA's Vulkan driver on Wayland kills the game when the window goes fullscreen (see
+    // launch::xwayland_for_fullscreen): play on XWayland instead, where the same driver shows it.
+    if crate::launch::xwayland_for_fullscreen(&crate::launch::Found::here()) {
+        cmd.env_remove("WAYLAND_DISPLAY");
+        eprintln!(
+            "Starting the game on XWayland: NVIDIA's Vulkan driver closes the window in \
+             fullscreen on Wayland. {}=1 keeps Wayland.",
+            crate::launch::KEEP_WAYLAND_ENV
+        );
+    }
     cmd
 }
 

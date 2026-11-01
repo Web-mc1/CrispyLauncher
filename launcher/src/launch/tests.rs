@@ -244,3 +244,17 @@ fn the_post_exit_command_runs_with_the_instance_variables() {
         .any(|(k, _)| *k == "INST_JAVA"));
     let _ = std::fs::remove_dir_all(&dir);
 }
+
+#[test]
+fn only_nvidias_vulkan_on_wayland_moves_the_game_to_xwayland() {
+    // Vulkan on NVIDIA deadlocks fullscreen on Wayland, so the game plays on XWayland instead.
+    assert!(xwayland_wanted(true, true, true, false));
+    // No X server to fall back to: Wayland stays.
+    assert!(!xwayland_wanted(true, false, true, false));
+    // Not a Wayland session: nothing to fall back from.
+    assert!(!xwayland_wanted(false, true, true, false));
+    // Mesa's Vulkan (RADV, NVK) shows fullscreen, and so does the AMD card.
+    assert!(!xwayland_wanted(true, true, false, false));
+    // The player asked for Wayland.
+    assert!(!xwayland_wanted(true, true, true, true));
+}
