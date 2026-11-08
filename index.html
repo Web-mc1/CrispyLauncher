@@ -1,218 +1,148 @@
 <!DOCTYPE html>
-<!-- saved from url=(0031)http://127.0.0.1:8000/#download -->
-<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Crispy Launcher — by FryedCheese</title>
-<meta name="description" content="Crispy Launcher by FryedCheese. Windows + Linux Minecraft launcher. Modrinth packs, Fabric/Forge/Quilt/NeoForge.">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='0.9em' font-size='90' text-anchor='middle'%3E%F0%9F%A7%80%3C/text%3E%3C/svg%3E">
-<link rel="preconnect" href="https://fonts.googleapis.com/"><link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
-<link href="./Crispy Launcher — by FryedCheese_files/css2" rel="stylesheet">
-<link rel="stylesheet" href="./Crispy Launcher — by FryedCheese_files/all.min.css">
-<script src="./Crispy Launcher — by FryedCheese_files/saved_resource"></script>
-<style>
-  *{box-sizing:border-box}
-  html{background:#140F09;color:#F5EAD6;font-family:Inter,sans-serif}
-  body{margin:0}
-  ::selection{background:#C97A3D;color:#140F09}
-  .mono{font-family:"JetBrains Mono",monospace}
-  .pix{image-rendering:pixelated}
-  /* flat, hand-made feel — no gradients, no glass glow */
-  .fl-card{background:#1C140E;border:2px solid #35261A;border-radius:6px}
-  .fl-card:hover{border-color:#C97A3D}
-  .fl-btn{background:#C97A3D;color:#FFF6E8;font-weight:800;border:2px solid #140F09;box-shadow:3px 3px 0 #140F09}
-  .fl-btn:hover{background:#D98A4A;transform:translate(-1px,-1px);box-shadow:4px 4px 0 #140F09}
-  .fl-btn2{background:#1C140E;color:#F5EAD6;font-weight:700;border:2px solid #35261A}
-  .fl-btn2:hover{border-color:#C97A3D;color:#C97A3D}
-  .tape{background:#C97A3D;color:#FFF6E8;font-weight:800;display:inline-block;padding:4px 10px;transform:rotate(-1.5deg);box-shadow:2px 2px 0 rgba(0,0,0,.4)}
-  .underline-hand{background:linear-gradient(transparent 62%,rgba(201,122,61,.35) 62%)}
-  .faq-a{max-height:0;overflow:hidden;transition:max-height .3s ease}
-  .faq-item.open .faq-a{max-height:280px}
-  .faq-item.open .chev{transform:rotate(90deg)}
-  .chev{transition:transform .25s ease}
-  .stamp{border:2px dashed #C97A3D;color:#C97A3D;padding:3px 8px;border-radius:4px;font-size:11px;font-weight:800;transform:rotate(1deg);display:inline-block}
-  .dot-grid{background-image:radial-gradient(#3A2C1C 1.2px,transparent 1.2px);background-size:22px 22px}
-</style>
-<style>*, ::before, ::after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / .5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-backdrop-drop-shadow: ;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-scroll-snap-strictness:proximity;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / .5)}
-*,:before,:after{box-sizing:border-box;border-width:0;border-style:solid;border-color:currentColor}</style>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crispy Launcher — by FryedCheese</title>
+  <meta name="description" content="Crispy Launcher by FryedCheese. Windows + Linux Minecraft launcher. Modrinth packs, Fabric/Forge/Quilt/NeoForge.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='0.9em' font-size='90' text-anchor='middle'%3E%F0%9F%A7%80%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <style>
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth;background:#140F09;color:#F5EAD6;font-family:Inter,sans-serif}
+    body{margin:0}
+    ::selection{background:#C97A3D;color:#140F09}
+    a{color:inherit}
+    .fl-card{background:#1C140E;border:2px solid #35261A;border-radius:6px}
+    .fl-card:hover{border-color:#C97A3D}
+    .fl-btn{background:#C97A3D;color:#FFF6E8;font-weight:800;border:2px solid #140F09;box-shadow:3px 3px 0 #140F09}
+    .fl-btn:hover{background:#D98A4A;transform:translate(-1px,-1px);box-shadow:4px 4px 0 #140F09}
+    .fl-btn2{background:#1C140E;color:#F5EAD6;font-weight:700;border:2px solid #35261A}
+    .fl-btn2:hover{border-color:#C97A3D;color:#C97A3D}
+    .tape{background:#C97A3D;color:#FFF6E8;font-weight:800;display:inline-block;padding:4px 10px;transform:rotate(-1.5deg)}
+    .faq-q{width:100%;display:flex;justify-content:space-between;align-items:center;gap:14px;padding:18px 20px;background:none;border:0;color:#F5EAD6;text-align:left;font:inherit;cursor:pointer}
+    .faq-q:focus-visible{outline:2px solid #C97A3D;outline-offset:-4px}
+    .faq-a{padding:0 20px 18px;color:#C9B99A;line-height:1.6}
+    .faq-a[hidden]{display:none}
+    .chev{color:#C97A3D;font-size:18px;transition:transform .2s ease}
+    .faq-q[aria-expanded="true"] .chev{transform:rotate(90deg)}
+    .dot-grid{background-image:radial-gradient(#3A2C1C 1.2px,transparent 1.2px);background-size:22px 22px}
+    .wrap{max-width:1100px;margin:0 auto;padding-left:24px;padding-right:24px}
+    @media(max-width:700px){.desktop-nav{display:none!important}.hero-title{font-size:38px!important}.wrap{padding-left:16px;padding-right:16px}}
+  </style>
+</head>
 <body>
-
-<header style="position:sticky;top:0;z-index:50;background:#0F0B07;border-bottom:2px solid #35261A">
-  <div style="max-width:100%;padding-left:24px;padding-right:24px;margin:0 auto;padding:0 16px;height:64px;display:flex;align-items:center;justify-content:space-between">
-    <a href="http://127.0.0.1:8000/#" style="display:flex;align-items:center;gap:10px;text-decoration:none;color:#F5EAD6">
-      <span style="font-size:28px;line-height:1">🧀</span>
-      <span><span style="font-weight:800;font-size:18px;letter-spacing:-.02em">Crispy Launcher</span><br><span style="font-size:11px;color:#A89A86">by FryedCheese</span></span>
+<header style="position:sticky;top:0;z-index:5;background:#0F0B07;border-bottom:2px solid #35261A">
+  <div class="wrap" style="height:64px;display:flex;align-items:center;justify-content:space-between;gap:16px">
+    <a href="#top" style="display:flex;align-items:center;gap:10px;text-decoration:none">
+      <span style="font-size:28px">🧀</span><span><strong style="font-size:18px">Crispy Launcher</strong><br><small style="color:#A89A86">by FryedCheese</small></span>
     </a>
-    <nav style="display:flex;gap:18px;font-size:14px;color:#C9B99A" class="hidden md:flex">
-      <a href="http://127.0.0.1:8000/#how" style="color:inherit;text-decoration:none">What it does</a>
-      <a href="http://127.0.0.1:8000/#preview" style="color:inherit;text-decoration:none">Preview</a>
-      <a href="http://127.0.0.1:8000/#download" style="color:inherit;text-decoration:none">Download</a>
-      <a href="http://127.0.0.1:8000/#faq" style="color:inherit;text-decoration:none">FAQ</a>
+    <nav class="desktop-nav" style="display:flex;gap:18px;color:#C9B99A;font-size:14px">
+      <a href="#how">What it does</a><a href="#preview">Preview</a><a href="#downloads">Download</a><a href="#faq">FAQ</a>
     </nav>
-    <a href="http://127.0.0.1:8000/#download" class="fl-btn" style="padding:8px 14px;border-radius:6px;text-decoration:none;font-size:14px;display:inline-flex;gap:8px;align-items:center"><i class="fa-solid fa-download" style="font-size:13px"></i> Download</a>
-    <button id="menu-btn" style="background:#1C140E;border:2px solid #35261A;color:#F5EAD6;width:40px;height:40px;border-radius:6px" class="md:hidden" aria-label="Menu"><i class="fa-solid fa-bars"></i></button>
-  </div>
-  <div id="mobile-menu" style="display:none;border-top:2px solid #35261A;padding:10px 16px;background:#0F0B07">
-    <a href="http://127.0.0.1:8000/#how" style="display:block;padding:10px 6px;color:#F5EAD6;text-decoration:none">What it does</a>
-    <a href="http://127.0.0.1:8000/#preview" style="display:block;padding:10px 6px;color:#F5EAD6;text-decoration:none">Preview</a>
-    <a href="http://127.0.0.1:8000/#download" style="display:block;padding:10px 6px;color:#F5EAD6;text-decoration:none">Download</a>
-    <a href="http://127.0.0.1:8000/#faq" style="display:block;padding:10px 6px;color:#F5EAD6;text-decoration:none">FAQ</a>
+    <a class="fl-btn" href="#downloads" style="padding:8px 14px;border-radius:6px;text-decoration:none">Download</a>
   </div>
 </header>
-
-<!-- hero -->
-<section id="download" style="position:relative;padding:56px 16px 64px;background:#140F09">
-  <div class="dot-grid" style="position:absolute;inset:0;opacity:.25;pointer-events:none"></div>
-  <div style="position:relative;max-width:960px;padding-left:24px;padding-right:24px;margin:0 auto;text-align:center">
-    <h1 style="font-size:46px;line-height:.95;font-weight:800;letter-spacing:-.03em;margin:0">I got tired of<br><span style="background:#C97A3D;color:#140F09;padding:2px 10px;border-radius:4px;display:inline-block">launcher bugs.</span></h1>
-    <p style="color:#C9B99A;font-size:16px;line-height:1.65;margin:18px auto 0;max-width:720px">Crispy is my little Minecraft launcher. Manage instances, add mods from Modrinth, launch — done. No ads, no paying walls. Written by me, in my free time.</p>
-
-    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:28px">
-      <a id="primary-download-btn" href="https://github.com/Web-mc1/CrispyLauncher/releases/download/v0.4.7/crispy-launcher-0.4.7.AppImage" target="_blank" rel="noopener" class="fl-btn" style="padding:14px 20px;border-radius:8px;text-decoration:none;display:inline-flex;align-items:center;gap:10px;font-size:15px">
-        <i id="download-icon" class="fa-brands fa-linux"></i> <span id="download-text">Download for Linux</span> <span id="download-version" style="font-size:11px;background:rgba(0,0,0,.15);padding:4px 7px;border-radius:999px;border:1px solid rgba(255,255,255,.12)">v0.4.7</span>
-      </a>
-      <a href="http://127.0.0.1:8000/#preview" class="fl-btn2" style="padding:14px 20px;border-radius:8px;text-decoration:none;display:inline-flex;align-items:center;gap:8px;font-size:15px"><i class="fa-solid fa-play"></i> See it</a>
+<main>
+  <section id="top" style="position:relative;padding:56px 16px 64px;text-align:center;overflow:hidden">
+    <div class="dot-grid" aria-hidden="true" style="position:absolute;inset:0;opacity:.25;pointer-events:none"></div>
+    <div style="position:relative;max-width:960px;margin:auto">
+      <h1 class="hero-title" style="font-size:46px;line-height:.95;font-weight:800;letter-spacing:-.03em;margin:0;transform:translateY(-2px)">I got tired of<br><span style="background:#C97A3D;color:#140F09;padding:2px 10px;border-radius:4px;display:inline-block">launcher bugs.</span></h1>
+      <p style="color:#C9B99A;font-size:16px;line-height:1.65;margin:18px auto 0;max-width:720px">Crispy is my little Minecraft launcher. Manage instances, add mods from Modrinth, launch — done. No ads, no paying walls. Written by me, in my free time.</p>
+      <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:28px">
+        <a id="primary-download-btn" class="fl-btn" href="https://github.com/Web-mc1/CrispyLauncher/releases/latest" style="padding:14px 20px;border-radius:8px;text-decoration:none;display:inline-flex;align-items:center;gap:10px"><i id="download-icon" class="fa-brands fa-linux" aria-hidden="true"></i><span id="download-text">Download Crispy Launcher</span><span id="download-version" style="font-size:11px;background:rgba(0,0,0,.15);padding:4px 7px;border-radius:999px">Latest</span></a>
+        <a class="fl-btn2" href="#preview" style="padding:14px 20px;border-radius:8px;text-decoration:none;display:inline-flex;align-items:center;gap:8px"><i class="fa-solid fa-play" aria-hidden="true"></i>See it</a>
+      </div>
+      <p id="detected-os" style="margin:14px 0 0;font-size:12px;color:#A89A86">Desktop download</p>
+      <p style="margin-top:14px;font-size:12px;color:#7A6B58">Free proprietary build • Windows 10/11 + Linux • Java 17+ auto-installed per instance • Microsoft sign-in</p>
     </div>
-
-    <div style="margin-top:14px;font-size:12px;color:#A89A86;display:flex;justify-content:center;gap:14px;flex-wrap:wrap">
-      <span id="detected-os">Linux detected</span>
-      <span style="color:#35261A">•</span><a id="dl-win-link" href="https://github.com/Web-mc1/CrispyLauncher/releases/download/v0.4.7/crispy-launcher-Setup-0.4.7.exe" target="_blank" style="color:#C9B99A;text-decoration:none">Windows .exe</a>
-      <span style="color:#35261A">•</span><a id="dl-linux-link" href="https://github.com/Web-mc1/CrispyLauncher/releases/download/v0.4.7/crispy-launcher-0.4.7.AppImage" target="_blank" style="color:#C9B99A;text-decoration:none">Linux .AppImage</a>
+  </section>
+  <section id="preview" style="padding:40px 16px;background:#0F0B07">
+    <div class="wrap"><div class="fl-card" style="padding:24px;display:grid;grid-template-columns:200px 1fr;gap:24px;min-height:250px">
+      <aside style="border-right:2px solid #35261A;padding-right:16px"><strong style="color:#C97A3D">🧀 Crispy Launcher</strong><p>▶ Play</p><p>Instances</p><p>Modpacks</p><p>Settings</p></aside>
+      <div style="align-self:center"><span style="color:#C97A3D;font-size:11px;font-weight:800;letter-spacing:.1em">EXAMPLE — REAL UI</span><h2 style="margin:8px 0">Your worlds, ready to play.</h2><p style="color:#C9B99A;line-height:1.6">Keep each instance in its own box, manage mods, and launch Minecraft without the extra clutter.</p><a class="fl-btn" href="#downloads" style="display:inline-block;padding:10px 24px;border-radius:6px;text-decoration:none">Launch</a></div>
+    </div><p style="font-size:12px;color:#7A6B58;margin-top:10px">A look at the Crispy Launcher interface.</p></div>
+  </section>
+  <section id="how" style="padding:48px 16px;border-top:2px solid #35261A">
+    <div class="wrap"><span class="tape">note from me</span><h2 style="font-size:28px;margin:14px 0 6px">Why I built it</h2>
+      <p style="color:#C9B99A;line-height:1.7">Every other launcher either died, got slow, or showed me a browser in an app. I just wanted a list of my worlds and a Play button that worked.</p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:22px">
+        <article class="fl-card" style="padding:18px"><h3>Modrinth inside</h3><p style="color:#A89A86;line-height:1.6">Search, install, and manage Modrinth packs directly from the launcher.</p></article>
+        <article class="fl-card" style="padding:18px"><h3>Each world is its own box</h3><p style="color:#A89A86;line-height:1.6">Version pinning, custom Java, and separate installs for each instance.</p></article>
+        <article class="fl-card" style="padding:18px"><h3>Choose your loader</h3><p style="color:#A89A86;line-height:1.6">Fabric, Forge, Quilt, and NeoForge support.</p></article>
+      </div>
+      <p style="color:#7A6B58;font-size:12px;line-height:1.6;margin-top:18px">Small Electron shell on purpose. Most of your RAM should go to Minecraft, not to me. Sign-in is Microsoft OAuth, and Java is managed per instance.</p>
     </div>
-    <p style="margin-top:14px;font-size:12px;color:#7A6B58">Free proprietary build • Windows 10/11 + Linux • Java 17+ auto-installed per instance • Microsoft sign-in</p>
-  </div>
-</section>
-
-<!-- preview — matches your actual launcher, no AI gloss -->
-<section id="preview" style="padding:8px 16px 56px;background:#0F0B07">
-  <div style="max-width:100%;padding-left:24px;padding-right:24px;margin:0 auto">
-    <div style="border:2px solid #35261A;border-radius:8px;overflow:hidden;background:#0A0703;box-shadow:8px 8px 0 rgba(0,0,0,.5)">
-      <div style="display:flex;min-height:380px;flex-wrap:wrap">
-        <!-- sidebar -->
-        <div style="width:200px;flex-shrink:0;background:#171208;border-right:2px solid #2A2014;padding:16px 12px;display:flex;flex-direction:column">
-          <div style="display:flex;align-items:center;gap:8px"><span style="font-size:20px">🧀</span><b style="color:#C97A3D;font-size:15px">Crispy Launcher</b></div>
-          <div style="margin-top:18px;display:flex;flex-direction:column;gap:4px;font-size:13px;font-weight:600">
-            <span style="background:#2F2316;border:2px solid #3A2C1C;color:#C97A3D;padding:10px 12px;border-radius:6px"><i class="fa-solid fa-play" style="font-size:11px;margin-right:8px"></i>Play</span>
-            <span style="color:#E8DCC2;padding:10px 12px"><i class="fa-solid fa-layer-group" style="font-size:12px;margin-right:8px"></i>Instances</span>
-            <span style="color:#E8DCC2;padding:10px 12px"><i class="fa-solid fa-box" style="font-size:12px;margin-right:8px"></i>Modpacks</span>
-            <span style="color:#C9B99A;padding:10px 12px"><i class="fa-solid fa-table-cells-large" style="font-size:12px;margin-right:8px"></i>Bedrock</span>
-            <span style="color:#C9B99A;padding:10px 12px"><i class="fa-regular fa-newspaper" style="font-size:12px;margin-right:8px"></i>News</span>
-          </div>
-          <div style="margin-top:auto;padding-top:20px;color:#C9B99A;font-size:13px;font-weight:600"><i class="fa-solid fa-sun"></i> Settings</div>
-        </div>
-        <!-- stage -->
-        <div style="flex:1;min-width:280px;position:relative;background:#222;min-height:340px;display:flex;flex-direction:column;justify-content:space-between">
-          <img src="mc-instance.png" alt="Minecraft Dappled Forest — red/orange poplars by a lake (official wiki screenshot)" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:saturate(.9) contrast(1.05)">
-          <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.15),transparent 40%,rgba(0,0,0,.55))"></div>
-          <div style="position:relative;display:flex;justify-content:space-between;align-items:center;padding:12px 14px">
-            <span style="color:#C97A3D;font-weight:800;font-size:13px">Crispy Launcher</span>
-            <span style="background:#171208;border:2px solid #3A2C1C;border-radius:99px;padding:5px 12px;display:inline-flex;align-items:center;gap:8px;font-weight:700;font-size:13px;color:#F5EAD6"><span style="width:8px;height:8px;border-radius:50%;background:#28C840;display:inline-block"></span>Online</span>
-          </div>
-          <div style="position:relative;padding:16px 20px 20px;display:flex;align-items:flex-end;gap:16px;flex-wrap:wrap">
-            <div style="background:rgba(23,18,8,.92);border:2px solid #3A2C1C;border-radius:8px;padding:12px 14px;width:250px">
-              <div style="font-size:10px;font-weight:800;letter-spacing:.12em;color:#C97A3D">EXAMPLE — REAL UI</div>
-              <p style="font-size:12px;color:#C9B99A;line-height:1.5;margin:8px 0 0">This is how it looks in-game. Your instances live under <b style="color:#F5EAD6">Instances</b>. Tap Play to launch.</p>
-              <div style="display:flex;gap:6px;margin-top:10px;flex-wrap:wrap">
-                <span style="background:#C97A3D;color:#140F09;font-weight:800;font-size:11px;padding:5px 9px;border-radius:6px">Play</span>
-                <span style="border:2px solid #35261A;color:#C9B99A;font-weight:700;font-size:11px;padding:5px 9px;border-radius:6px">Store</span>
-                <span style="border:2px solid #35261A;color:#C9B99A;font-weight:700;font-size:11px;padding:5px 9px;border-radius:6px">Downloads</span>
-              </div>
-            </div>
-            <div style="margin-left:auto;text-align:right">
-              <span style="display:inline-block;background:rgba(0,0,0,.55);border:1px solid rgba(255,255,255,.25);color:#C97A3D;font-size:10px;font-weight:800;padding:4px 8px;border-radius:99px;letter-spacing:.12em;text-transform:uppercase">Latest modpack</span>
-              <div style="font-size:28px;font-weight:800;color:#fff;line-height:1;margin-top:6px">Example instance</div>
-              <div style="font-size:12px;font-weight:600;color:rgba(255,255,255,.9);margin-top:4px">Fabric • 26.2 • Played 20 min</div>
-              <a href="http://127.0.0.1:8000/#download" style="margin-top:10px;display:inline-flex;background:linear-gradient(90deg,#C97A3D,#B33A12);color:#140F09;font-weight:800;padding:11px 28px;border-radius:8px;text-decoration:none;box-shadow:0 6px 0 rgba(0,0,0,.4)">Launch</a>
-            </div>
-          </div>
-        </div>
+  </section>
+  <section id="downloads" style="padding:48px 16px;background:#0F0B07;border-top:2px solid #35261A">
+    <div class="wrap"><h2 style="font-size:26px;margin:0">Get it</h2><p style="color:#A89A86;font-size:14px">Latest build is auto-picked for your OS below. No account needed to download.</p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-top:18px">
+        <a id="card-win" class="fl-btn" href="https://github.com/Web-mc1/CrispyLauncher/releases/latest" style="padding:16px;border-radius:8px;text-decoration:none;display:flex;flex-direction:column;gap:8px"><strong style="font-size:18px"><i class="fa-brands fa-windows" aria-hidden="true"></i> Windows</strong><span>Installer .exe</span></a>
+        <a id="card-linux" class="fl-btn2" href="https://github.com/Web-mc1/CrispyLauncher/releases/latest" style="padding:16px;border-radius:8px;text-decoration:none;display:flex;flex-direction:column;gap:8px"><strong style="font-size:18px;color:#C97A3D"><i class="fa-brands fa-linux" aria-hidden="true"></i> Linux</strong><span>AppImage</span></a>
+      </div>
+      <p style="font-size:12px;color:#7A6B58;margin-top:16px">Linux: make the AppImage executable before running it: <code>chmod +x Crispy-*.AppImage</code></p>
+      <p style="font-size:12px;color:#A89A86">Latest release: <strong id="release-tag">Loading…</strong></p>
+    </div>
+  </section>
+  <section id="faq" style="padding:48px 16px 64px;border-top:2px solid #35261A">
+    <div class="wrap"><span class="tape">FAQ</span><h2 style="font-size:30px;margin:12px 0 0">Questions, answered.</h2><p style="color:#A89A86;font-size:13px">A few practical bits before you install.</p>
+      <div id="faq-list" style="margin-top:24px;display:flex;flex-direction:column;gap:14px">
+        <article class="faq-item fl-card"><button class="faq-q" type="button" aria-expanded="false" aria-controls="faq-answer-1"><span><strong>Does it run on Windows and Linux?</strong></span><span class="chev" aria-hidden="true">›</span></button><div class="faq-a" id="faq-answer-1" hidden>Yep. The launcher is built for both operating systems and can auto-manage Java per instance.</div></article>
+        <article class="faq-item fl-card"><button class="faq-q" type="button" aria-expanded="false" aria-controls="faq-answer-2"><span><strong>Can I add modpacks from Modrinth?</strong></span><span class="chev" aria-hidden="true">›</span></button><div class="faq-a" id="faq-answer-2" hidden>Yes. Search, install, and manage Modrinth packs directly from the launcher.</div></article>
+        <article class="faq-item fl-card"><button class="faq-q" type="button" aria-expanded="false" aria-controls="faq-answer-3"><span><strong>Is this a paid app?</strong></span><span class="chev" aria-hidden="true">›</span></button><div class="faq-a" id="faq-answer-3" hidden>No. It’s free to download and use, with no paywall or ad clutter.</div></article>
+        <article class="faq-item fl-card"><button class="faq-q" type="button" aria-expanded="false" aria-controls="faq-answer-4"><span><strong>Does it sign in with Microsoft?</strong></span><span class="chev" aria-hidden="true">›</span></button><div class="faq-a" id="faq-answer-4" hidden>Yes. Microsoft sign-in is used for the account flow, and tokens are handled locally by the app.</div></article>
+        <article class="faq-item fl-card"><button class="faq-q" type="button" aria-expanded="false" aria-controls="faq-answer-5"><span><strong>How does Java get installed?</strong></span><span class="chev" aria-hidden="true">›</span></button><div class="faq-a" id="faq-answer-5" hidden>Each instance can fetch the required Java version automatically so your installs stay consistent.</div></article>
+        <article class="faq-item fl-card"><button class="faq-q" type="button" aria-expanded="false" aria-controls="faq-answer-6"><span><strong>Can I use a different loader version?</strong></span><span class="chev" aria-hidden="true">›</span></button><div class="faq-a" id="faq-answer-6" hidden>You can create separate instances with different loader and runtime settings without affecting each other.</div></article>
       </div>
     </div>
-    <p style="text-align:left;font-size:12px;color:#7A6B58;margin-top:10px">That's the real sidebar + Play screen. Not a render — same colors as the app.</p>
-  </div>
-</section>
-
-<!-- notes from me — human voice -->
-<section id="how" style="padding:48px 16px;background:#140F09;border-top:2px solid #35261A">
-  <div style="max-width:100%;padding-left:24px;padding-right:24px;margin:0 auto">
-    <span class="tape">note from me</span>
-    <h2 style="font-size:28px;font-weight:800;margin:14px 0 6px">Why I built it</h2>
-    <p style="color:#C9B99A;line-height:1.7;font-size:15px">Every other launcher either died, got slow, or showed me a browser in an app. I just wanted a list of my worlds and a Play button that worked.</p>
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-top:22px">
-      <div class="fl-card" style="padding:18px"><div style="font-size:20px">🧀</div><h3 style="margin:8px 0 6px;font-size:16px">Modrinth inside</h3><p style="color:#A89A86;font-size:13px;line-height:1.6;margin:0">Install mods without leaving the launcher. Search, sort, add, and keep your modpacks tidy.</p></div>
-      <div class="fl-card" style="padding:18px"><div style="font-size:20px"><i class="fa-solid fa-boxes-stacked" style="color:#C97A3D"></i></div><h3 style="margin:8px 0 6px;font-size:16px">Each world is its own box</h3><p style="color:#A89A86;font-size:13px;line-height:1.6;margin:0">Version pinning, custom Java, separate installs, no more reinstalling everything just to test one mod.</p></div>
-      <div class="fl-card" style="padding:18px"><div style="font-size:20px"><i class="fa-solid fa-layer-group" style="color:#C97A3D"></i></div><h3 style="margin:8px 0 6px;font-size:16px">Fabric / Forge / Quilt / NeoForge</h3><p style="color:#A89A86;font-size:13px;line-height:1.6;margin:0">Pick your loader and stay focused on the build that actually runs on your machine.</p></div>
-    </div>
-    <p style="color:#7A6B58;font-size:12px;line-height:1.6;margin-top:18px">Small Electron shell on purpose. Most of your RAM should go to Minecraft, not to me. Sign-in is Microsoft OAuth — tokens stay local to your account, and Java is managed per instance.</p>
-  </div>
-</section>
-
-<!-- download bits -->
-<section id="download" style="padding:48px 16px;background:#0F0B07;border-top:2px solid #35261A">
-  <div style="max-width:100%;padding-left:24px;padding-right:24px;margin:0 auto">
-    <h2 style="font-size:26px;font-weight:800;margin:0">Get it</h2>
-    <p style="color:#A89A86;font-size:14px;margin-top:6px">Latest build is auto-picked for your OS below. No account needed to download.</p>
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-top:18px">
-      <a id="card-win" href="https://github.com/Web-mc1/CrispyLauncher/releases/download/v0.4.7/crispy-launcher-Setup-0.4.7.exe" target="_blank" class="fl-btn" style="padding:16px;border-radius:8px;text-decoration:none;color:#FFF6E8;display:flex;flex-direction:column;gap:8px;align-items:flex-start">
-        <div style="display:flex;align-items:center;gap:10px"><i class="fa-brands fa-windows" style="font-size:20px"></i><span style="font-size:18px;font-weight:800">Windows</span></div>
-        <span style="font-size:13px;color:#F7E7D2">Installer .exe</span>
-      </a>
-      <a id="card-linux" href="https://github.com/Web-mc1/CrispyLauncher/releases/download/v0.4.7/crispy-launcher-0.4.7.AppImage" target="_blank" class="fl-btn2" style="padding:16px;border-radius:8px;text-decoration:none;color:#F5EAD6;display:flex;flex-direction:column;gap:8px;align-items:flex-start">
-        <div style="display:flex;align-items:center;gap:10px"><i class="fa-brands fa-linux" style="font-size:20px;color:#C97A3D"></i><span style="font-size:18px;font-weight:800">Linux</span></div>
-        <span style="font-size:13px;color:#C9B99A">AppImage</span>
-      </a>
-    </div>
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-top:14px">
-      <div class="fl-card" style="padding:16px"><div style="font-size:11px;font-weight:800;letter-spacing:.1em;color:#A89A86"><i class="fa-brands fa-linux" style="color:#C97A3D"></i> LINUX — 2 LINES</div><div style="font-size:14px;color:#F5EAD6;font-weight:700;margin-top:8px">Run the AppImage</div><pre style="margin:8px 0 0;background:#0F0B07;color:#F5EAD6;padding:10px;border-radius:6px;overflow:auto;font-size:12px">chmod +x Crispy-*.AppImage
-./Crispy-*.AppImage</pre><button data-copy="chmod +x Crispy-*.AppImage" style="margin-top:10px;background:none;border:none;color:#C97A3D;font-weight:800;font-size:12px;cursor:pointer"><i class="fa-regular fa-copy"></i> Copy command</button></div>
-      <div class="fl-card" style="padding:16px"><div style="font-size:11px;font-weight:800;letter-spacing:.1em;color:#A89A86"><i class="fa-solid fa-tag" style="color:#C97A3D"></i> LATEST</div><div id="release-tag" style="margin-top:8px;font-size:18px;font-weight:800;letter-spacing:-.02em">v0.4.7</div><p style="margin:8px 0 0;color:#A89A86;font-size:13px;line-height:1.6">Auto-updates from GitHub releases; latest build is checked on page load.</p></div>
-    </div>
-  </div>
-</section>
-
-<!-- FAQ -->
-<section id="faq" style="padding:48px 16px 64px;background:#140F09;border-top:2px solid #35261A">
-  <div style="max-width:100%;padding-left:24px;padding-right:24px;margin:0 auto">
-    <div style="text-align:left"><span class="stamp">FAQ</span><h2 style="font-size:30px;font-weight:800;margin:12px 0 0">Questions, answered.</h2><p style="color:#A89A86;font-size:13px;margin-top:8px">A few practical bits before you install.</p></div>
-    <div style="margin-top:24px;display:flex;flex-direction:column;gap:14px" id="faq-list">
-      <div class="faq-item fl-card" style="overflow:hidden"><button class="faq-q" style="width:100%;display:flex;justify-content:space-between;align-items:center;gap:14px;padding:18px 20px;background:none;border:none;color:#F5EAD6;text-align:left;font:inherit;cursor:pointer"><span style="font-weight:800">Does it run on Windows and Linux?</span><span class="chev" style="font-size:18px;color:#C97A3D">›</span></button><div class="faq-a"><div style="padding:0 20px 18px;color:#C9B99A;line-height:1.6">Yep. The launcher is built for both operating systems and can auto-manage Java per instance.</div></div></div>
-      <div class="faq-item fl-card" style="overflow:hidden"><button class="faq-q" style="width:100%;display:flex;justify-content:space-between;align-items:center;gap:14px;padding:18px 20px;background:none;border:none;color:#F5EAD6;text-align:left;font:inherit;cursor:pointer"><span style="font-weight:800">Can I add modpacks from Modrinth?</span><span class="chev" style="font-size:18px;color:#C97A3D">›</span></button><div class="faq-a"><div style="padding:0 20px 18px;color:#C9B99A;line-height:1.6">Yes. Search, install, and manage Modrinth packs directly from the launcher.</div></div></div>
-      <div class="faq-item fl-card" style="overflow:hidden"><button class="faq-q" style="width:100%;display:flex;justify-content:space-between;align-items:center;gap:14px;padding:18px 20px;background:none;border:none;color:#F5EAD6;text-align:left;font:inherit;cursor:pointer"><span style="font-weight:800">Is this a paid app?</span><span class="chev" style="font-size:18px;color:#C97A3D">›</span></button><div class="faq-a"><div style="padding:0 20px 18px;color:#C9B99A;line-height:1.6">No. It’s free to download and use, with no paywall or ad clutter.</div></div></div>
-      <div class="faq-item fl-card" style="overflow:hidden"><button class="faq-q" style="width:100%;display:flex;justify-content:space-between;align-items:center;gap:14px;padding:18px 20px;background:none;border:none;color:#F5EAD6;text-align:left;font:inherit;cursor:pointer"><span style="font-weight:800">Does it sign in with Microsoft?</span><span class="chev" style="font-size:18px;color:#C97A3D">›</span></button><div class="faq-a"><div style="padding:0 20px 18px;color:#C9B99A;line-height:1.6">Yes. Microsoft sign-in is used for account flow, and tokens are handled locally by the app.</div></div></div>
-      <div class="faq-item fl-card" style="overflow:hidden"><button class="faq-q" style="width:100%;display:flex;justify-content:space-between;align-items:center;gap:14px;padding:18px 20px;background:none;border:none;color:#F5EAD6;text-align:left;font:inherit;cursor:pointer"><span style="font-weight:800">How does Java get installed?</span><span class="chev" style="font-size:18px;color:#C97A3D">›</span></button><div class="faq-a"><div style="padding:0 20px 18px;color:#C9B99A;line-height:1.6">Each instance can fetch the required Java version automatically so your installs stay consistent.</div></div></div>
-      <div class="faq-item fl-card" style="overflow:hidden"><button class="faq-q" style="width:100%;display:flex;justify-content:space-between;align-items:center;gap:14px;padding:18px 20px;background:none;border:none;color:#F5EAD6;text-align:left;font:inherit;cursor:pointer"><span style="font-weight:800">What if I want a different loader version?</span><span class="chev" style="font-size:18px;color:#C97A3D">›</span></button><div class="faq-a"><div style="padding:0 20px 18px;color:#C9B99A;line-height:1.6">You can create separate instances with different loader and runtime settings without affecting each other.</div></div></div>
-    </div>
-  </div>
-</section>
-
-<footer style="border-top:2px solid #35261A;padding:28px 16px;background:#0F0B07">
-  <div style="max-width:100%;padding-left:24px;padding-right:24px;margin:0 auto;display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between">
-    <span style="display:inline-flex;align-items:center;gap:8px;font-weight:800"><span style="font-size:22px">🧀</span> Crispy Launcher <span style="color:#7A6B58;font-weight:500;font-size:12px">by FryedCheese</span></span>
-    <span style="font-size:12px;color:#A89A86;display:inline-flex;gap:14px"><a href="http://127.0.0.1:8000/#download" style="color:#C97A3D;text-decoration:none">Download</a><a href="https://discord.gg/5pjG7wVdNN" target="_blank" rel="noopener" style="color:#C97A3D;text-decoration:none">Discord</a></span>
-  </div>
-</footer>
-
+  </section>
+</main>
+<footer style="border-top:2px solid #35261A;padding:28px 16px;background:#0F0B07"><div class="wrap" style="display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between"><strong>🧀 Crispy Launcher <small style="color:#7A6B58;font-weight:500">by FryedCheese</small></strong><span style="font-size:12px;display:flex;gap:14px"><a href="#downloads" style="color:#C97A3D;text-decoration:none">Download</a><a href="https://discord.gg/5pjG7wVdNN" target="_blank" rel="noopener noreferrer" style="color:#C97A3D;text-decoration:none">Discord</a></span></div></footer>
 <script>
-document.getElementById('year').textContent = new Date().getFullYear();
-var menuBtn=document.getElementById('menu-btn'), mm=document.getElementById('mobile-menu');
-if(menuBtn){menuBtn.addEventListener('click',function(){var h=mm.style.display==='none'||!mm.style.display;mm.style.display=h?'block':'none';});}
-document.querySelectorAll('.faq-q').forEach(function(btn){btn.addEventListener('click',function(){var it=btn.closest('.faq-item');var open=it.classList.contains('open');document.querySelectorAll('.faq-item').forEach(function(item){item.classList.remove('open');});if(!open){it.classList.add('open');}});});
-document.querySelectorAll('[data-copy]').forEach(function(b){b.addEventListener('click',function(){if(navigator.clipboard)navigator.clipboard.writeText(b.dataset.copy);b.textContent='Copied!';setTimeout(function(){b.textContent='Copy command';},1200);});});
+  // Delegate from the FAQ list so clicks on either the question or arrow toggle the answer.
+  document.getElementById('faq-list').addEventListener('click', function (event) {
+    var button = event.target.closest('.faq-q');
+    if (!button || !this.contains(button)) return;
+    var answer = document.getElementById(button.getAttribute('aria-controls'));
+    var isOpen = button.getAttribute('aria-expanded') === 'true';
+    button.setAttribute('aria-expanded', String(!isOpen));
+    answer.hidden = isOpen;
+  });
 
-var winLink=document.getElementById('dl-win-link'),linuxLink=document.getElementById('dl-linux-link'),primaryBtn=document.getElementById('primary-download-btn'),downloadText=document.getElementById('download-text'),downloadIcon=document.getElementById('download-icon'),detected=document.getElementById('detected-os');
-var ua=navigator.userAgent||'',onLinux=/linux/i.test(ua)&&!/android/i.test(ua),onWin=/windows|win32|win64/i.test(ua);
-if(onLinux){downloadText.textContent='Download for Linux';downloadIcon.className='fa-brands fa-linux';detected.textContent='Linux detected';}
-else if(onWin){downloadText.textContent='Download for Windows';downloadIcon.className='fa-brands fa-windows';detected.textContent='Windows detected';}
-else{downloadText.textContent='Download Crispy Launcher';detected.textContent='Desktop detected';}
-var REPO='Web-mc1/CrispyLauncher',tag=document.getElementById('release-tag'),ver=document.getElementById('download-version');
-fetch('https://api.github.com/repos/'+REPO+'/releases/latest',{headers:{Accept:'application/vnd.github+json'}}).then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(j){
-  var v=j.tag_name||j.name||'Latest'; if(tag)tag.textContent=v; if(ver){ver.textContent=v;ver.style.display='inline-block'}
-  var assets=j.assets||[];var exe=assets.filter(function(x){return /\.exe$/i.test(x.name)})[0];var app=assets.filter(function(x){return /\.AppImage$/i.test(x.name)})[0];
-  if(exe)winLink.href=exe.browser_download_url; if(app)linuxLink.href=app.browser_download_url;
-  var t=onLinux?app:exe; if(t)primaryBtn.href=t.browser_download_url;
-  var cw=document.getElementById('card-win'); if(cw&&exe)cw.href=exe.browser_download_url;
-  var cl=document.getElementById('card-linux'); if(cl&&app)cl.href=app.browser_download_url;
-}).catch(function(){if(tag)tag.textContent='Latest'});
+  var ua = navigator.userAgent || '';
+  var onLinux = /linux/i.test(ua) && !/android/i.test(ua);
+  var onWin = /windows|win32|win64/i.test(ua);
+  var downloadText = document.getElementById('download-text');
+  var downloadIcon = document.getElementById('download-icon');
+  var detected = document.getElementById('detected-os');
+  if (onLinux) {
+    downloadText.textContent = 'Download for Linux';
+    downloadIcon.className = 'fa-brands fa-linux';
+    detected.textContent = 'Linux detected';
+  } else if (onWin) {
+    downloadText.textContent = 'Download for Windows';
+    downloadIcon.className = 'fa-brands fa-windows';
+    detected.textContent = 'Windows detected';
+  }
+
+  fetch('https://api.github.com/repos/Web-mc1/CrispyLauncher/releases/latest', {headers: {Accept: 'application/vnd.github+json'}})
+    .then(function (response) { if (!response.ok) throw new Error('Release lookup failed'); return response.json(); })
+    .then(function (release) {
+      var version = release.tag_name || release.name || 'Latest';
+      document.getElementById('release-tag').textContent = version;
+      document.getElementById('download-version').textContent = version;
+      var assets = release.assets || [];
+      var exe = assets.find(function (asset) { return /\.exe$/i.test(asset.name); });
+      var app = assets.find(function (asset) { return /\.AppImage$/i.test(asset.name); });
+      if (exe) document.getElementById('card-win').href = exe.browser_download_url;
+      if (app) document.getElementById('card-linux').href = app.browser_download_url;
+      var primary = onLinux ? app : exe;
+      if (primary) document.getElementById('primary-download-btn').href = primary.browser_download_url;
+    })
+    .catch(function () { document.getElementById('release-tag').textContent = 'Latest'; });
 </script>
-
-</body></html>
+</body>
+</html>
