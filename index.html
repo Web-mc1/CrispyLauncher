@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -27,13 +26,14 @@
   .tape{background:#C97A3D;color:#FFF6E8;font-weight:800;display:inline-block;padding:4px 10px;transform:rotate(-1.5deg);box-shadow:2px 2px 0 rgba(0,0,0,.4)}
   .underline-hand{background:linear-gradient(transparent 62%,rgba(201,122,61,.35) 62%)}
   .faq-a{max-height:0;overflow:hidden;transition:max-height .3s ease}
-  .faq-item.open .faq-a{max-height:280px}
+  .faq-item.open .faq-a{max-height:500px}
   .faq-item.open .chev{transform:rotate(90deg)}
   .chev{transition:transform .25s ease}
   .stamp{border:2px dashed #C97A3D;color:#C97A3D;padding:3px 8px;border-radius:4px;font-size:11px;font-weight:800;transform:rotate(1deg);display:inline-block}
   .dot-grid{background-image:radial-gradient(#3A2C1C 1.2px,transparent 1.2px);background-size:22px 22px}
 </style>
 <style>*, ::before, ::after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / .5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-backdrop-drop-shadow: ;--tw-transform: ;--tw-transform-origin: ;--tw-transition: ;--tw-transition-delay: ;--tw-transition-duration: ;--tw-transition-property: ;--tw-transition-timing-function: ;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / .5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-backdrop-drop-shadow: ;--tw-scroll-snap-strictness:proximity} *,:before,:after{box-sizing:border-box;border-width:0;border-style:solid;border-color:currentColor}</style>
+</head>
 <body>
 
 <header style="position:sticky;top:0;z-index:50;background:#0F0B07;border-bottom:2px solid #35261A">
@@ -63,7 +63,7 @@
 <section id="download" style="position:relative;padding:56px 16px 64px;background:#140F09">
   <div class="dot-grid" style="position:absolute;inset:0;opacity:.25;pointer-events:none"></div>
   <div style="position:relative;max-width:960px;padding-left:24px;padding-right:24px;margin:0 auto;text-align:center">
-    <h1 style="font-size:46px;line-height:.95;font-weight:800;letter-spacing:-.03em;margin:0">I got tired of<br><span style="background:#C97A3D;color:#140F09;padding:2px 10px;border-radius:4px;display:inline-block">launcher bugs.</span></h1>
+    <h1 style="font-size:46px;line-height:.95;font-weight:800;letter-spacing:-.03em;margin:-2px 0 0;transform:translateY(-2px)">I got tired of<br><span style="background:#C97A3D;color:#140F09;padding:2px 10px;border-radius:4px;display:inline-block">launcher bugs.</span></h1>
     <p style="color:#C9B99A;font-size:16px;line-height:1.65;margin:18px auto 0;max-width:720px">Crispy is my little Minecraft launcher. Manage instances, add mods from Modrinth, launch — done. No ads, no paying walls. Written by me, in my free time.</p>
 
     <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:28px">
@@ -192,10 +192,21 @@
 </footer>
 
 <script>
-document.getElementById('year').textContent = new Date().getFullYear();
 var menuBtn=document.getElementById('menu-btn'), mm=document.getElementById('mobile-menu');
 if(menuBtn){menuBtn.addEventListener('click',function(){var h=mm.style.display==='none'||!mm.style.display;mm.style.display=h?'block':'none';});}
-document.querySelectorAll('.faq-q').forEach(function(btn){btn.addEventListener('click',function(){var it=btn.closest('.faq-item');var open=it.classList.contains('open');document.querySelectorAll('.faq-item').forEach(function(item){item.classList.remove('open');});if(!open){it.classList.add('open');}});});
+document.querySelectorAll('.faq-q').forEach(function(btn){
+  btn.addEventListener('click', function(e){
+    e.stopPropagation();
+    var it = btn.closest('.faq-item');
+    var isOpen = it.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(function(item){
+      item.classList.remove('open');
+    });
+    if (!isOpen) {
+      it.classList.add('open');
+    }
+  });
+});
 document.querySelectorAll('[data-copy]').forEach(function(b){b.addEventListener('click',function(){if(navigator.clipboard)navigator.clipboard.writeText(b.dataset.copy);b.textContent='Copied!';setTimeout(function(){b.textContent='Copy command';},1200);});});
 
 var winLink=document.getElementById('dl-win-link'),linuxLink=document.getElementById('dl-linux-link'),primaryBtn=document.getElementById('primary-download-btn'),downloadText=document.getElementById('download-text'),downloadIcon=document.getElementById('download-icon'),detected=document.getElementById('detected-os');
