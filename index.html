@@ -48,17 +48,9 @@
       <a href="#download" style="color:inherit;text-decoration:none">Download</a>
       <a href="#faq" style="color:inherit;text-decoration:none">FAQ</a>
     </nav>
-    <div style="display:flex;align-items:center;gap:8px">
+    <div style="display:flex;align-items:center">
       <a href="#download" class="fl-btn" style="padding:8px 14px;border-radius:6px;text-decoration:none;font-size:14px;display:inline-flex;gap:8px;align-items:center"><i class="fa-solid fa-download" style="font-size:13px"></i> Download</a>
-      <a href="#how" class="fl-btn2" style="width:38px;height:38px;border-radius:6px;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;color:#C9B99A" title="Settings"><i class="fa-solid fa-gear" style="font-size:15px"></i></a>
-      <button id="menu-btn" style="background:#1C140E;border:2px solid #35261A;color:#F5EAD6;width:38px;height:38px;border-radius:6px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center" aria-label="Menu"><i class="fa-solid fa-bars"></i></button>
     </div>
-  </div>
-  <div id="mobile-menu" style="display:none;border-top:2px solid #35261A;padding:10px 16px;background:#0F0B07">
-    <a href="#how" style="display:block;padding:10px 6px;color:#F5EAD6;text-decoration:none">What it does</a>
-    <a href="#preview" style="display:block;padding:10px 6px;color:#F5EAD6;text-decoration:none">Preview</a>
-    <a href="#download" style="display:block;padding:10px 6px;color:#F5EAD6;text-decoration:none">Download</a>
-    <a href="#faq" style="display:block;padding:10px 6px;color:#F5EAD6;text-decoration:none">FAQ</a>
   </div>
 </header>
 
@@ -70,14 +62,17 @@
     <p style="color:#C9B99A;font-size:16px;line-height:1.65;margin:18px auto 0;max-width:720px">Crispy is my little Minecraft launcher. Manage instances, add mods from Modrinth, launch — done. No ads, no paying walls. Written by me, in my free time.</p>
 
     <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:28px">
-      <a id="primary-download-btn" href="https://github.com/Web-mc1/CrispyLauncher/releases/download/v0.4.7/crispy-launcher-0.4.7.AppImage" target="_blank" rel="noopener" class="fl-btn" style="padding:14px 20px;border-radius:8px;text-decoration:none;display:inline-flex;align-items:center;gap:8px;font-size:15px">
-        <i id="download-icon" class="fa-brands fa-linux"></i> <span id="download-text">Download for Linux</span> <span id="download-version" style="font-size:11px;background:rgba(0,0,0,.15);padding:4px 7px;border-radius:999px">v0.4.7</span>
+      <a id="primary-download-btn" href="https://github.com/Web-mc1/CrispyLauncher/releases/download/v0.4.7/crispy-launcher-Setup-0.4.7.exe" target="_blank" rel="noopener" class="fl-btn" style="padding:14px 20px;border-radius:8px;text-decoration:none;display:inline-flex;align-items:center;gap:8px;font-size:15px">
+        <i id="download-icon" class="fa-brands fa-windows"></i> <span id="download-text">Download for Windows</span> <span id="download-version" style="font-size:11px;background:rgba(0,0,0,.15);padding:4px 7px;border-radius:999px">v0.4.7</span>
+      </a>
+      <a id="secondary-download-btn" href="https://github.com/Web-mc1/CrispyLauncher/releases/download/v0.4.7/crispy-launcher-0.4.7.AppImage" target="_blank" rel="noopener" class="fl-btn2" style="padding:14px 20px;border-radius:8px;text-decoration:none;display:inline-flex;align-items:center;gap:8px;font-size:15px">
+        <i id="secondary-icon" class="fa-brands fa-linux" style="color:#C97A3D"></i> <span id="secondary-text">Linux .AppImage</span>
       </a>
       <a href="#preview" class="fl-btn2" style="padding:14px 20px;border-radius:8px;text-decoration:none;display:inline-flex;align-items:center;gap:8px;font-size:15px"><i class="fa-solid fa-play"></i> See it</a>
     </div>
 
     <div style="margin-top:14px;font-size:12px;color:#A89A86;display:flex;justify-content:center;gap:14px;flex-wrap:wrap">
-      <span id="detected-os">Linux detected</span>
+      <span id="detected-os">Windows detected</span>
       <span style="color:#35261A">•</span><a id="dl-win-link" href="https://github.com/Web-mc1/CrispyLauncher/releases/download/v0.4.7/crispy-launcher-Setup-0.4.7.exe" target="_blank" style="color:#C97A3D;text-decoration:none">Windows .exe</a>
       <span style="color:#35261A">•</span><a id="dl-linux-link" href="https://github.com/Web-mc1/CrispyLauncher/releases/download/v0.4.7/crispy-launcher-0.4.7.AppImage" target="_blank" style="color:#C97A3D;text-decoration:none">Linux .AppImage</a>
     </div>
@@ -196,11 +191,6 @@
 </footer>
 
 <script>
-var menuBtn=document.getElementById('menu-btn'), mm=document.getElementById('mobile-menu');
-if(menuBtn){menuBtn.addEventListener('click',function(){var h=mm.style.display==='none'||!mm.style.display;mm.style.display=h?'block':'none';});}
-document.querySelectorAll('#mobile-menu a').forEach(function(link){
-  link.addEventListener('click', function(){ mm.style.display = 'none'; });
-});
 document.querySelectorAll('.faq-q').forEach(function(btn){
   btn.addEventListener('click', function(e){
     e.stopPropagation();
@@ -216,17 +206,13 @@ document.querySelectorAll('.faq-q').forEach(function(btn){
 });
 document.querySelectorAll('[data-copy]').forEach(function(b){b.addEventListener('click',function(){if(navigator.clipboard)navigator.clipboard.writeText(b.dataset.copy);b.textContent='Copied!';setTimeout(function(){b.textContent='Copy command';},1200);});});
 
-var winLink=document.getElementById('dl-win-link'),linuxLink=document.getElementById('dl-linux-link'),primaryBtn=document.getElementById('primary-download-btn'),downloadText=document.getElementById('download-text'),downloadIcon=document.getElementById('download-icon'),detected=document.getElementById('detected-os');
-var ua=navigator.userAgent||'',onLinux=/linux/i.test(ua)&&!/android/i.test(ua),onWin=/windows|win32|win64/i.test(ua);
-if(onLinux){downloadText.textContent='Download for Linux';downloadIcon.className='fa-brands fa-linux';detected.textContent='Linux detected';}
-else if(onWin){downloadText.textContent='Download for Windows';downloadIcon.className='fa-brands fa-windows';detected.textContent='Windows detected';}
-else{downloadText.textContent='Download Crispy Launcher';detected.textContent='Desktop detected';}
+var winLink=document.getElementById('dl-win-link'),linuxLink=document.getElementById('dl-linux-link'),primaryBtn=document.getElementById('primary-download-btn'),secondaryBtn=document.getElementById('secondary-download-btn'),downloadText=document.getElementById('download-text'),downloadIcon=document.getElementById('download-icon'),secondaryText=document.getElementById('secondary-text'),secondaryIcon=document.getElementById('secondary-icon'),detected=document.getElementById('detected-os');
 var REPO='Web-mc1/CrispyLauncher',tag=document.getElementById('release-tag'),ver=document.getElementById('download-version');
 fetch('https://api.github.com/repos/'+REPO+'/releases/latest',{headers:{Accept:'application/vnd.github+json'}}).then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(j){
   var v=j.tag_name||j.name||'Latest'; if(tag)tag.textContent=v; if(ver){ver.textContent=v;ver.style.display='inline-block'}
   var assets=j.assets||[];var exe=assets.filter(function(x){return /\.exe$/i.test(x.name)})[0];var app=assets.filter(function(x){return /\.AppImage$/i.test(x.name)})[0];
-  if(exe)winLink.href=exe.browser_download_url; if(app)linuxLink.href=app.browser_download_url;
-  var t=onLinux?app:exe; if(t)primaryBtn.href=t.browser_download_url;
+  if(exe){winLink.href=exe.browser_download_url; primaryBtn.href=exe.browser_download_url;}
+  if(app){linuxLink.href=app.browser_download_url; secondaryBtn.href=app.browser_download_url;}
   var cw=document.getElementById('card-win'); if(cw&&exe)cw.href=exe.browser_download_url;
   var cl=document.getElementById('card-linux'); if(cl&&app)cl.href=app.browser_download_url;
 }).catch(function(){if(tag)tag.textContent='Latest'});
