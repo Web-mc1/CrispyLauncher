@@ -50,7 +50,7 @@
     </nav>
     <div style="display:flex;align-items:center;gap:12px">
       <a href="#download" class="fl-btn" style="padding:8px 14px;border-radius:6px;text-decoration:none;font-size:14px;display:inline-flex;gap:8px;align-items:center"><i class="fa-solid fa-download" style="font-size:13px"></i> Download</a>
-      <button id="menu-btn" style="display:none;background:#1C140E;border:2px solid #35261A;color:#F5EAD6;width:40px;height:40px;border-radius:6px" aria-label="Menu"><i class="fa-solid fa-bars"></i></button>
+      <button id="menu-btn" style="background:#1C140E;border:2px solid #35261A;color:#F5EAD6;width:40px;height:40px;border-radius:6px;cursor:pointer" aria-label="Menu"><i class="fa-solid fa-bars"></i></button>
     </div>
   </div>
   <div id="mobile-menu" style="display:none;border-top:2px solid #35261A;padding:10px 16px;background:#0F0B07">
@@ -186,9 +186,10 @@
   </div>
 </section>
 
-<footer style="border-top:2px solid #35261A;padding:28px 16px;background:#0F0B07">
-  <div style="max-width:1200px;padding:0 24px;margin:0 auto;display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between">
+<footer style="border-top:2px solid #35261A;padding:28px 12px;background:#0F0B07">
+  <div style="max-width:100%;padding:0;margin:0 auto;display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between">
     <span style="display:inline-flex;align-items:center;gap:8px;font-weight:800"><span style="font-size:22px">🧀</span> Crispy Launcher <span style="color:#7A6B58;font-weight:500;font-size:12px">by FryedCheese</span></span>
+    <span style="font-size:12px;color:#A89A86">Questions or business: <a href="mailto:etienne.gauchet.yt@gmail.com" style="color:#C97A3D;text-decoration:none">etienne.gauchet.yt@gmail.com</a></span>
     <span style="font-size:12px;color:#A89A86;display:inline-flex;gap:14px"><a href="#download" style="color:#C97A3D;text-decoration:none">Download</a><a href="https://discord.gg/5pjG7wVdNN" target="_blank" rel="noopener" style="color:#C97A3D;text-decoration:none">Discord</a></span>
   </div>
 </footer>
@@ -196,6 +197,9 @@
 <script>
 var menuBtn=document.getElementById('menu-btn'), mm=document.getElementById('mobile-menu');
 if(menuBtn){menuBtn.addEventListener('click',function(){var h=mm.style.display==='none'||!mm.style.display;mm.style.display=h?'block':'none';});}
+document.querySelectorAll('#mobile-menu a').forEach(function(link){
+  link.addEventListener('click', function(){ mm.style.display = 'none'; });
+});
 document.querySelectorAll('.faq-q').forEach(function(btn){
   btn.addEventListener('click', function(e){
     e.stopPropagation();
